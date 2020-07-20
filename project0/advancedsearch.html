@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Google Advanced Search</title>
+        <meta charset="utf-8">
+        <link rel="icon" type="image/png" href="img/google_tab_icon.png" sizes="32x32" />
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="stylesheet/advancedsearch.css">
+    </head>
+
+    <body>
+        <div class="viewport">
+            <!-- header -->
+            <div class="header-section">
+                <!-- top nav bar -->
+                <div id="top-nav-bar-white-block">
+                    <div class="top-nav-bar-google-icon-section">
+                        <div class="top-nav-bar-google-container">
+                            <img class="top-nav-bar-google-icon" src="img/google_icon.png" alt="google-icon">
+                        </div>
+                    </div>
+
+                    <div class="top-nav-bar-container">
+                        <div class="top-nav-links">
+                            <a href="index.html">Google Search</a>
+                            <a href="imagesearch.html">Google Image Search</a>
+                        </div>
+
+                        <div class="grid-icon-container">
+                            <img class="grid-icon" src="img/grid_icon.svg" alt="grid-icon">
+                        </div>
+
+                        <div class="profile-picture-container">
+                            <img id="profile-picture-id" src="img/profile_picture.png" alt="profile-picture">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- app-bar section -->
+            <div class="app-bar-section">
+                <div class="app-bar-container">
+                    <div class="app-bar-word-container">
+                        <p>Advanced Search</p>
+                    </div>
+                </div>
+            </div>
+            <!-- form section -->
+            <div class="form-container">
+                <form class="advanced-search-form" action="https://google.com/search">
+                    <!-- top section -->
+                    <div class="top-section">
+                        <!-- header row -->
+                        <div class="header-row">
+                            <div class="find-pages-with-container">
+                                <span class="find-pages-with-text">Find pages with...</span>
+                            </div>
+                            <div class="find-pages-with-input-container"></div>
+                            <div class="to-do-this-container">
+                                <span class="to-do-this-text">To do this in the search box.</span>
+                            </div>
+                        </div>
+
+                        <!-- user input section -->
+                        <div class="user-input-section">
+                            <!-- second row -->
+                            <div class="all-these-words-container">
+                                <span class="all-these-words-text">all these words:</span>
+                            </div>
+                            <div class="all-these-words-input-container">
+                                <input class="all-these-words-input" type="text" name="as_q">
+                            </div>
+                            <div class="second-row-hint-container">
+                                <span class="left-hint">Type the important words:</span>
+                                <span class="right-hint">tri-colour rat terrier</span>
+                            </div>
+                            <!-- third row -->
+                            <div class="this-exact-word-container">
+                                <span class="this-exact-word-text">this exact word or phrase:</span>
+                            </div>
+                            <div class="this-exact-word-input-container">
+                                <input class="this-exact-word-input" type="text" name="as_epq">
+                            </div>
+                            <div class="third-row-hint-container">
+                                <span class="left-hint">Put exact words in quotes:</span>
+                                <span class="right-hint">"rat terrier"</span>
+                            </div>
+                            <!-- fourth row -->
+                            <div class="any-of-these-container">
+                                <span class="any-of-these-text">any of these words:</span>
+                            </div>
+                            <div class="any-of-these-input-container">
+                                <input class="any-of-these-input" type="text" name="as_oq">
+                            </div>
+                            <div class="fourth-row-hint-container">
+                                <span class="left-hint">Type OR between all the words you want:</span>
+                                <span class="right-hint">miniature OR standard</span>
+                            </div>
+                            <!-- fifth row -->
+                            <div class="none-of-these-container">
+                                <span class="none-of-these-text">none of these words:</span>
+                            </div>
+                            <div class="none-of-these-input-container">
+                                <input class="none-of-these-input" type="text" name="as_eq">
+                            </div>
+                            <div class="fifth-row-hint-container">
+                                <span class="left-hint">Put a minus sign just before words that you don't want:</span>
+                                <span class="right-hint">-rodent, -"Jack Russell"</span>
+                            </div>
+                            <!-- sixth row -->
+                            <div class="numbers-ranging-container">
+                                <span class="numbers-ranging-text">number ranging from:</span>
+                            </div>
+                            <div class="numbers-ranging-input-container">
+                                <div class="numbers-ranging-left-input-container">
+                                    <input class="numbers-ranging-left-input" type="text" name="as_nlo">
+                                </div>
+                                <div class="numbers-ranging-word-to-container">
+                                    <div class="numbers-ranging-word-to-border">
+                                        <span class="word-to">to</span>
+                                    </div>
+                                </div>
+                                <div class="numbers-ranging-right-input-container">
+                                    <input class="numbers-ranging-right-input" type="text" name="as_nhi">
+                                </div>
+                            </div>
+                            <div class="sixth-row-hint-container">
+                                <span class="left-hint">Put two full stops between the numbers and add a unit of measurement:</span>
+                                <span class="right-hint">10..35 kg, £300..£500, 2010..2011</span>
+                            </div>
+                            <!-- button row -->
+                            <div class="empty-left-section"></div>
+                            <div class="button-container">
+                                <div class="button-border">
+                                    <button class="advanced-search-button" type="submit" value="Google Search">Advanced Search</button>
+                                </div>
+                            </div>
+                            <div class="seventh-row-empty-hint-section">
+                                <span class="left-hint-empty-text">empty text here</span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- bottom links -->
+                <div class="you-can-also-section">
+                    <div class="find-pages-with-container">
+                        <span class="find-pages-with-text">You can also...</span>
+                    </div>
+                    <div class="first-line">
+                        <a class="bottom-links" href="https://support.google.com/websearch?p=adv_pages_similar&hl=en">Find pages that are similar to a URL</a>
+                    </div>
+                    <div class="second-line">
+                        <a class="bottom-links" href="https://support.google.com/websearch?p=adv_pages_visited&hl=en">Search pages that you've visited</a>
+                    </div>
+                    <div class="third-line">
+                        <a class="bottom-links" href="https://support.google.com/websearch?p=adv_operators&hl=en">Use operators in the search box</a>
+                    </div>
+                    <div class="fourth-line">
+                        <a class="bottom-links" href="https://www.google.com/preferences?hl=en-SG">Customise your search settings</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- footer -->
+            <div class="footer-section">
+                <!-- location -->
+                <div class="location-bar-section">
+                    <div class="location-bar-container">
+                        <span class="location">Singapore</span>
+                    </div>
+                </div>
+                <div class="bottom-links-section">
+                    <!-- left links -->
+                    <span class="footer-section-left-links">
+                        <a href="https://www.google.com/intl/en_sg/ads/?subid=ww-ww-et-g-awa-a-g_hpafoot1_1!o2&utm_source=google.com&utm_medium=referral&utm_campaign=google_hpafooter&fg=1">Advertising</a>
+                        <a href="https://www.google.com/services/?subid=ww-ww-et-g-awa-a-g_hpbfoot1_1!o2&utm_source=google.com&utm_medium=referral&utm_campaign=google_hpbfooter&fg=1">Business</a>
+                        <a href="https://about.google/?utm_source=google-SG&utm_medium=referral&utm_campaign=hp-footer&fg=1">About</a>
+                        <a href="https://google.com/search/howsearchworks/?fg=1">How Search works</a>
+                    </span>
+                    <!-- right links -->
+                    <span class="footer-section-right-links">
+                        <a href="https://policies.google.com/privacy?hl=en-SG&fg=1">Privacy</a>
+                        <a href="https://policies.google.com/terms?hl=en-SG&amp;fg=1">Terms</a>
+                        <a href="https://www.google.com/preferences?hl=en">Settings</a>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

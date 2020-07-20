@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Google Images</title>
+        <meta charset="utf-8">
+        <link rel="icon" type="image/png" href="img/google_tab_icon.png" sizes="32x32" />
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="stylesheet/imagesearch.css">
+    </head>
+
+    <body>
+        <div id="viewport">
+            <div id="top-nav-bar-white-block">
+                <div class="top-nav-bar-container">
+                    <div class="top-nav-links">
+                        <a href="index.html">Google Search</a>
+                        <a href="advancedSearch.html">Google Advanced Search</a>
+                    </div>
+
+                    <div class="grid-icon-container">
+                        <img class="grid-icon" src="img/grid_icon.svg" alt="grid-icon">
+                    </div>
+
+                    <div class="profile-picture-container">
+                        <img id="profile-picture-id" src="img/profile_picture.png" alt="profile-picture">
+                    </div>
+                </div>
+            </div>
+
+            <div class="search-form-section">
+                <form class="search-form-container"  action="https://google.com/search">
+                    <!-- google main icon -->
+                    <div class="google-icon-section">
+                        <img class="google-icon" src="img/google_icon.png" alt="google-icon">
+                        <div class="google-icon-subtext-container">
+                            <span class="google-icon-subtext">images</span>
+                        </div>
+                    </div>
+
+                    <div class="search-bar-border">
+                        <div class="search-bar-container">
+                            <!-- magnifying glass section -->
+                            <div class="search-bar-magnifying-glass-section">
+                                <div class="search-bar-magnifying-glass-container">
+                                    <span class="search-bar-magnifying-glass-icon">
+                                        <i class="fa fa-search" aria-hidden="true"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <!-- search form section -->
+                            <input class="search-bar-input-container" type="text" name="q">
+                            <input class="search-bar-input-container-image-param" type="hidden" name="tbm" value="isch">
+                            <!-- camera icon section -->
+                            <div class="search-bar-camera-section">
+                                <div class="search-bar-camera-container">
+                                    <span class="search-bar-camera-icon">
+                                        <i class="fa fa-camera" aria-hidden="true"></i>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- mic icon section -->
+                            <div class="search-bar-mic-section">
+                                <div class="search-bar-mic-container">
+                                    <span class="search-bar-magnifying-glass-icon">
+                                        <img class="microphone-icon" src="img/microphone_icon.png" alt="microphone-icon">
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- blue magnifying glass section -->
+                            <div class="search-bar-blue-magnifying-glass-section">
+                                <div class="search-bar--blue-magnifying-glass-container">
+                                    <span class="search-bar-magnifying-glass-icon">
+                                        <button class="search-bar-magnifying-glass-button" type="submit" value="Google Search">
+                                            <i id="blue-magnifying-glass" class="fa fa-search" aria-hidden="true"></i>
+                                        </button>
+                                        <input class="blue-magnifying-glass-image-search" type="hidden" name="tbm=isch">
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- footer -->
+            <div class="footer-section">
+                <!-- location -->
+                <div class="location-bar-section">
+                    <div class="location-bar-container">
+                        <span class="location">Singapore</span>
+                    </div>
+                </div>
+                <div class="bottom-links-section">
+                    <!-- left links -->
+                    <span class="footer-section-left-links">
+                        <a href="https://www.google.com/intl/en_sg/ads/?subid=ww-ww-et-g-awa-a-g_hpafoot1_1!o2&utm_source=google.com&utm_medium=referral&utm_campaign=google_hpafooter&fg=1">Advertising</a>
+                        <a href="https://www.google.com/services/?subid=ww-ww-et-g-awa-a-g_hpbfoot1_1!o2&utm_source=google.com&utm_medium=referral&utm_campaign=google_hpbfooter&fg=1">Business</a>
+                        <a href="https://about.google/?utm_source=google-SG&utm_medium=referral&utm_campaign=hp-footer&fg=1">About</a>
+                        <a href="https://google.com/search/howsearchworks/?fg=1">How Search works</a>
+                    </span>
+                    <!-- right links -->
+                    <span class="footer-section-right-links">
+                        <a href="https://policies.google.com/privacy?hl=en-SG&fg=1">Privacy</a>
+                        <a href="https://policies.google.com/terms?hl=en-SG&amp;fg=1">Terms</a>
+                        <a href="https://www.google.com/preferences?hl=en">Settings</a>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
