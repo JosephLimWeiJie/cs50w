@@ -1,0 +1,21 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    Search
+{% endblock %}
+
+{% block body %}
+    {% if substring_entry_list %}
+        <h1>Here are the search following results that contains your given keyword.</h1>
+
+        {% for entry in substring_entry_list %}
+            <li>
+                <a href="{% url 'encyclopedia:title' entry %}">{{ entry }}</a>
+            </li>
+        {% endfor%}
+    {% else %}
+        <h1>There is currently no search result that contains your given keyword.</h1>
+    {% endif %}
+
+
+{% endblock %}
