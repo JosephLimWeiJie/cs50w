@@ -1,2 +1,2 @@
 # JosephLimWeiJie
-This project is not completed yet.
+This project is **COMPLETED**.
