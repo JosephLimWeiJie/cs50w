@@ -50,7 +50,7 @@ def search(request):
         if isFound:
             return render(request, "encyclopedia/entry.html", {
                 "title_of_website": user_input.upper(),
-                "entry_content": util.get_entry(user_input)
+                "entry_content": markdown2.markdown(util.get_entry(user_input))
             })
         else:
             substring_entry_list = get_substring_entry(user_input)
