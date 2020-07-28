@@ -3,8 +3,22 @@
 {% block body %}
     <h1>Listing: {{ listing }}</h1>
     <div>
-        <img src="{{ listing.image_url }}" alt="image-url">
+        <img src="{{ listing.image_url }}" height=300px width=300px alt="image-url">
     </div>
+    <div class="">
+        <p> </p>
+    </div>
+    <form class="" method="POST">
+        {% csrf_token %}
+        {% if user.is_authenticated %}
+            {% if is_on_watchlist %}
+                <button class="btn btn-primary" type="submit" name="remove-watchlist" formaction="{% url 'removewatchlist' listing.id %}">Remove from Watchlist</button>
+            {% else %}
+                <button class="btn btn-primary" type="submit" name="add-watchlist" formaction="{% url 'addwatchlist' listing.id %}">Add to Watchlist</button>
+            {% endif %}
+        {% endif %}
+    </form>
+    <hr>
     <div>
         <h2>Current bid: {{ curr_highest_bid }}</h2>
         <p>{{ total_bid_count }} bid(s) so far.
@@ -24,7 +38,7 @@
             </div>
             <input class="btn btn-primary" type="submit" value="Place Bid">
             {% if user.is_authenticated %}
-            <button class="btn btn-primary" type="submit" name="Close Bid" formaction="{% url 'close' listing.id %}">Close Bid</button>
+            <button class="btn btn-primary" type="submit" name="close-Bid" formaction="{% url 'close' listing.id %}">Close Bid</button>
             {% endif %}
         </form>
     </div>
@@ -34,5 +48,25 @@
         <li>Listed by: {{ listing.user }}</li>
         <li>Category: {{ listing.category }}</li>
         <li>Description: {{ listing.desrc }}</li>
+    </div>
+    <hr>
+    <div class="">
+        <h2>Comments:</h2>
+        {% if comments %}
+            {% for comment in comments %}
+                <li>{{ comment }}</li>
+            {% endfor %}
+        {% else %}
+            There is currently no comments on this listing yet.
+        {% endif %}
+        <div class="">
+            <p> </p>
+        </div>
+        {% if user.is_authenticated %}
+        <form class="">
+            <button class="btn btn-primary" type="submit" name="add-comment" formaction="{% url 'comment' listing.id %}">Add Comments</button>
+        </form>
+        {% endif %}
+
     </div>
 {% endblock %}

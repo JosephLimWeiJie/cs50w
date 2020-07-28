@@ -1,0 +1,14 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h1>Listing: {{ listing }}</h1>
+    <h5>Comment on the listing below:</h5>
+    <hr>
+    <form action="{% url 'comment' listing.id %}" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <input autofocus class="form-control" type="text" name="comment" placeholder="Enter your comments here.">
+        </div>
+        <input class="btn btn-primary" type="submit" value="Post">
+    </form>
+{% endblock %}

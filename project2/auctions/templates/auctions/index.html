@@ -1,13 +1,55 @@
 {% extends "auctions/layout.html" %}
+{% load static %}
+
 
 {% block body %}
     <h2>Active Listings</h2>
     <hr>
     {% for listing in listings %}
-        <li>
-            <a href="{% url 'listing' listing.id %}">{{ listing }}</a>
-        </li>
+    <div class="container">
+        <div class="row">
+            <a href="{% url 'listing' listing.id %}">
+                <div class="col">
+                    <img src="{{ listing.image_url }}" alt="listing-image" height=300px>
+                </div>
+                <div class="col">
+                    <div class="listing-group-title-border">
+                        <div class="listing-group-title">
+                            <p>{{ listing.title }}</p>
+                        </div>
+                    </div>
+                    <div class="listing-group-price-border">
+                        <div class="listing-group-price">
+                            <p>Current highest bid:
+                                {% for key, value in curr_highest_bids.items %}
+                                    {% if key == listing %}
+                                        {{ value }}
+                                    {% endif %}
+                                {% endfor %}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="listing-group-date-border">
+                        <div class="listing-group-date">
+                            <p>Created on: {{ listing.date }}</p>
+                        </div>
+                    </div>
+                    <div class="listing-group-desrc-border">
+                        <div class="listing-group-desrc">
+                            <p>Description: {{ listing.desrc }}</p>
+                        </div>
+                    </div>
+                    <div class="listing-group-category-border">
+                        <div class="listing-group-category">
+                            <p>Category: {{ listing.category }}</p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
     {% empty %}
         <h3>There are currently no listings available.</h3>
     {% endfor%}
+
 {% endblock %}

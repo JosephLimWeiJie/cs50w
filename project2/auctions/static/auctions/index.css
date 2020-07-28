@@ -1,0 +1,9 @@
+.listing-group {
+    display: block;
+    border: 1px solid red;
+    max-height: 200px;
+}
+
+.listing-group-image {
+    height: 200px;
+}
