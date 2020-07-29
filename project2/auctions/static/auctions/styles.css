@@ -1,3 +1,7 @@
 body {
     padding: 10px;
 }
+
+.col-sm-6 {
+    min-width: 568px;
+}

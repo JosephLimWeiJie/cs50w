@@ -27,6 +27,8 @@
             </li>
             {% if user.is_authenticated %}
                 <li class="nav-item">
+                    {% block navalert %}
+                    {% endblock %}
                     <a class="nav-link" href="{% url 'watchlist' %}">Watchlist</a>
                 </li>
                 <li class="nav-item">

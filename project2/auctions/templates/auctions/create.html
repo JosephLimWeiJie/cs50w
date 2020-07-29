@@ -1,5 +1,11 @@
 {% extends "auctions/layout.html" %}
 
+{% block navalert %}
+    {% if num_item_in_watchlist != 0 %}
+        <span class="badge badge-pill badge-primary" style="float:right;margin-bottom:-10px;">{{ num_item_in_watchlist }}</span>
+    {% endif %}
+{% endblock %}
+
 {% block body %}
     <h1>Create Listing</h1>
     <h5>Create your new listing by filling the fields below.</h5>
@@ -13,10 +19,13 @@
             <input class="form-control" type="text" name="desrc" placeholder="Describe your new listing here.">
         </div>
         <div class="form-group">
+            {% if error_message %}
+                {{ error_message }}
+            {% endif %}
             <input class="form-control" type="text" name="bid-amount" placeholder="Enter your starting bid here.">
         </div>
         <div class="form-group">
-            <input class="form-control" type="text" name="image-url" placeholder="Enter the image's URL for your new listing.">
+            <input class="form-control" type="text" name="image-url" placeholder="<Optional> You may enter the image's URL for your new listing here.">
         </div>
         <div class="form-group">
             <label for="category">Select the category of your listing</label>

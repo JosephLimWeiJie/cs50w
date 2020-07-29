@@ -1,10 +1,69 @@
 {% extends "auctions/layout.html" %}
 
+{% block navalert %}
+    {% if num_item_in_watchlist != 0 %}
+        <span class="badge badge-pill badge-primary" style="float:right;margin-bottom:-10px;">{{ num_item_in_watchlist }}</span>
+    {% endif %}
+{% endblock %}
+
 {% block body %}
-    {% for listing in listings %}
-        <li>
-            <a href="{% url 'listing' listing.id %}">{{ listing }}</a>
-        </li>
+    {% for listing in relevant_listings %}
+    <div class="container-fluid p-3 my-3 border">
+        <div class="row">
+            <div class="col-4">
+                <div class="media p-3">
+                    <a href="{% url 'listing' listing.id %}">
+                        <img src="{{ listing.image_url }}" alt="listing-image" class="img-fluid">
+                    </a>
+                </div>
+
+            </div>
+            <div class="col-6">
+                <div class="listing-group-title-border">
+                    <div class="listing-group-title">
+                        <a href="{% url 'listing' listing.id %}">
+                            <h2>{{ listing.title }}</h2>
+                        </a>
+                </div>
+                <div class="listing-group-price-border">
+                    <div class="listing-group-price">
+                        <h4>
+                            <strong>
+                                Current highest bid:
+                                    {% for key, value in curr_highest_bids.items %}
+                                        {% if key == listing %}
+                                            {{ value }}
+                                        {% endif %}
+                                    {% endfor %}
+                            </strong>
+                        </h4>
+                    </div>
+                </div>
+                <div class="listing-group-date-border">
+                    <div class="listing-group-date" style="color: grey;">
+                        <p>Created on: {{ listing.date }}</p>
+                    </div>
+                </div>
+                <div class="listing-group-desrc-border">
+                    <div class="listing-group-desrc">
+                        <p>
+                            <strong>Description: </strong>
+                            {{ listing.desrc }}
+                        </p>
+                    </div>
+                </div>
+                <div class="listing-group-category-border">
+                    <div class="listing-group-category">
+                        <p>
+                            <strong>Category: </strong>
+                                {{ listing.category }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
     {% empty %}
         There is no listing under this category currently.
     {% endfor %}
