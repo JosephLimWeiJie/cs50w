@@ -3,6 +3,8 @@ from django.db import models
 
 
 class User(AbstractUser):
+    watchlist_counter = models.IntegerField(default=0)
+    has_won = models.BooleanField(default=False)
     pass
 
 
@@ -10,7 +12,7 @@ class Listing(models.Model):
     CATEGORY = (
         ("Men's Wear", "Men's Wear"),
         ("Women's Apparel", "Women's Apparel"),
-        ("Mobile & Gadgets", "MMobile & Gadgets"),
+        ("Mobile & Gadgets", "Mobile & Gadgets"),
         ("Beauty & Personal Care", "Beauty & Personal Care"),
         ("Home Appliances", "Home Appliances"),
         ("Home & Living", "Home & Living"),
@@ -42,8 +44,14 @@ class Listing(models.Model):
     date = models.DateField(auto_now_add=True)
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="listing", default=1)
+    bid_winner = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="winnerlisting",
+        default=2, blank=True, null=True)
     is_active = models.BooleanField(default=True)
     is_on_watchlist = models.BooleanField(default=False)
+    watchlist_listing = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="watchlist_listing",
+        blank=True, null=True, default=3)
 
     def __str__(self):
         return f"{self.title}"

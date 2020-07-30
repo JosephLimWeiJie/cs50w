@@ -16,13 +16,9 @@
         <p>{{ total_bid_count }} bid(s) so far.</p>
     </div>
     <div class="">
-        {% if is_winner %}
-            <h2><strong>Congratulations!</strong>! You are the <strong>WINNER</strong> of this listing!</h2>
-        {% else %}
-            <h2>The winner for this listing is: <strong>{{ listing.bid_winner }}</strong></h2>
-        {% endif %}
+        <h2><strong>Congratulations!</strong>! You are the <strong>WINNER</strong> of this listing!</h2>
         <p>
-            This listing will now be officially closed and will not longer appear in the
+            This listing has been officially closed and will not longer appear in the
             <a href="{% url 'index' %}">'Active Listings'</a>
             page.
         </p>

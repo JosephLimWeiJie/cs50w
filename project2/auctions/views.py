@@ -39,13 +39,24 @@ category_dict = {
 
 def index(request):
     listings = Listing.objects.all().filter(is_active=True)
-    curr_highest_bids = get_curr_highest_bid_for_each_listing(listings)
 
-    return render(request, "auctions/index.html", {
-        "listings": listings,
-        "curr_highest_bids": curr_highest_bids,
-        "num_item_in_watchlist": get_watchlist_counter(request)
-    })
+    if Listing.objects.all().count() == 0:
+        return render(request, "auctions/index.html", {
+            "listings": listings,
+        })
+    else:
+        curr_highest_bids = get_curr_highest_bid_for_each_listing(listings)
+        if request.user.is_authenticated:
+            return render(request, "auctions/index.html", {
+                "listings": Listing.objects.all().filter(is_active=True),
+                "curr_highest_bids": curr_highest_bids,
+                "num_item_in_watchlist": request.user.watchlist_counter
+            })
+        else:
+            return render(request, "auctions/index.html", {
+                "listings": Listing.objects.all().filter(is_active=True),
+                "curr_highest_bids": curr_highest_bids,
+            })
 
 
 def login_view(request):
@@ -59,7 +70,20 @@ def login_view(request):
         # Check if authentication successful
         if user is not None:
             login(request, user)
-            return HttpResponseRedirect(reverse("index"))
+            if request.user.is_authenticated and request.user.has_won:
+                listing = Listing.objects.all().filter(
+                    bid_winner=request.user).last()
+                curr_highest_bid = get_curr_highest_bid(listing)
+                request.user.has_won = False
+                request.user.save()
+                return render(request, "auctions/winbid.html", {
+                    "listing": listing,
+                    "curr_highest_bid": format_curr_highest_bid(
+                        curr_highest_bid),
+                    "total_bid_count": listing.bid.all().count(),
+                })
+            else:
+                return HttpResponseRedirect(reverse("index"))
         else:
             return render(request, "auctions/login.html", {
                 "message": "Invalid username and/or password."
@@ -110,16 +134,16 @@ def create_view(request):
         category = request.POST['category']
         user = request.user
 
-        try:
-            # If image_url is not provided, use a placeholder image instead.
-            if image_url is not None:
-                image_url = "https://user-images.githubusercontent.com/"
-                + "59989652/88834961-2aa0b280-d207-11ea-9e3d-24c488a75569.jpg"
+        # If image_url is not provided, use a placeholder image instead.
+        if image_url is None or not image_url:
+            image_url = "https://user-images.githubusercontent.com/59989652/88834961-2aa0b280-d207-11ea-9e3d-24c488a75569.jpg"
 
+        try:
             bid_amount = float(bid_amount)
             listing = Listing.objects.create(
                 title=title, desrc=desrc, image_url=image_url,
-                category=category, user=user)
+                category=category, user=user, bid_winner=user,
+                watchlist_listing=None)
             new_bid = Bid.objects.create(
                 listing=listing, amount=bid_amount, user=user)
 
@@ -140,9 +164,26 @@ def listing_view(request, listing_id):
     listing = Listing.objects.get(pk=listing_id)
     curr_highest_bid = get_curr_highest_bid(listing)
     is_current_bid = check_current_bid(request, listing, curr_highest_bid)
+    bid_winner = listing.bid_winner
+
+    if not request.user.is_authenticated:
+        return render(request, "auctions/nonloginlisting.html", {
+            "is_on_watchlist": listing.is_on_watchlist,
+            "listing": listing,
+            "total_bid_count": listing.bid.all().count(),
+            "curr_highest_bid": format_curr_highest_bid(curr_highest_bid),
+            "is_current_bid": is_current_bid,
+            "error_message":
+                "You must enter a valid number for your new bid.",
+            "comments": listing.comment.all(),
+            "num_item_in_watchlist": get_watchlist_counter(request),
+            "bid_winner": bid_winner
+            })
 
     if request.method == "POST":
         new_bid = request.POST['new-bid']
+
+        # Check if new bid is a valid number
         try:
             new_bid = float(new_bid)
         except (TypeError, ValueError):
@@ -155,8 +196,10 @@ def listing_view(request, listing_id):
                 "error_message":
                     "You must enter a valid number for your new bid.",
                 "comments": listing.comment.all(),
-                "num_item_in_watchlist": get_watchlist_counter(request)
+                "num_item_in_watchlist": get_watchlist_counter(request),
+                "bid_winner": bid_winner
             })
+
         # Error if new bid is lower than current bid
         if new_bid < curr_highest_bid:
             return render(request, "auctions/listing.html", {
@@ -168,12 +211,16 @@ def listing_view(request, listing_id):
                 "error_message":
                     "You must enter a higher bid than the current bid.",
                 "comments": listing.comment.all(),
-                "num_item_in_watchlist": get_watchlist_counter(request)
+                "num_item_in_watchlist": get_watchlist_counter(request),
+                "bid_winner": bid_winner
             })
         else:
             # Update bid if higher than current bid
             new_bid = Bid.objects.create(
                 listing=listing, amount=new_bid, user=request.user)
+            listing.bid_winner = request.user
+            listing.save()
+
             return render(request, "auctions/listing.html", {
                 "is_on_watchlist": listing.is_on_watchlist,
                 "listing": listing,
@@ -182,7 +229,8 @@ def listing_view(request, listing_id):
                     get_curr_highest_bid(listing)),
                 "is_current_bid": is_current_bid,
                 "comments": listing.comment.all(),
-                "num_item_in_watchlist": get_watchlist_counter(request)
+                "num_item_in_watchlist": get_watchlist_counter(request),
+                "bid_winner": listing.bid_winner
             })
     else:
         return render(request, "auctions/listing.html", {
@@ -192,7 +240,8 @@ def listing_view(request, listing_id):
             "is_current_bid": is_current_bid,
             "total_bid_count": listing.bid.all().count(),
             "comments": listing.comment.all(),
-            "num_item_in_watchlist": get_watchlist_counter(request)
+            "num_item_in_watchlist": get_watchlist_counter(request),
+            "bid_winner": bid_winner
         })
 
 
@@ -200,14 +249,28 @@ def close_view(request, listing_id):
     listing = Listing.objects.get(pk=listing_id)
     curr_highest_bid = get_curr_highest_bid(listing)
     listing.is_active = False
+
+    # Notify the bid winner when the poster closes the bid
+    bid_winner = listing.bid_winner
+    bid_winner.has_won = True
+
+    bid_winner.save()
     listing.save()
+
+    # Reduce watchlist count by 1 for all users that
+    # have this item in their watchlist
+    for user in User.objects.all():
+        if user.listing == listing:
+            user.watchlist_counter -= 1
+            user.save()
 
     return render(request, "auctions/close.html", {
         "listing": listing,
         "curr_highest_bid": format_curr_highest_bid(curr_highest_bid),
         "total_bid_count": listing.bid.all().count(),
         "is_winner": is_winner(request, listing),
-        "num_item_in_watchlist": get_watchlist_counter(request)
+        "num_item_in_watchlist": get_watchlist_counter(request),
+        "bid_winner": bid_winner
     })
 
 
@@ -232,9 +295,14 @@ def watchlist(request):
     watchlist = Listing.objects.all().filter(
         is_on_watchlist=True, is_active=True)
 
+    user_specific_watchlist = []
+    for listing in watchlist:
+        if listing.watchlist_listing == request.user:
+            user_specific_watchlist.append(listing)
+
     curr_highest_bids = get_curr_highest_bid_for_each_listing(watchlist)
     return render(request, "auctions/watchlist.html", {
-        "watchlist": watchlist,
+        "user_specific_watchlist": user_specific_watchlist,
         "curr_highest_bids": curr_highest_bids,
         "num_item_in_watchlist": get_watchlist_counter(request)
     })
@@ -244,6 +312,10 @@ def add_to_watchlist(request, listing_id):
     if request.method == "POST":
         listing = Listing.objects.get(pk=listing_id)
         listing.is_on_watchlist = True
+        listing.watchlist_listing = request.user
+        request.user.watchlist_counter += 1
+
+        request.user.save()
         listing.save()
         return HttpResponseRedirect(reverse("listing", args=[listing_id]))
 
@@ -252,6 +324,12 @@ def remove_from_watchlist(request, listing_id):
     if request.method == "POST":
         listing = Listing.objects.get(pk=listing_id)
         listing.is_on_watchlist = False
+        request.user.watchlist_counter -= 1
+
+        if request.user.watchlist_counter < 0:
+            request.user.watchlist_counter = 0
+
+        request.user.save()
         listing.save()
         return HttpResponseRedirect(reverse("listing", args=[listing_id]))
 
@@ -308,7 +386,7 @@ def is_winner(request, listing):
     Returns True if the current user has won the auction and
     False if otherwise
     """
-    if listing.user == request.user:
+    if listing.bid_winner == request.user:
         return True
     return False
 
@@ -329,10 +407,5 @@ def get_curr_highest_bid_for_each_listing(listings):
 
 
 def get_watchlist_counter(request):
-    num_item_in_watchlist = None
-
     if request.user.is_authenticated:
-        num_item_in_watchlist = Listing.objects.all().filter(
-            is_on_watchlist=True, is_active=True).count()
-
-    return num_item_in_watchlist
+        return request.user.watchlist_counter

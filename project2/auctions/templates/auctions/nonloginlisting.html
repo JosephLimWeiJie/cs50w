@@ -18,7 +18,7 @@
         {% csrf_token %}
         {% if user.is_authenticated %}
             {% if is_on_watchlist %}
-                <button class="btn btn-primary" type="submit" name="remove-watchlist" formaction="{% url 'removewatchlist' listing.id %}" style="background-color:grey; border-color:grey">Remove from Watchlist</button>
+                <button class="btn btn-primary" type="submit" name="remove-watchlist" formaction="{% url 'removewatchlist' listing.id %}">Remove from Watchlist</button>
             {% else %}
                 <button class="btn btn-primary" type="submit" name="add-watchlist" formaction="{% url 'addwatchlist' listing.id %}">Add to Watchlist</button>
             {% endif %}
@@ -30,21 +30,6 @@
         <p>{{ total_bid_count }} bid(s) so far.
             {{ bid_winner }} has the highest bid currently.
         </p>
-    </div>
-    <div class="form-group">
-        <form class="" action="{% url 'listing' listing.id %}" method="post">
-            {% csrf_token %}
-            {% if error_message %}
-                {{ error_message }}
-            {% endif %}
-            <div class="form-group">
-                <input autofocus class="form-control" type="text" name="new-bid" placeholder="Place your new bid here">
-            </div>
-            <input class="btn btn-primary" type="submit" value="Place Bid">
-            {% if user.is_authenticated and listing.user == user %}
-            <button class="btn btn-primary" type="submit" name="close-Bid" formaction="{% url 'close' listing.id %}">Close Bid</button>
-            {% endif %}
-        </form>
     </div>
     <hr>
     <h1>Details:</h1>
