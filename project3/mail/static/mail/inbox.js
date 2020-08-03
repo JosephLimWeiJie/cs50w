@@ -11,7 +11,6 @@ document.addEventListener('DOMContentLoaded', function () {
         'click', compose_email);
     document.querySelector('#compose-form').onsubmit = send_email;
 
-
     // By default, load the inbox
     load_mailbox('inbox');
 });
@@ -44,6 +43,9 @@ function load_mailbox(mailbox) {
             for (index = 0; index < emails.length; index++) {
                 const email = emails[index];
                 const email_border_div = document.createElement('div');
+                email_border_div.style.border = '1px solid grey';
+                email_border_div.style.borderRadius = '8px';
+                email_border_div.style.marginBottom = '12px';
 
                 if (email.read == true) {
                     email_border_div.style.background = 'lightgrey';
@@ -51,16 +53,26 @@ function load_mailbox(mailbox) {
                     email_border_div.style.background = 'white';
                 }
 
+                // Construct the contents for an email
                 email_border_div.innerHTML = `
                     <div class='email-content'>
                         <div class='email-sender-div'>
-                            <p>${email.sender}</p>
+                            <p style="font-size: 20px; padding-left: 5px;">
+                                <strong>
+                                    ${get_email_username(email.sender)}
+                                </strong>
+                            </p>
                         </div>
                         <div class='email-subject-div'>
-                            <p>${email.subject}</p>
+                            <p style='padding-left: 5px;'>
+                                Subject: ${email.subject}
+                            </p>
                         </div>
                         <div class='email-timestamp-div'>
-                            <p>${email.timestamp}</p>
+                            <p style="font-size: 12px; color: grey;
+                                padding-left: 5px;">
+                                ${email.timestamp}
+                            </p>
                         </div>
                     </div>`;
 
@@ -114,18 +126,27 @@ function view_email(email_id, mailbox) {
             email_border_div.innerHTML = `
                 <div class='email-content'>
                     <div class='email-sender-div'>
-                        <p>From: ${email.sender}</p>
+                        <p>
+                            <strong>From: </strong>${email.sender}
+                        </p>
                     </div>
                     <div class='email-recipents-div'>
-                        <p>To: ${email.recipients}</p>
+                        <p>
+                            <strong>To: </strong>${email.recipients}
+                        </p>
                     </div>
                     <div class='email-subject-div'>
-                        <p>Subject: ${email.subject}</p>
+                        <p>
+                            <strong> Subject: </strong>${email.subject}
+                        </p>
                     </div>
                     <div class='email-timestamp-div'>
-                        <p>${email.timestamp}</p>
+                        <p style="font-size: 12px; color: grey;">
+                            ${email.timestamp}
+                        </p>
                     </div>
                     <div class='email-body-div'>
+                        <hr>
                         <p>${email.body}</p>
                     </div>
                 </div>
@@ -134,36 +155,39 @@ function view_email(email_id, mailbox) {
             document.querySelector('#view-emails-view').append(
                 email_border_div);
 
-            // Create the 'Reply' button
-            reply_button_border_div = document.createElement('div');
-            reply_button_border_div.innerHTML =
-                `<button id='reply-btn'>Reply</button>`;
-            reply_button_border_div.addEventListener(
-                'click', () => reply_email(email_id));
-            document.querySelector('#view-emails-view').append(
-                reply_button_border_div);
-
-            // Create 'Archive' button if email is under 'inbox'
-            if (mailbox == 'inbox') {
-                button_border_div = document.createElement('div');
-                button_border_div.innerHTML =
-                    `<button id='archive-btn'>Archive</button>`;
-                button_border_div.addEventListener(
-                    'click', () => archive_email(email_id));
+                // Create the 'Reply' button
+                reply_button_border_div = document.createElement('div');
+                reply_button_border_div.innerHTML =
+                    `<button class="btn btn-sm btn-outline-primary"
+                    id='reply-btn' style='margin-bottom: 8px;'>Reply</button>`;
+                reply_button_border_div.addEventListener(
+                    'click', () => reply_email(email_id));
                 document.querySelector('#view-emails-view').append(
-                    button_border_div);
+                    reply_button_border_div);
 
-            // Create 'Unarchive' button if email is under 'archive'
-            } else if (mailbox == 'archive') {
-                button_border_div = document.createElement('div');
-                button_border_div.innerHTML =
-                    `<button id='archive-btn'>Unarchive</button>`;
-                button_border_div.addEventListener(
-                    'click', () => unarchive_email(email_id));
-                document.querySelector('#view-emails-view').append(
-                    button_border_div);
-            }
-        });
+                // Create 'Archive' button if email is under 'inbox'
+                if (mailbox == 'inbox') {
+                    button_border_div = document.createElement('div');
+                    button_border_div.innerHTML =
+                        `<button class="btn btn-sm btn-outline-primary"
+                        id='archive-btn'>Archive</button>`;
+                    button_border_div.addEventListener(
+                        'click', () => archive_email(email_id));
+                    document.querySelector('#view-emails-view').append(
+                        button_border_div);
+
+                // Create 'Unarchive' button if email is under 'archive'
+                } else if (mailbox == 'archive') {
+                    button_border_div = document.createElement('div');
+                    button_border_div.innerHTML =
+                        `<button class="btn btn-sm btn-outline-primary"
+                        id='archive-btn'>Unarchive</button>`;
+                    button_border_div.addEventListener(
+                        'click', () => unarchive_email(email_id));
+                    document.querySelector('#view-emails-view').append(
+                        button_border_div);
+                }
+            });
 
     // Update email.read in database
     fetch(`/emails/${email_id}`, {
@@ -196,7 +220,7 @@ function unarchive_email(email_id) {
     load_mailbox('inbox');
 }
 
-function reply_email(email_id) {
+function reply_email(email_id, mailbox) {
 
     // Show compose view and hide other views
     document.querySelector('#emails-view').style.display = 'none';
@@ -218,7 +242,12 @@ function reply_email(email_id) {
             }
 
             // Pre-fill body with timestamp and sender's info
-            var body = `On ${timestamp} ${recipent} wrote: \n` + email.body;
+            if (mailbox == 'sent') {
+                var body = email.body;
+            } else {
+                var body = `On ${timestamp} ${recipent} wrote:
+                    \n ${email.body}`;
+            }
 
             document.querySelector('#compose-recipients').value = recipent;
             document.querySelector('#compose-subject').value = subject;
@@ -228,7 +257,10 @@ function reply_email(email_id) {
     );
 }
 
+/* This functions toggles the display of the respective views when the user
+   clicks on the respective emails button. */
 function toggle_email_view(mailbox) {
+
     if (mailbox == "inbox") {
         document.querySelector('#emails-view').style.display = 'block';
         document.querySelector('#view-emails-view').style.display = 'none';
@@ -242,4 +274,12 @@ function toggle_email_view(mailbox) {
         document.querySelector('#view-emails-view').style.display = 'none';
         document.querySelector('#compose-view').style.display = 'none';
     }
+}
+
+/* This function formats a given email username and return the user's first
+   name. */
+function get_email_username(email) {
+    var username = email.split("@");
+    var first_name = username[0];
+    return first_name.charAt(0).toUpperCase() + first_name.slice(1);
 }
