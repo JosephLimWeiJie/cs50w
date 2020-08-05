@@ -1,0 +1,55 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+    <h1 style="text-align: center;">{{ user_name.username }}</h1>
+    <div class="container p-3 my-3 border" style="border-radius: 8px">
+        <div class="row">
+            <div class="col-6" style="text-align: center;">
+                Number of followers: <br>
+                <strong>{{ num_follower }}</strong>
+            </div>
+            <div class="col-6" style="text-align: center;">
+                Number of followings: <br>
+                <strong>{{ num_following }}</strong>
+            </div>
+        </div>
+    </div>
+
+    {% if is_not_user %}
+        <div class="container p-3 my-3" style="border-radius: 8px">
+            <div class="row">
+                <div class="col-sm" style="text-align: right">
+                    <button style="width: 100px; border-radius: 8px;" class ="btn-primary" type="button" name="button">Follow</button>
+                </div>
+                <div class="col-sm" style="text-align: left">
+                    <button style="width: 100px; border-radius: 8px;" class="btn-primary" type="button" name="button">Unfollow</button>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="container p-3 my-3 border" style="border-radius: 8px">
+        {% for post in posts %}
+            <div class="container p-3 my-3 border" style="border-radius: 8px">
+                <div class="">
+                    <a href="{% url 'profile' post.user %}">{{ post.user }}</a>
+                </div>
+                <div class="">
+                    {{ post.datetime }}
+                </div>
+                <div class="">
+                    {{ post.content }}
+                </div>
+                <div class="">
+                    {% for like in likes %}
+                        {% if like.post == post %}
+                            Likes: {{ like.like_count }}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        {% empty %}
+            <p>There is no post currently.</p>
+        {% endfor %}
+    </div>
+{% endblock %}

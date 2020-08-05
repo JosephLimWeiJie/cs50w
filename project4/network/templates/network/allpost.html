@@ -1,0 +1,42 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+    <h1 style="text-align: center;">All Posts</h1>
+    <div class="container p-3 my-3 border">
+        <h2>New Post</h2>
+        <form id="add-post-form" action="{% url 'allpost' %}" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <input class="form-control" type="text" name="content" value="" placeholder="What's on your mind today, {{ user.username}}?">
+            </div>
+            <button class="btn btn-sm btn-outline-primary" id="post-button">Post</button>
+        </form>
+    </div>
+
+    <div id="all-post-view" class="container p-3 my-3 border">
+        {% for post in posts %}
+            <div class="container p-3 my-3 border">
+                <div class="">
+                    <a href="{% url 'profile' post.user %}">{{ post.user }}</a>
+                </div>
+                <div class="">
+                    {{ post.content }}
+                </div>
+                <div class="">
+                    {{ post.datetime }}
+                </div>
+                <div class="">
+                    {% for like in likes %}
+                        {% if like.post == post %}
+                            Likes: {{ like.like_count }}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        {% empty %}
+            <p>There is no post currently.</p>
+        {% endfor %}
+    </div>
+
+
+{% endblock %}

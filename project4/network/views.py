@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import User
+from .models import User, Post, Like, Follower
 
 
 def index(request):
@@ -61,3 +61,57 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "network/register.html")
+
+
+def all_post_view(request):
+    if request.method == "POST":
+        content = request.POST["content"]
+
+        post = Post.objects.create(user=request.user, content=content)
+        like = Like.objects.create(post=post)
+        post.save()
+        like.save()
+        return render(request, "network/allpost.html", {
+            "posts": Post.objects.all().order_by("datetime").reverse(),
+            "likes": Like.objects.all()
+        })
+    else:
+        return render(request, "network/allpost.html", {
+            "posts": Post.objects.all().order_by("datetime").reverse(),
+            "likes": Like.objects.all()
+        })
+
+
+def profile(request, name):
+    if request.user.username == name:
+        return render(request, "network/profile.html", {
+            "num_follower": request.user.follower.count(),
+            "num_following": get_num_of_followings(name),
+            "is_not_user": False,
+            "user_name": request.user,
+            "posts": Post.objects.all().filter(
+                user=request.user).order_by("datetime").reverse()
+        })
+    else:
+        # Load other user's profile
+        other_user = User.objects.get(username=name)
+        return render(request, "network/profile.html", {
+            "num_follower": request.user.follower.count(),
+            "num_following": get_num_of_followings(name),
+            "is_not_user": True,
+            "user_name": other_user,
+            "posts": Post.objects.all().filter(
+                user=other_user).order_by("datetime").reverse()
+        })
+
+
+""" Utility functions """
+
+
+def get_num_of_followings(name):
+    followers_count = 0
+    for follower in Follower.objects.all():
+        if follower.user == name:
+            followers_count += 1
+
+    return followers_count
