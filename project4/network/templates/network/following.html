@@ -1,0 +1,34 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+    <h1 style="text-align: center;">Here are the posts from the users you're following: </h1>
+    <div id="all-post-view" class="container p-3 my-3 border">
+        {% for follow in curr_session_user_followings %}
+            {% for post in posts %}
+                {% if post.user.username == follow %}
+                    <div class="container p-3 my-3 border">
+                        <div class="">
+                            <a href="{% url 'profile' post.user %}">{{ post.user }}</a>
+                        </div>
+                        <div class="">
+                            {{ post.content }}
+                        </div>
+                        <div class="">
+                            {{ post.datetime }}
+                        </div>
+                        <div class="">
+                            {% for like in likes %}
+                                {% if like.post == post %}
+                                    Likes: {{ like.like_count }}
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+    </div>
+
+
+
+{% endblock %}

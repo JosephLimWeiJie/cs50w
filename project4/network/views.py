@@ -85,8 +85,8 @@ def all_post_view(request):
 def profile(request, name):
     if request.user.username == name:
         return render(request, "network/profile.html", {
-            "num_follower": request.user.follower.count(),
-            "num_following": get_num_of_followings(name),
+            "num_follower": request.user.follower_count,
+            "num_following": request.user.following_count,
             "is_not_user": False,
             "user_name": request.user,
             "posts": Post.objects.all().filter(
@@ -95,14 +95,56 @@ def profile(request, name):
     else:
         # Load other user's profile
         other_user = User.objects.get(username=name)
+        curr_session_user = request.user
         return render(request, "network/profile.html", {
-            "num_follower": request.user.follower.count(),
-            "num_following": get_num_of_followings(name),
+            "num_follower": other_user.follower_count,
+            "num_following": other_user.following_count,
             "is_not_user": True,
+            "is_following_user": is_following_user(
+                curr_session_user, other_user),
             "user_name": other_user,
             "posts": Post.objects.all().filter(
                 user=other_user).order_by("datetime").reverse()
         })
+
+
+def following_view(request):
+    return render(request, "network/following.html", {
+        "posts": Post.objects.all().exclude(
+            user=request.user).order_by("datetime").reverse(),
+        "likes": Like.objects.all(),
+        "curr_session_user_followings": request.user.followings
+    })
+
+
+def edit_follower(request, name):
+    if request.method == "POST":
+        user = User.objects.get(username=name)
+        curr_session_user = request.user
+
+        # Add follower
+        if request.POST["edit_follow_button"] == "Follow":
+            user.follower_count += 1
+            curr_session_user.following_count += 1
+            follower = Follower.objects.create(
+                name=request.user.username, following=user)
+            curr_session_user.followings.append(user.username)
+
+            user.save()
+            curr_session_user.save()
+            follower.save()
+        # Remove follower
+        else:
+            user.follower_count -= 1
+            curr_session_user.following_count -= 1
+            follower = Follower.objects.get(name=curr_session_user.username)
+            follower.delete()
+            curr_session_user.followings.append(user.username)
+
+            user.save()
+            curr_session_user.save()
+
+        return HttpResponseRedirect(reverse('profile', args=[name]))
 
 
 """ Utility functions """
@@ -115,3 +157,12 @@ def get_num_of_followings(name):
             followers_count += 1
 
     return followers_count
+
+
+def is_following_user(curr_session_user, other_user):
+    is_following = False
+    for follower in other_user.follower.all():
+        if follower.name == curr_session_user.username:
+            return True
+
+    return is_following

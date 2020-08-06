@@ -4,7 +4,9 @@ from datetime import datetime
 
 
 class User(AbstractUser):
-    pass
+    follower_count = models.IntegerField(default=0)
+    following_count = models.IntegerField(default=0)
+    followings = []
 
 
 class Post(models.Model):
@@ -27,5 +29,9 @@ class Like(models.Model):
 
 
 class Follower(models.Model):
-    user = models.ForeignKey(
+    name = models.CharField(max_length=64)
+    following = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="follower", blank=True)
+
+    def __str__(self):
+        return f"{self.name}"
