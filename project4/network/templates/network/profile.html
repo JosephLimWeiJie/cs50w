@@ -36,16 +36,16 @@
 
     <div class="container p-3 my-3 border" style="border-radius: 8px">
         <h6 style="color: grey;">Here are all the posts made by {{ user_name.username }}:</h6>
-        {% for post in posts %}
-            <div class="container p-3 my-3 border" style="border-radius: 8px">
+        {% for post in page_obj %}
+            <div id="all-post-view" class="container p-3 my-3 border">
                 <div class="">
                     <a href="{% url 'profile' post.user %}">{{ post.user }}</a>
                 </div>
                 <div class="">
-                    {{ post.datetime }}
+                    {{ post.content }}
                 </div>
                 <div class="">
-                    {{ post.content }}
+                    {{ post.datetime }}
                 </div>
                 <div class="">
                     {% for like in likes %}
@@ -59,4 +59,33 @@
             <p>There is no post currently.</p>
         {% endfor %}
     </div>
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1">&laquo; first</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}">previous</a>
+                </li>
+            {% endif %}
+
+            <span class="current">
+                <p style="margin-top: 10px; margin-right: 10px; margin-left: 10px;">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </p>
+            </span>
+
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">next</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+
 {% endblock %}

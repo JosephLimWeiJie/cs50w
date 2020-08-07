@@ -3,6 +3,7 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from django.core.paginator import Paginator
 
 from .models import User, Post, Like, Follower
 
@@ -71,12 +72,25 @@ def all_post_view(request):
         like = Like.objects.create(post=post)
         post.save()
         like.save()
+
+        post_list = Post.objects.all().order_by("datetime").reverse()
+        paginator = Paginator(post_list, 10)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+
         return render(request, "network/allpost.html", {
+            "page_obj": page_obj,
             "posts": Post.objects.all().order_by("datetime").reverse(),
             "likes": Like.objects.all()
         })
     else:
+        post_list = Post.objects.all().order_by("datetime").reverse()
+        paginator = Paginator(post_list, 10)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+
         return render(request, "network/allpost.html", {
+            "page_obj": page_obj,
             "posts": Post.objects.all().order_by("datetime").reverse(),
             "likes": Like.objects.all()
         })
@@ -84,18 +98,33 @@ def all_post_view(request):
 
 def profile(request, name):
     if request.user.username == name:
+        post_list = Post.objects.all().filter(
+            user=request.user).order_by("datetime").reverse()
+        paginator = Paginator(post_list, 10)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+
         return render(request, "network/profile.html", {
             "num_follower": request.user.follower_count,
             "num_following": request.user.following_count,
             "is_not_user": False,
             "user_name": request.user,
             "posts": Post.objects.all().filter(
-                user=request.user).order_by("datetime").reverse()
+                user=request.user).order_by("datetime").reverse(),
+            "page_obj": page_obj,
+            "post_list": post_list
         })
     else:
         # Load other user's profile
         other_user = User.objects.get(username=name)
         curr_session_user = request.user
+
+        post_list = Post.objects.all().filter(
+            user=other_user).order_by("datetime").reverse(),
+        paginator = Paginator(post_list, 10)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+
         return render(request, "network/profile.html", {
             "num_follower": other_user.follower_count,
             "num_following": other_user.following_count,
@@ -104,7 +133,9 @@ def profile(request, name):
                 curr_session_user, other_user),
             "user_name": other_user,
             "posts": Post.objects.all().filter(
-                user=other_user).order_by("datetime").reverse()
+                user=other_user).order_by("datetime").reverse(),
+            "page_obj": page_obj,
+            "post_list": post_list
         })
 
 

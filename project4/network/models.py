@@ -1,4 +1,5 @@
 from django.contrib.auth.models import AbstractUser
+from django.views.generic import ListView
 from django.db import models
 from datetime import datetime
 
@@ -35,3 +36,8 @@ class Follower(models.Model):
 
     def __str__(self):
         return f"{self.name}"
+
+
+class PostList(ListView):
+    paginate_by = 2
+    model = Post
