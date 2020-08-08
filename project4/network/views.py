@@ -80,7 +80,7 @@ def all_post_view(request):
 
         return render(request, "network/allpost.html", {
             "page_obj": page_obj,
-            "posts": Post.objects.all().order_by("datetime").reverse(),
+            "posts": post_list,
             "likes": Like.objects.all()
         })
     else:
@@ -91,7 +91,7 @@ def all_post_view(request):
 
         return render(request, "network/allpost.html", {
             "page_obj": page_obj,
-            "posts": Post.objects.all().order_by("datetime").reverse(),
+            "posts": post_list,
             "likes": Like.objects.all()
         })
 
@@ -132,19 +132,27 @@ def profile(request, name):
             "is_following_user": is_following_user(
                 curr_session_user, other_user),
             "user_name": other_user,
-            "posts": Post.objects.all().filter(
-                user=other_user).order_by("datetime").reverse(),
             "page_obj": page_obj,
-            "post_list": post_list
+            "post_list": Post.objects.all().filter(
+                user=other_user).order_by("datetime").reverse()
         })
 
 
 def following_view(request):
+
+    post_list = Post.objects.all().exclude(
+        user=request.user).order_by("datetime").reverse()
+    paginator = Paginator(post_list, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     return render(request, "network/following.html", {
-        "posts": Post.objects.all().exclude(
-            user=request.user).order_by("datetime").reverse(),
         "likes": Like.objects.all(),
-        "curr_session_user_followings": request.user.followings
+        "curr_session_user_followings": parse_user_followings(
+            request.user.following),
+        "page_obj": page_obj,
+        "post_list": Post.objects.all().exclude(
+            user=request.user).order_by("datetime").reverse()
     })
 
 
@@ -159,7 +167,8 @@ def edit_follower(request, name):
             curr_session_user.following_count += 1
             follower = Follower.objects.create(
                 name=request.user.username, following=user)
-            curr_session_user.followings.append(user.username)
+            curr_session_user.following = add_following_into_followings(
+                curr_session_user.following, user.username)
 
             user.save()
             curr_session_user.save()
@@ -168,9 +177,11 @@ def edit_follower(request, name):
         else:
             user.follower_count -= 1
             curr_session_user.following_count -= 1
-            follower = Follower.objects.get(name=curr_session_user.username)
+            follower = Follower.objects.get(
+                name=curr_session_user.username, following=user)
             follower.delete()
-            curr_session_user.followings.append(user.username)
+            curr_session_user.following = remove_following_into_followings(
+                curr_session_user.following, user.username)
 
             user.save()
             curr_session_user.save()
@@ -197,3 +208,30 @@ def is_following_user(curr_session_user, other_user):
             return True
 
     return is_following
+
+
+def add_following_into_followings(
+        curr_session_user_followings, following_to_add):
+
+    return curr_session_user_followings + following_to_add + ","
+
+
+def remove_following_into_followings(
+        curr_session_user_followings, following_to_delete):
+
+    if curr_session_user_followings is None:
+        return ""
+    else:
+        following_users = curr_session_user_followings.split(",")
+        updated_session_user_followings = ""
+        for i in range(0, len(following_users) - 1):
+            updated_session_user_followings + following_users[i] + ","
+
+        return updated_session_user_followings
+
+
+def parse_user_followings(user_followings):
+    if user_followings is None:
+        return ""
+    else:
+        return user_followings.split(",")

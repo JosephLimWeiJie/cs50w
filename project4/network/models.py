@@ -7,7 +7,7 @@ from datetime import datetime
 class User(AbstractUser):
     follower_count = models.IntegerField(default=0)
     following_count = models.IntegerField(default=0)
-    followings = []
+    following = models.TextField(blank=True, null=True)
 
 
 class Post(models.Model):
@@ -39,5 +39,5 @@ class Follower(models.Model):
 
 
 class PostList(ListView):
-    paginate_by = 2
+    paginate_by = 10
     model = Post

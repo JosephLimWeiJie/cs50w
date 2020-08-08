@@ -36,10 +36,10 @@
 
     <div class="container p-3 my-3 border" style="border-radius: 8px">
         <h6 style="color: grey;">Here are all the posts made by {{ user_name.username }}:</h6>
-        {% for post in page_obj %}
+        {% for post in post_list %}
             <div id="all-post-view" class="container p-3 my-3 border">
                 <div class="">
-                    <a href="{% url 'profile' post.user %}">{{ post.user }}</a>
+                    <a href="{% url 'profile' post.user.username %}">{{ post.user }}</a>
                 </div>
                 <div class="">
                     {{ post.content }}
@@ -59,6 +59,10 @@
             <p>There is no post currently.</p>
         {% endfor %}
     </div>
+
+    {% for follow in curr_session_user_followings %}
+        {{ follow }}
+    {% endfor %}
 
     <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-center">

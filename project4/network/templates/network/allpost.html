@@ -7,7 +7,7 @@
         <form id="add-post-form" action="{% url 'allpost' %}" method="post">
             {% csrf_token %}
             <div class="form-group">
-                <input class="form-control" type="text" name="content" value="" placeholder="What's on your mind today, {{ user.username}}?">
+                <input class="form-control" type="text" name="content" value="" placeholder="What's on your mind today, {{ user.username }}?">
             </div>
             <button class="btn btn-sm btn-outline-primary" id="post-button">Post</button>
         </form>
@@ -33,7 +33,9 @@
             </div>
         </div>
     {% empty %}
-        <p>There is no post currently.</p>
+        <div id="all-post-view" class="container p-3 my-3 border">
+            <p>There is no post currently.</p>
+        </div>
     {% endfor %}
 
     <nav aria-label="Page navigation example">
