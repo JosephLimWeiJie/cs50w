@@ -9,6 +9,14 @@ class User(AbstractUser):
     following_count = models.IntegerField(default=0)
     following = models.TextField(blank=True, null=True)
 
+    def serialize(self):
+        return {
+            "username": self.username,
+            "email": self.email,
+            "follower_count": self.follower_count,
+            "following_count": self.following_count
+        }
+
 
 class Post(models.Model):
     user = models.ForeignKey(
@@ -18,6 +26,13 @@ class Post(models.Model):
 
     def __str__(self):
         return f"{self.content}"
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "content": self.content,
+            "datetime": self.datetime
+        }
 
 
 class Like(models.Model):

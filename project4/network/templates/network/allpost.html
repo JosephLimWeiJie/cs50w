@@ -1,5 +1,55 @@
 {% extends "network/layout.html" %}
 
+{% block script %}
+    <script>
+        function closeEditForm(form_id) {
+            document.querySelector(`#form-${form_id}`).style.display = "none";
+            document.querySelector(`#editbtn-${form_id}`).innerHTML = "Edit";
+
+            document.querySelector(`#editbtn-${form_id}`).addEventListener(
+                'click', () => showEditForm(form_id)
+            );
+        }
+
+        function showEditForm(form_id) {
+            document.querySelector(`#form-${form_id}`).style.display = "block";
+            document.querySelector(`#editbtn-${form_id}`).innerHTML = "Undo";
+
+            document.querySelector(`#editbtn-${form_id}`).addEventListener(
+                'click', () => closeEditForm(form_id)
+            );
+
+            document.querySelector(`#form-${form_id}`).onsubmit = () => {
+                const updated_content = document.querySelector(`#new-content-${form_id}`).value;
+                document.querySelector(`#indiv-content-${form_id}`).innerHTML = updated_content;
+
+                fetch(`/post/${form_id}`, {
+                    method: 'PUT',
+                    body: JSON.stringify({
+                        content: updated_content
+                    })
+                });
+
+                closeEditForm(form_id);
+
+                return false;
+            };
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('button').forEach(function(button) {
+                if (button.innerHTML === "Edit") {
+
+                    button.onclick = function() {
+                        showEditForm(this.dataset.editbtnid);
+                    }
+
+                }
+            });
+        });
+    </script>
+{% endblock %}
+
 {% block body %}
     <h1 style="text-align: center;">All Posts</h1>
     <div class="container p-3 my-3 border">
@@ -14,23 +64,45 @@
     </div>
 
     {% for post in page_obj %}
-        <div id="all-post-view" class="container p-3 my-3 border">
-            <div class="">
-                <a href="{% url 'profile' post.user %}">{{ post.user }}</a>
+        <div id="indiv-post-{{ post.id }}" class="container p-3 my-3 border">
+            <div class="row">
+                <div class="col-8">
+                    <div class="" style="display: none;">
+                        <p>{{ post.id }}</p>
+                    </div>
+                    <p><a href="{% url 'profile' post.user %}">{{ post.user }}</a></p>
+                    <p id="indiv-content-{{ post.id }}">{{ post.content }}</p>
+                    <p>{{ post.datetime }}</p>
+                    {% for like in likes %}
+                        {% if like.post == post %}
+                            <p>Likes: {{ like.like_count }}</p>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+                {% if post.user == request.user %}
+                    <div class="col-4">
+                        <div class="" style="text-align: right;">
+                            <button id="editbtn-{{ post.id }}" data-editbtnid="{{ post.id }}" class="btn btn-sm btn-outline-primary">Edit</button>
+                        </div>
+                    </div>
+                {% endif %}
             </div>
-            <div class="">
-                {{ post.content }}
-            </div>
-            <div class="">
-                {{ post.datetime }}
-            </div>
-            <div class="">
-                {% for like in likes %}
-                    {% if like.post == post %}
-                        Likes: {{ like.like_count }}
-                    {% endif %}
-                {% endfor %}
-            </div>
+
+            <!-- Show edit form -->
+            <form id="form-{{ post.id }}" method="post" style="display: none;" onsubmit="return false">
+                {% csrf_token %}
+                <hr>
+                <div>
+                    <div class="form-group">
+                        <input id="new-content-{{ post.id }}" class="form-control" type="text" name="edited-text" placeholder="Edit your post here!">
+                    </div>
+
+                </div>
+                <div class="" style="text-align: right;">
+                    <input id="savebtn-{{ post.id }}" type="submit" name="save-button" class="btn btn-sm btn-outline-primary" value="Save">
+                </div>
+            </form>
         </div>
     {% empty %}
         <div id="all-post-view" class="container p-3 my-3 border">

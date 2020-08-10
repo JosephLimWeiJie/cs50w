@@ -4,6 +4,10 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.core.paginator import Paginator
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+import json
 
 from .models import User, Post, Like, Follower
 
@@ -187,6 +191,35 @@ def edit_follower(request, name):
             curr_session_user.save()
 
         return HttpResponseRedirect(reverse('profile', args=[name]))
+
+
+@csrf_exempt
+@login_required
+def post(request, post_id):
+
+    # Query for requested post
+    try:
+        post = Post.objects.get(user=request.user, pk=post_id)
+    except Post.DoesNotExist:
+        return JsonResponse({"error": "Post not found."}, status=404)
+
+    # Return post_list contents
+    if request.method == "GET":
+        return JsonResponse(post.serialize())
+
+    # Update post's content
+    elif request.method == "PUT":
+        data = json.loads(request.body)
+        if data.get("content") is not None:
+            post.content = data["content"]
+        post.save()
+        return HttpResponse(status=204)
+
+    # Post must be via GET or PUT
+    else:
+        return JsonResponse({
+            "error": "GET or PUT request required."
+        }, status=400)
 
 
 """ Utility functions """
