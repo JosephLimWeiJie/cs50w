@@ -13,7 +13,16 @@ from .models import User, Post, Like, Follower
 
 
 def index(request):
-    return render(request, "network/index.html")
+    post_list = Post.objects.all().order_by("datetime").reverse()
+    paginator = Paginator(post_list, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, "network/allpost.html", {
+        "page_obj": page_obj,
+        "posts": post_list,
+        "likes": Like.objects.all()
+    })
 
 
 def login_view(request):
