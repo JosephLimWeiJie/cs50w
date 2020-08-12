@@ -139,7 +139,7 @@
                                 </div>
                                 <p><a href="{% url 'profile' post.user %}">{{ post.user }}</a></p>
                                 <p id="indiv-content-{{ post.id }}">{{ post.content }}</p>
-                                <p>{{ post.datetime }}</p>
+                                <p style="color: lightgrey; font-size: 13px;">{{ post.datetime }}</p>
                                 <p>
                                     {% for like in likes %}
                                         {% if like.post == post %}
