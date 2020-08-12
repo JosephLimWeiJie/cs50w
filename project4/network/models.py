@@ -36,12 +36,21 @@ class Post(models.Model):
 
 
 class Like(models.Model):
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="user_like", default=1)
     post = models.ForeignKey(
         Post, on_delete=models.CASCADE, related_name="like", default=0)
     like_count = models.IntegerField(default=0)
+    has_liked = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.like_count}"
+
+    def serialize(self):
+        return {
+            "like_count": self.like_count,
+            "has_liked": self.has_liked,
+        }
 
 
 class Follower(models.Model):

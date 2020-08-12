@@ -116,7 +116,8 @@ def profile(request, name):
             "posts": Post.objects.all().filter(
                 user=request.user).order_by("datetime").reverse(),
             "page_obj": page_obj,
-            "post_list": post_list
+            "post_list": post_list,
+            "likes": Like.objects.all(),
         })
     else:
         # Load other user's profile
@@ -138,7 +139,8 @@ def profile(request, name):
             "user_name": other_user,
             "page_obj": page_obj,
             "post_list": Post.objects.all().filter(
-                user=other_user).order_by("datetime").reverse()
+                user=other_user).order_by("datetime").reverse(),
+            "likes": Like.objects.all()
         })
 
 
@@ -216,6 +218,40 @@ def post(request, post_id):
         return HttpResponse(status=204)
 
     # Post must be via GET or PUT
+    else:
+        return JsonResponse({
+            "error": "GET or PUT request required."
+        }, status=400)
+
+
+@csrf_exempt
+@login_required
+def update_likes(request, post_id):
+
+    # Query for requested like
+    try:
+        post = Post.objects.get(pk=post_id)
+        like = Like.objects.get(post=post)
+    except Like.DoesNotExist:
+        return JsonResponse({"error": "Like not found."}, status=404)
+
+    # Return likes
+    if request.method == "GET":
+        return JsonResponse(like.serialize())
+
+    # Update likes
+    elif request.method == "PUT":
+        data = json.loads(request.body)
+        if data.get("like_count") is not None:
+            like.like_count = data["like_count"]
+
+        if data.get("has_liked") is not None:
+            like.has_liked = data["has_liked"]
+
+        like.save()
+        return HttpResponse(status=204)
+
+    # Likes must be via GET or PUT
     else:
         return JsonResponse({
             "error": "GET or PUT request required."

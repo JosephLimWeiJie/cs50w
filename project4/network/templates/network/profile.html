@@ -3,6 +3,69 @@
 
 {% block script %}
     <script>
+        function enableLikeButton(button_id) {
+            const button_id_number = button_id.split("-").pop().trim();
+            document.querySelector(`#likebtn-${button_id_number}`).disabled = false;
+
+        }
+
+        function enableUnLikeButton(button_id) {
+            const button_id_number = button_id.split("-").pop().trim();
+            document.querySelector(`#unlikebtn-${button_id_number}`).disabled = false;
+
+        }
+
+        function disableLikeButton(button_id) {
+            const button_id_number = button_id.split("-").pop().trim();
+            document.querySelector(`#likebtn-${button_id_number}`).disabled = true;
+
+        }
+
+        function disabledUnlikeButton(button_id) {
+            const button_id_number = button_id.split("-").pop().trim();
+            document.querySelector(`#unlikebtn-${button_id_number}`).disabled = true;
+        }
+
+        function likePost(button_id) {
+
+            const button_id_number = button_id.split("-").pop().trim();
+
+            var curr_count = Number(document.querySelector(`#like-count-${button_id_number}`).innerHTML);
+            var new_count = curr_count + 1;
+            document.querySelector(`#like-count-${button_id_number}`).innerHTML = new_count;
+
+            fetch(`/updatelikes/${button_id_number}`, {
+                method: 'PUT',
+                body: JSON.stringify({
+                    like_count: new_count,
+                    has_liked: true
+                })
+            });
+
+            disableLikeButton(button_id);
+            enableUnLikeButton(button_id);
+        }
+
+        function unlikePost(button_id) {
+
+            const button_id_number = button_id.split("-").pop().trim();
+
+            var curr_count = Number(document.querySelector(`#like-count-${button_id_number}`).innerHTML);
+            var new_count = curr_count - 1;
+            document.querySelector(`#like-count-${button_id_number}`).innerHTML = new_count;
+
+            fetch(`/updatelikes/${button_id_number}`, {
+                method: 'PUT',
+                body: JSON.stringify({
+                    like_count: new_count,
+                    has_liked: false
+                })
+            });
+
+            disabledUnlikeButton(button_id);
+            enableLikeButton(button_id);
+        }
+
         function closeEditForm(form_id) {
             document.querySelector(`#form-${form_id}`).style.display = "none";
             document.querySelector(`#editbtn-${form_id}`).innerHTML = "Edit";
@@ -45,6 +108,18 @@
                         showEditForm(this.dataset.editbtnid);
                     }
 
+                }
+            });
+
+            document.querySelectorAll('.like-button').forEach(function(button) {
+                button.onclick = function() {
+                    likePost(this.id);
+                }
+            });
+
+            document.querySelectorAll('.unlike-button').forEach(function(button) {
+                button.onclick = function() {
+                    unlikePost(this.id);
                 }
             });
         });
@@ -101,7 +176,8 @@
                         <p>
                             {% for like in likes %}
                                 {% if like.post == post %}
-                                    Likes: {{ like.like_count }}
+                                    <span>Likes:</span>
+                                    <span id="like-count-{{ post.id }}">{{ like.like_count }}</span>
                                 {% endif %}
                             {% endfor %}
                         </p>
@@ -112,6 +188,30 @@
                         <div id="edit-view" class="col-4">
                             <div class="" style="text-align: right;">
                                 <button id="editbtn-{{ post.id }}" data-editbtnid="{{ post.id }}" class="btn btn-sm btn-outline-primary">Edit</button>
+                            </div>
+                            <div class="">
+                                <p><br></p>
+                            </div>
+                            <div class="">
+                                <p><br></p>
+                            </div>
+                            <div class="">
+                                <!-- Like and Unlike buttons -->
+                                <div class="like-button" style="text-align: right; font-size: 25px; margin-right: 3px;">
+                                    {% for like in likes %}
+                                        {% if like.post == post %}
+                                            {% if like.user == request.user %}
+                                                {% if like.has_liked %}
+                                                    <button id="likebtn-{{ post.id }}" type="button" disabled name="button" class="btn btn-sm btn-outline-primary like-button"><i id="likebtnicon-{{ post.id }}" class="fa fa-thumbs-up"></i></button>
+                                                    <button id="unlikebtn-{{ post.id }}" type="button" name="button" class="btn btn-sm btn-outline-primary unlike-button"><i id="unlikebtnicon-{{ post.id }}" class="fa fa-thumbs-down"></i></button>
+                                                {% else %}
+                                                    <button id="likebtn-{{ post.id }}" type="button" name="button" class="btn btn-sm btn-outline-primary like-button"><i id="likebtnicon-{{ post.id }}" class="fa fa-thumbs-up"></i></button>
+                                                    <button id="unlikebtn-{{ post.id }}" type="button" disabled name="button" class="btn btn-sm btn-outline-primary unlike-button"><i id="unlikebtnicon-{{ post.id }}" class="fa fa-thumbs-down"></i></button>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
                             </div>
                         </div>
                     {% endif %}
