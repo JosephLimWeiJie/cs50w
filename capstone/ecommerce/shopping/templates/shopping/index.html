@@ -33,10 +33,11 @@
                 height: 16px;
                 width: 16px;
             }
+        }
 
-            .col-1: hover {
-                border: lightgrey solid 1px;
-            }
+        .shopping-descr p {
+            font-size: 13px;
+            color: grey;
         }
 
     </style>
@@ -51,7 +52,7 @@
 
         <div class="row">
             <div class="col-1">
-                <a href="#">
+                <a href="" class="category-border">
                     <img src="{% static 'shopping/menwear.jpg' %}" alt="Men's Wear">
                     <p>Men's Wear</p>
                 </a>
@@ -201,6 +202,58 @@
             </div>
         </div>
     </div>
+{% endblock %}
 
+{% block trending %}
+    <div class="row">
+        <p style="margin-left: 15px;">TRENDING SEARCHES:</p>
+    </div>
+
+{% endblock %}
+
+{% block top_products %}
+    <div class="row">
+        <p style="margin-left: 15px;">TOP PRODUCTS:</p>
+    </div>
+
+{% endblock %}
+
+{% block all_products %}
+    <div class="row">
+        <p style="margin-left: 15px;">ALL PRODUCTS:</p>
+    </div>
+
+{% endblock %}
+
+{% block shopping_descr %}
+    <div class="shopping-descr">
+        <h6>Shopping Singapore - Asia's leading online shopping platform</h6>
+        <p>
+            Shopping Singapore is the leading online shopping platform in Southeast Asia, based in Singapore, extending to other countries like Malaysia, Thailand, Indonesia, Vietnam, Philippines and Taiwan.
+            Shop anytime, anywhere using our strong payment and logistical support.
+            Shopping provides all users with a safe and secure online shopping environment. But that’s not all!
+
+            Hassle no more! Experience easy purchase and get the items you ordered seamlessly with our payment method.
+
+            Shopping is free for all! Join our community and start shopping online today.
+        </p>
+
+        <h6>Get everything here in Shopping!</h6>
+        <p>
+            Shopping provides a huge range of products that you can ever think of! With our 14 Day Free Return policy, you can now
+            purchase with an ease in mind and be assured quality products from our premium sellers, such as Nestle, Logitech and Uniqlo.
+
+            Begin by browsing from our CATEGORIES section, or simply just browsing through our ALL PRODUCTS!
+        </p>
+
+        <h6>Save more in Shopping!</h6>
+        <p>
+            Shopping ensures that you always get the best deals!
+
+            Look out for specific day of the month such as 1.1 New Year Sale, 2.2 Feb Sale and 12.12 End of Year Sale!
+
+            Keep your eyes peered for our news on sales events and mark them down!
+        </p>
+    </div>
 
 {% endblock %}
