@@ -1,0 +1,206 @@
+{% extends "shopping/layout.html" %}
+{% load static %}
+
+{% block style %}
+    <style>
+        @media (min-width: 1250px) {
+            .col-1 p {
+                font-size: 10px;
+                text-align: center;
+                justify-content: center;
+            }
+
+            .col-1 img {
+                margin-left: 9px;
+                margin-top: 9px;
+                margin-bottom: 9px;
+                height: 32px;
+                width: 32px;
+            }
+        }
+
+        @media (max-width: 1249px) {
+            .col-1 p {
+                font-size: 8px;
+                text-align: center;
+                justify-content: center;
+            }
+
+            .col-1 img {
+                margin-left: 5px;
+                margin-top: 9px;
+                margin-bottom: 9px;
+                height: 16px;
+                width: 16px;
+            }
+
+            .col-1: hover {
+                border: lightgrey solid 1px;
+            }
+        }
+
+    </style>
+
+{% endblock %}
+
+{% block categories %}
+    <div class="container-fluid">
+        <div class="row">
+            <p style="margin-left: 15px;">CATEGORIES:</p>
+        </div>
+
+        <div class="row">
+            <div class="col-1">
+                <a href="#">
+                    <img src="{% static 'shopping/menwear.jpg' %}" alt="Men's Wear">
+                    <p>Men's Wear</p>
+                </a>
+            </div>
+            <div class="col-1">
+                <a href="#">
+                    <img src="{% static 'shopping/mobile.jpeg' %}" alt="Mobile & Gadgets">
+                    <p>Mobile & Gadgets</p>
+                </a>
+            </div>
+            <div class="col-1">
+                <a href="#">
+                    <img src="{% static 'shopping/homeappliances.jpeg' %}" alt="Home Appliances">
+                    <p>Home Appliances</p>
+                </a>
+            </div>
+            <div class="col-1">
+                <a href="#">
+                    <img src="{% static 'shopping/kidsfashion.jpg' %}" alt="Kids Fashion">
+                    <p>Kids Fashion</p>
+                </a>
+            </div>
+            <div class="col-1">
+                <a href="#">
+                    <img src="{% static 'shopping/videogames.webp' %}" alt="Video Games">
+                    <p>Video Games</p>
+                </a>
+            </div>
+            <div class="col-1">
+                <a href="#">
+                    <img src="{% static 'shopping/computer.jpeg' %}" alt="Computer & Peripherals">
+                    <p>Computer & Peripherals</p>
+                </a>
+            </div>
+            <div class="col-1">
+                <a href="#">
+                    <img src="{% static 'shopping/health.jpeg' %}" alt="Health & Wellness">
+                    <p>Health & Wellness</p>
+                </a>
+            </div>
+            <div class="col-1">
+                <a href="#">
+                    <img src="{% static 'shopping/travel.jpg' %}" alt="Travel & Luggage">
+                    <p>Travel & Luggage</p>
+                </a>
+            </div>
+            <div class="col-1">
+                <a href="#">
+                    <img src="{% static 'shopping/watches.webp' %}" alt="Watches">
+                    <p>Watches</p>
+                </a>
+            </div>
+            <div class="col-1">
+                <a href="#">
+                    <img src="{% static 'shopping/menshoes.jpeg' %}" alt="Men's Shoes">
+                    <p>Men's Shoes</p>
+                </a>
+            </div>
+            <div class="col-1">
+                <a href="#">
+                    <img src="{% static 'shopping/womenapparel.jpeg' %}" alt="Women's Apparel">
+                    <p>Women's Apparel</p>
+                </a>
+            </div>
+            <div class="col-1">
+                <a href="#">
+                    <img src="{% static 'shopping/beauty.jpeg' %}" alt="Beauty & Personal Care">
+                    <p>Beauty & Personal Care</p>
+                </a>
+            </div>
+        </div>
+
+        <div class="w-100 d-none d-md-block"></div>
+
+        <div class="row">
+            <div class="col-1">
+                <a href="#">
+                    <img src="{% static 'shopping/homeliving.jpeg' %}" alt="Home & Living">
+                    <p>Home & Living</p>
+                </a>
+            </div>
+            <div class="col-1">
+                <a href="#">
+                    <img src="{% static 'shopping/toys.webp' %}" alt="Toys, Kids & Babies">
+                    <p>Toys, Kids & Babies</p>
+                </a>
+            </div>
+            <div class="col-1">
+                <a href="#">
+                    <img src="{% static 'shopping/food.jpeg' %}" alt="Food & Beverages">
+                    <p>Food & Beverages</p>
+                </a>
+            </div>
+            <div class="col-1">
+                <a href="#">
+                    <img src="{% static 'shopping/hobbies.jpg' %}" alt="Hobbies & Books">
+                    <p>Hobbies & Books</p>
+                </a>
+            </div>
+            <div class="col-1">
+                <a href="#">
+                    <img src="{% static 'shopping/womenbag.jpeg' %}" alt="Women's Bags">
+                    <p>Women's Bags</p>
+                </a>
+            </div>
+            <div class="col-1">
+                <a href="#">
+                    <img src="{% static 'shopping/petfood.jpeg' %}" alt="Pet Food & Supplies">
+                    <p>Pet Food & Supplies</p>
+                </a>
+            </div>
+            <div class="col-1">
+                <a href="#">
+                    <img src="{% static 'shopping/jewellery.jpg' %}" alt="Jewellery & Accessories">
+                    <p>Jewellery & Accessories</p>
+                </a>
+            </div>
+            <div class="col-1">
+                <a href="#">
+                    <img src="{% static 'shopping/womenshoes.jpeg' %}" alt="Women's Shoes">
+                    <p>Women's Shoes</p>
+                </a>
+            </div>
+            <div class="col-1">
+                <a href="#">
+                    <img src="{% static 'shopping/sport.jpg' %}" alt="Sports & Outdoors">
+                    <p>Sports & Outdoors</p>
+                </a>
+            </div>
+            <div class="col-1">
+                <a href="#">
+                    <img src="{% static 'shopping/menbag.jpeg' %}" alt="Men's Bags">
+                    <p>Men's Bags</p>
+                </a>
+            </div>
+            <div class="col-1">
+                <a href="#">
+                    <img src="{% static 'shopping/dining.jpeg' %}" alt="Dining, Travel & Services">
+                    <p>Dining, Travel & Services</p>
+                </a>
+            </div>
+            <div class="col-1">
+                <a href="#">
+                    <img src="{% static 'shopping/misc.jpeg' %}" alt="Misc">
+                    <p>Misc</p>
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

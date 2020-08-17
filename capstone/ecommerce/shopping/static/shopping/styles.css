@@ -1,7 +1,3 @@
-.follow-links {
-    margin-left: 15px;
-}
-
-.country-icons {
-    height: 30px;
+.carousel-indicators li {
+    background-color: red;
 }

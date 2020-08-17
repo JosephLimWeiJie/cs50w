@@ -12,4 +12,4 @@ import json
 # Create your views here.
 
 def index(request):
-    return render(request, "shopping/layout.html")
+    return render(request, "shopping/index.html")
