@@ -10,6 +10,8 @@ from django.http import JsonResponse
 import json
 from django import forms
 
+from .models import User
+
 # Create your views here.
 
 
@@ -45,6 +47,17 @@ def signup(request):
 
 
 def login(request):
-    return render(request, "shopping/login.html", {
-    
-    })
+    if request.method == "POST":
+        # Attempt to sign user in
+        username = request.POST["username"]
+        password = request.POST["password"]
+        user = authenticate(request, username=username, password=password)
+
+    # Check if authentication successful
+    if user is not None:
+        login(request, user)
+        return HttpResponseRedirect(reverse("index"))
+    else:
+        return render(request, "shopping/login.html", {
+            "message": "Invalid username and/or password."
+        })

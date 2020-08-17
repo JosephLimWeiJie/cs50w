@@ -40,7 +40,7 @@
                             <div class="" style="margin: 40px 20px 2px 2px;">
                                 <p>
                                     <label for="id_full_name">Username</label>
-                                    <input autofocus id="id_full_name" type="text" name="full_name" maxlength="100" required class="form-control">
+                                    <input autofocus id="id_full_name" type="text" name="username" maxlength="100" required class="form-control">
                                 </p>
 
                                 <p>
@@ -51,6 +51,8 @@
                                 <a href="#">
                                     <p>Forgot password</p>
                                 </a>
+
+                                {{ message }}
 
                             </div>
                             <input style="width: 100%; margin-top: 100px; background-color: #42f5c2; color: white" type="submit" class="btn" name="login" value="Log In">
