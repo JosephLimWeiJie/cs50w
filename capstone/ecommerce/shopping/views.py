@@ -13,7 +13,7 @@ from django import forms
 # Create your views here.
 
 
-class NewSignUpForm(forms.Form):
+class SignUpForm(forms.Form):
     GENDER = [
      ('M', 'Male'),
      ('F', 'Female')
@@ -40,5 +40,11 @@ def index(request):
 
 def signup(request):
     return render(request, "shopping/signup.html", {
-        "form": NewSignUpForm()
+        "form": SignUpForm()
+    })
+
+
+def login(request):
+    return render(request, "shopping/login.html", {
+    
     })

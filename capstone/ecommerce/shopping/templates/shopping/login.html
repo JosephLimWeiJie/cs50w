@@ -2,23 +2,7 @@
 {% load static %}
 
 {% block title %}
-    Shopping | Sign Up
-{% endblock %}
-
-{% block script %}
-    <!-- Moment.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.23.0/moment.min.js" integrity="sha256-VBLiveTKyUZMEzJd6z2mhfxIqz3ZATCuVMawPZGzIfA=" crossorigin="anonymous"></script>
-
-    <!-- Tempus Dominus Bootstrap 4 -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.1.2/css/tempusdominus-bootstrap-4.min.css" integrity="sha256-XPTBwC3SBoWHSmKasAk01c08M6sIA5gF5+sRxqak2Qs=" crossorigin="anonymous" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.1.2/js/tempusdominus-bootstrap-4.min.js" integrity="sha256-z0oKYg6xiLq3yJGsp/LsY9XykbweQlHl42jHv2XTBz4=" crossorigin="anonymous"></script>
-
-    <script>
-        $(function () {
-            $("#datetimepicker1").datetimepicker();
-        });
-    </script>
-
+    Shopping | Log In
 {% endblock %}
 
 {% block style %}
@@ -36,7 +20,7 @@
         <!-- Top nav bar -->
         <nav class="navbar navbar-light" style="margin-top: 10px;">
             <i class="fa fa-shopping-bag"></i>
-            <p>Shopping Sign Up</p>
+            <p>Shopping Login</p>
         </nav>
     </div>
     {% endblock %}
@@ -46,17 +30,17 @@
         <div class="container-fluid" style="background-color: #42f5c2; width: 100%;">
             <div class="container-fluid" style="max-width: 70%; background-color: #42f5c2;">
                 <div class="row">
-                    <div class="col-6" style="text-align: center; font-size: 80px; margin-top: 18%;">
+                    <div class="col-6" style="text-align: center; font-size: 80px; margin-top: 12%;">
                         <i class="fa fa-shopping-bag"></i>
                         <p>Shopping</p>
                     </div>
                     <div class="col-6">
                         <form class="form-group" action="" method="post" style="background-color: white; padding: 20px 20px 20px 20px; margin-top: 15px; border-radius: 7px;">
                             {% csrf_token %}
-                            <div class="" style="margin: 20px 20px 2px 2px;">
+                            <div class="" style="margin: 40px 20px 2px 2px;">
                                 <p>
-                                    <label for="id_full_name">Full Name</label>
-                                    <input id="id_full_name" type="text" name="full_name" maxlength="100" required class="form-control">
+                                    <label for="id_full_name">Username</label>
+                                    <input autofocus id="id_full_name" type="text" name="full_name" maxlength="100" required class="form-control">
                                 </p>
 
                                 <p>
@@ -64,39 +48,12 @@
                                     <input id="id_password" type="password" name="password" maxlength="100" required class="form-control">
                                 </p>
 
-                                <p>
-                                    <label for="id_gender">Gender</label>
-                                    <select id="id_full_name" class="form-control" name="gender">
-                                        <option value="M">Male</option>
-                                        <option value="F">Female</option>
-                                    </select>
-                                </p>
+                                <a href="#">
+                                    <p>Forgot password</p>
+                                </a>
 
-                                <p>
-                                    <label for="id_phone_number">Phone Number</label>
-                                    <input id="id_phone_number" type="text" name="phone_number" maxlength="100" required class="form-control">
-                                </p>
-
-                                <p>
-                                    <label for="id_email">Email</label>
-                                    <input id="id_email" type="text" name="email" maxlength="100" required class="form-control">
-                                </p>
-
-                                <p style="margin-bottom: 2px;">
-                                    <label for="id_birthday" class="label">Date of Birth</label>
-                                </p>
                             </div>
-
-                            <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
-                                <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1">
-                                <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
-                                    <div class="input-group-text">
-                                        <i class="fa fa-calendar"></i>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <input style="width: 100%; margin-top: 20px; background-color: #42f5c2; color: white" type="submit" class="btn" name="Sign Up" value="Sign Up">
+                            <input style="width: 100%; margin-top: 100px; background-color: #42f5c2; color: white" type="submit" class="btn" name="login" value="Log In">
                         </form>
                     </div>
                 </div>
@@ -106,7 +63,7 @@
 
     {% block bottom_footer %}
         <!-- Bottom footer -->
-        <div class="container-fluid " style="max-width: 68%; margin-top: 15px;">
+        <div class="container-fluid" style="max-width: 68%; margin-top: 15px;">
             <div class="row">
                 <div class="col-sm">
                     <p style="margin-bottom: 0rem; color: #575757;" class="nav-item nav-link">Shopping Country & Region:</p>
