@@ -15,7 +15,9 @@
 
     <script>
         $(function () {
-            $("#datetimepicker1").datetimepicker();
+            $('#datetimepicker4').datetimepicker({
+                format: 'L'
+            });
         });
     </script>
 
@@ -25,6 +27,17 @@
     <style>
         .navbar p {
             font-size: 30px;
+        }
+
+        #signup-btn {
+            width: 100%;
+            margin-top: 20px;
+            background-color: #42f5c2;
+            color: white;
+        }
+
+        #signup-btn:hover {
+            background-color: #60dbb9;
         }
 
     </style>
@@ -51,18 +64,32 @@
                         <p>Shopping</p>
                     </div>
                     <div class="col-6">
-                        <form class="form-group" action="" method="post" style="background-color: white; padding: 20px 20px 20px 20px; margin-top: 15px; border-radius: 7px;">
+                        <form class="form-group" action="{% url 'signup' %}" method="post" style="background-color: white; padding: 20px 20px 20px 20px; margin-top: 15px; border-radius: 7px;">
                             {% csrf_token %}
                             <div class="" style="margin: 20px 20px 2px 2px;">
                                 <p>
-                                    <label for="id_full_name">Full Name</label>
-                                    <input id="id_full_name" type="text" name="full_name" maxlength="100" required class="form-control">
+                                    <label for="id_username">Username</label>
+                                    <input id="id_username" type="text" name="username" maxlength="100" required class="form-control">
+                                    <p style="margin-left: 3px; color: grey"><i>{{ message_username }}</i></p>
                                 </p>
 
                                 <p>
                                     <label for="id_password">Password</label>
                                     <input id="id_password" type="password" name="password" maxlength="100" required class="form-control">
+                                    <p style="margin-left: 3px; color: grey"><i>{{ message_password }}</i></p>
                                 </p>
+
+                                <p>
+                                    <label for="id_confirmation">Re-Enter Password</label>
+                                    <input id="id_confirmation" type="password" name="confirmation" maxlength="100" required class="form-control">
+                                </p>
+
+                                <p>
+                                    <label for="id_full_name">Full Name</label>
+                                    <input id="id_full_name" type="text" name="full_name" maxlength="100" required class="form-control">
+                                </p>
+
+
 
                                 <p>
                                     <label for="id_gender">Gender</label>
@@ -87,16 +114,16 @@
                                 </p>
                             </div>
 
-                            <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
-                                <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1">
-                                <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                            <div class="input-group date" id="datetimepicker4" data-target-input="nearest">
+                                <input type="text" name="date_of_birth" class="form-control datetimepicker-input" data-target="#datetimepicker4"/>
+                                <div class="input-group-append" data-target="#datetimepicker4" data-toggle="datetimepicker">
                                     <div class="input-group-text">
                                         <i class="fa fa-calendar"></i>
                                     </div>
                                 </div>
                             </div>
 
-                            <input style="width: 100%; margin-top: 20px; background-color: #42f5c2; color: white" type="submit" class="btn" name="Sign Up" value="Sign Up">
+                            <input id="signup-btn" style="" type="submit" class="btn" name="Sign Up" value="Sign Up">
                         </form>
                     </div>
                 </div>
