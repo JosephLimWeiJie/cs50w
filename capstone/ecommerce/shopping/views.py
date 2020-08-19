@@ -11,7 +11,7 @@ from datetime import datetime
 import json
 from django import forms
 
-from .models import User
+from .models import User, Profile
 
 # Create your views here.
 
@@ -58,13 +58,16 @@ def signup(request):
                 "message_password": "Passwords must match."
             })
 
-        # Attempt to create new user
+        # Attempt to create new user and his/her profile
         try:
-            user = User.objects.create(
-                username=username, password=password, full_name=full_name,
-                gender=gender, phone_number=phone_number,
-                date_of_birth=parse_birthdate(date_of_birth), email=email)
+            user = User.objects.create_user(username, email, password)
             user.save()
+
+            profile = Profile.objects.create(
+                user=user, full_name=full_name, gender=gender,
+                phone_number=phone_number, date_of_birth=parse_birthdate(
+                date_of_birth))
+            profile.save()
         except IntegrityError:
             return render(request, "shopping/signup.html", {
                 "message_username": "Username already taken."
@@ -94,6 +97,11 @@ def login_view(request):
             })
     else:
         return render(request, "shopping/login.html")
+
+
+def logout_view(request):
+    logout(request)
+    return HttpResponseRedirect(reverse("index"))
 
 
 """ Utility Functions """

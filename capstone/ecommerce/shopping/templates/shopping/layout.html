@@ -24,6 +24,11 @@
         {% endblock %}
 
         {% block style %}
+        <style>
+            #search-btn {
+                background-color: orange;
+            }
+        </style>
         {% endblock %}
 
     </head>
@@ -33,20 +38,25 @@
         <div class="container-fluid" style="width: 70%;">
             <!-- Top nav bar -->
             <div class="top-nav-bar sticky-top">
-                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #42f5c2; color: white;">
                     <a class="navbar-brand" href="#"></a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                         <div class="navbar-nav">
-                          <a class="nav-item nav-link" href="#">Sell on Shopping</a>
-                          <a class="nav-item nav-link" href="#">Customer Care</a>
-                          <a class="nav-item nav-link" href="#">Track My Order</a>
+                            <a class="nav-item nav-link" href="#">Sell on Shopping</a>
+                            <a class="nav-item nav-link" href="#">Customer Care</a>
+                            <a class="nav-item nav-link" href="#">Track My Order</a>
                         </div>
                         <div class="navbar-nav ml-auto p-2">
-                          <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
-                          <a class="nav-item nav-link" href="{% url 'signup' %}">Sign Up</a>
+                            {% if user.is_authenticated %}
+                                <a class="nav-item nav-link" href="#">{{ user.username }}</a>
+                                <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
+                            {% else %}
+                                <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
+                                <a class="nav-item nav-link" href="{% url 'signup' %}">Sign Up</a>
+                            {% endif %}
                         </div>
                     </div>
                 </nav>
@@ -66,22 +76,22 @@
             </div>
 
             <!-- Search bar div -->
-            <div class="container-fluid bg-light sticky-top">
+            <div class="container-fluid sticky-top" style="background-color: #42f5c2;">
                 <div class="row">
-                    <div class="col-3" style="font-size: 2rem; text-align: center;">
+                    <div class="col-3" style="font-size: 2rem; text-align: center; color: white;">
                         <i class="fa fa-shopping-bag"></i>
                         <p>Shopping</p>
                     </div>
                     <div class="col-7 mt-4 form-group">
                         <form class="form-inline" action="index.html" method="post">
                             <input type="text" name="" value="" placeholder="Search here!" style="width: 85%;" class="form-control">
-                            <button type="submit" name="button" class="btn btn-link;" style="background-color: orange;">
+                            <button type="submit" name="button" class="btn btn-warning">
                                 <i class="fa fa-search"></i>
                             </button>
                         </form>
                     </div>
                     <div class="col-2 mt-3">
-                        <a href="#" style="font-size: 2rem; color: black;">
+                        <a href="#" style="font-size: 2rem; color: white;">
                             <i class="fa fa-shopping-cart"></i>
                         </a>
                     </div>
@@ -162,6 +172,10 @@
                 {% endblock %}
 
                 <hr>
+
+                <!-- Line divider -->
+                {% block line_divider %}
+                {% endblock %}
 
                 <hr>
 

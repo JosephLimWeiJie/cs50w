@@ -40,6 +40,17 @@
             color: grey;
         }
 
+        #line-divider {
+            width: 100%;
+            background-color: #42f5c2;
+            font-size: 10px;
+        }
+
+        #line-divider p {
+            color: #42f5c2;
+            font-size: 10px;
+        }
+
     </style>
 
 {% endblock %}
@@ -223,6 +234,12 @@
         <p style="margin-left: 15px;">ALL PRODUCTS:</p>
     </div>
 
+{% endblock %}
+
+{% block line_divider %}
+    <div id="line-divider">
+        <p>c</p>
+    </div>
 {% endblock %}
 
 {% block shopping_descr %}
