@@ -41,7 +41,7 @@ def index(request):
     return render(request, "shopping/index.html")
 
 
-def signup(request):
+def signup_view(request):
     if request.method == "POST":
         username = request.POST["username"]
         email = request.POST["email"]
@@ -104,12 +104,19 @@ def logout_view(request):
     return HttpResponseRedirect(reverse("index"))
 
 
+def profile_view(request, name):
+    return render(request, "shopping/profile.html", {
+        "name": name
+    })
+
+
 """ Utility Functions """
 
 
 def parse_birthdate(received_date_of_birth_repr):
     date_params = received_date_of_birth_repr.split("/")
-    parsed_date_of_birth = (date_params[2] + "-" + date_params[0] + "-" + date_params[1])
+    parsed_date_of_birth = (
+        date_params[2] + "-" + date_params[0] + "-" + date_params[1])
 
     parsed_date_of_birth = datetime.strptime(parsed_date_of_birth, '%Y-%m-%d')
     return parsed_date_of_birth.date()
