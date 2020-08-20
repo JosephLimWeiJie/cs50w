@@ -105,8 +105,11 @@ def logout_view(request):
 
 
 def profile_view(request, name):
+    profile = Profile.objects.get(user=request.user)
     return render(request, "shopping/profile.html", {
-        "name": name
+        "name": name,
+        "profile": profile,
+        "hexed_phone_number": hex_phone_number(profile.phone_number)
     })
 
 
@@ -120,3 +123,18 @@ def parse_birthdate(received_date_of_birth_repr):
 
     parsed_date_of_birth = datetime.strptime(parsed_date_of_birth, '%Y-%m-%d')
     return parsed_date_of_birth.date()
+
+
+def hex_phone_number(number):
+    phone_number_string = str(number)
+    phone_number_length = len(phone_number_string)
+    hexed_phone_number = ""
+
+    for i in range(0, phone_number_length - 2):
+        hexed_phone_number += "*"
+
+    hexed_phone_number += (
+        phone_number_string[phone_number_length - 2]
+        + phone_number_string[phone_number_length - 1])
+
+    return hexed_phone_number

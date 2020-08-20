@@ -3,10 +3,97 @@
 
 {% block style %}
     <style>
-        .user-links {
-            margin-left: 10px;
+        .user-profile-links:hover {
+            color: teal;
+            border: none;
         }
+
+        .user-profile-links:active {
+            border-style: outset;
+            border: none;
+        }
+
+        .user-profile-links {
+            -webkit-border-radius: 0px;
+            -moz-border-radius: 0px;
+            -ms-border-radius: 0px;
+            -o-border-radius: 0px;
+            border-radius: 0px;
+            outline: none !important;
+            border: none;
+            background-color: white;
+        }
+
+        .account-tags {
+            width: 140px;
+            color: grey;
+        }
+
+        .home-logo {
+            color: white;
+        }
+
+        .home-logo:hover {
+            text-decoration: none;
+            color: teal;
+        }
+
+        .cart-logo i:hover {
+            color: teal;
+        }
+
+        .line-divider {
+            background-color: #42f5c2;
+            width: 100%;
+        }
+
+        .line-divider p {
+            color: #42f5c2;
+            font-size: 4px;
+            margin-bottom: 0px;
+        }
+
     </style>
+{% endblock %}
+
+{% block script %}
+    <script>
+
+        function loadProfilePage() {
+            document.querySelector('#my-account').style.display = "block";
+            document.querySelector('#my-purchase').style.display = "none";
+            document.querySelector('#notif').style.display = "none";
+        }
+
+        function loadMyAccount() {
+            document.querySelector('#my-account').style.display = "block";
+            document.querySelector('#my-purchase').style.display = "none";
+            document.querySelector('#notif').style.display = "none";
+        }
+
+        function loadMyPurchase() {
+            document.querySelector('#my-account').style.display = "none";
+            document.querySelector('#my-purchase').style.display = "block";
+            document.querySelector('#notif').style.display = "none";
+        }
+
+        function loadNotif() {
+            document.querySelector('#my-account').style.display = "none";
+            document.querySelector('#my-purchase').style.display = "none";
+            document.querySelector('#notif').style.display = "block";
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProfilePage();
+
+            document.querySelector('#my-account-btn').addEventListener(
+                'click', () => loadMyAccount());
+            document.querySelector('#my-purchase-btn').addEventListener(
+                'click', () => loadMyPurchase());
+            document.querySelector('#notif-btn').addEventListener(
+                'click', () => loadNotif());
+        });
+    </script>
 {% endblock %}
 
 {% block body %}
@@ -50,44 +137,114 @@
             </div>
         </div>
 
+        <!-- Search bar div -->
+        <div class="container-fluid sticky-top" style="background-color: #42f5c2;">
+            <div class="row">
+                <div class="col-3" style="font-size: 2rem; text-align: center; color: white;">
+                    <a class="home-logo" href="{% url 'index' %}">
+                        <i class="fa fa-shopping-bag"></i>
+                        <p>Shopping</p>
+                    </a>
+                </div>
+                <div class="col-7 mt-4 form-group">
+                    <form class="form-inline" action="index.html" method="post">
+                        <input type="text" name="" value="" placeholder="Search here!" style="width: 85%;" class="form-control">
+                        <button type="submit" name="button" class="btn btn-warning">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </form>
+                </div>
+                <div class="col-2 mt-3">
+                    <a class="cart-logo" href="#" style="font-size: 2rem; color: white;">
+                        <i class="fa fa-shopping-cart"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
         <!-- Profile section -->
-        <div class="container-fluid">
+        <div class="container-fluid" style="margin-top: 15px;">
             <div class="row">
                 <div class="col-4">
                     <div class="row mt-2" style="justify-content: center;">
                         <div class="image-border">
-                            <img  style="height: 40px; width: 40px; border-radius: 30px;" src="https://user-images.githubusercontent.com/59989652/88834961-2aa0b280-d207-11ea-9e3d-24c488a75569.jpg" alt="Profile Picture">
-                            <span>{{ user.username }}</span>
+                            <img  style="height: 50px; width: 50px; border-radius: 30px;" src="https://user-images.githubusercontent.com/59989652/88834961-2aa0b280-d207-11ea-9e3d-24c488a75569.jpg" alt="Profile Picture">
+                            <span style="margin-left: 5px;">{{ user.username }}</span>
                         </div>
                     </div>
 
+                    <hr>
+
                     <div class="row mt-4 ml-1 mb-4">
-                        <a href="#">
-                            <i class="fa fa-user-circle" style="font-size: 16px;"></i>
+                        <button id="my-account-btn" class="user-profile-links">
+                            <i class="fa fa-user-circle" style="font-size: 16px; width: 30px; color: #42f5c2;"></i>
                             <span class="user-links">My Account Info</span>
-                        </a>
+                        </button>
                         <div class="w-100 d-none d-md-block"></div>
-                        <a href="#">
-                            <i class="fa fa-shopping-cart" style="font-size: 15px;"></i>
+                        <button id="my-purchase-btn" class="user-profile-links" id="my-purchase">
+                            <i class="fa fa-shopping-cart" style="font-size: 15px; width: 30px; color: #03f0fc;"></i>
                             <span class="user-links">My Purchase</span>
-                        </a>
+                        </button>
                         <div class="w-100 d-none d-md-block"></div>
-                        <a href="#">
-                            <i class="fa fa-bell" style="font-size: 16px;"></i>
+                        <button id="notif-btn" class="user-profile-links">
+                            <i class="fa fa-bell" style="font-size: 16px; width: 30px; color: orange;"></i>
                             <span class="user-links">Notifications</span>
-                        </a>
+                        </button>
                     </div>
                 </div>
-                <div class="col-8">
-                    <p>Contact Information</p>
+                <div id="user-profile-content" class="col-8 mt-3">
+                    <div id="my-account">
+                        <h4>My Account Information</h4>
+                        <div class="container-fluid bg-light mt-4 pt-5 pl-5 pb-5">
+                            <div class="row">
+                                <p class="account-tags">Username:</p>
+                                <span>{{ user.username }}</span>
+                            </div>
+                            <div class="row">
+                                <p class="account-tags">Name:</p>
+                                <span>{{ profile.full_name }}</span>
+                            </div>
+                            <div class="row">
+                                <p class="account-tags">Gender:</p>
+                                <span>{{ profile.gender }} </span>
+                            </div>
+                            <div class="row">
+                                <p class="account-tags">Phone Number:</p>
+                                <span>{{ hexed_phone_number }}</span>
+                            </div>
+                            <div class="row">
+                                <p class="account-tags">Date of Birth:</p>
+                                <span>{{ profile.date_of_birth }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="my-purchase">
+                        <h4>My Purchase</h4>
+                        {% if hasPurchases %}
+                        {% else %}
+                            <p>You have no purchases currently.</p>
+                        {% endif %}
+                    </div>
+
+                    <div id="notif">
+                        <h4>Notifications</h4>
+                        {% if hasNotif %}
+                        {% else %}
+                            <p>You have no notifications currently.</p>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
-
         </div>
 
 
+        <div class="line-divider">
+            <p>c</p>
+        </div>
+
         <!-- Bottom footer -->
-        <div class="container-fluid bg-light" style="">
+        <div class="container-fluid bg-light">
             <div class="row">
                 <div class="col-sm">
                     <p style="margin-bottom: 0rem; color: #575757;" class="nav-item nav-link">Shopping Country & Region:</p>
