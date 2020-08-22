@@ -5,7 +5,12 @@ from django.db import models
 
 
 class User(AbstractUser):
-    pass
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "email": self.email
+        }
 
 
 class Profile(models.Model):
@@ -19,6 +24,16 @@ class Profile(models.Model):
         blank=True, null=False, default=99887766)
     date_of_birth = models.DateField(
         blank=False, null=False, default="2000-12-30")
+    profile_pic = models.ImageField(null=True, blank=True)
 
     def __str__(self):
         return self.full_name
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "full_name": self.full_name,
+            "gender": self.gender,
+            "phone_number": self.phone_number,
+            "date_of_birth": self.date_of_birth
+        }

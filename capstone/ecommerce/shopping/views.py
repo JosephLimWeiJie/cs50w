@@ -18,8 +18,9 @@ from .models import User, Profile
 
 class SignUpForm(forms.Form):
     GENDER = [
-     ('M', 'Male'),
-     ('F', 'Female')
+     ('Male', 'Male'),
+     ('Female', 'Female'),
+     ('Other', 'Other')
     ]
 
     full_name = forms.CharField(label="Full Name")
@@ -65,8 +66,8 @@ def signup_view(request):
 
             profile = Profile.objects.create(
                 user=user, full_name=full_name, gender=gender,
-                phone_number=phone_number, date_of_birth=parse_birthdate(
-                date_of_birth))
+                phone_number=phone_number,
+                date_of_birth=parse_birthdate(date_of_birth))
             profile.save()
         except IntegrityError:
             return render(request, "shopping/signup.html", {
@@ -111,6 +112,56 @@ def profile_view(request, name):
         "profile": profile,
         "hexed_phone_number": hex_phone_number(profile.phone_number)
     })
+
+
+@csrf_exempt
+@login_required
+def update_profile(request, profile_id):
+
+    # Query for requested profile
+    try:
+        profile = Profile.objects.get(pk=profile_id)
+    except profile.DoesNotExist:
+        return JsonResponse({"error": "Post not found."}, status=404)
+
+    # Return profile contents
+    if request.method == "GET":
+        return JsonResponse(profile.serialize())
+
+    # Update profile content
+    elif request.method == "PUT":
+        data = json.loads(request.body)
+        if data.get("email") is not None:
+            request.user.email = data["email"]
+        if data.get("gender") is not None:
+            profile.gender = data["gender"]
+        if data.get("phone_number") is not None:
+            profile.phone_number = data["phone_number"]
+        if data.get("date_of_birth") is not None:
+            profile.date_of_birth = data["date_of_birth"]
+        profile.save()
+        request.user.save()
+        return HttpResponse(status=204)
+
+    # Profile must be via GET or PUT
+    else:
+        return JsonResponse({
+            "error": "GET or PUT request required."
+        }, status=400)
+
+
+def update_profile_pic(request):
+    if request.method == 'POST':
+        profile_to_update = Profile.objects.get(user=request.user)
+        profile_to_update.profile_pic = request.FILES['myfile']
+        profile_to_update.save()
+
+        return render(request, "shopping/profile.html", {
+            "name": request.user.username,
+            "profile": profile_to_update,
+            "hexed_phone_number": hex_phone_number(
+                profile_to_update.phone_number)
+        })
 
 
 """ Utility Functions """

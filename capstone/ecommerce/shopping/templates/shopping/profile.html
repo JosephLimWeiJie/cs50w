@@ -35,11 +35,11 @@
 
         .home-logo:hover {
             text-decoration: none;
-            color: teal;
+            color: #60dbb9;
         }
 
         .cart-logo i:hover {
-            color: teal;
+            color: #60dbb9;
         }
 
         .line-divider {
@@ -53,6 +53,76 @@
             margin-bottom: 0px;
         }
 
+        #edit-profile-btn {
+            -webkit-border-radius: 0px;
+            -moz-border-radius: 0px;
+            -ms-border-radius: 0px;
+            -o-border-radius: 0px;
+            border-radius: 0px;
+            outline: none !important;
+            border: none;
+            background-color: white;
+            color: grey;
+        }
+
+        #edit-profile-btn:hover {
+            border-style: outset;
+            border: none;
+            text-decoration: underline;
+        }
+
+        #edit-profile-btn:active {
+            border-style: outset;
+            border: none;
+        }
+
+        #save-btn {
+            background-color: #42f5c2;
+            color: white;
+        }
+
+        #save-btn:hover {
+            background-color: #60dbb9;
+        }
+
+        #undo-btn {
+            background-color: #42f5c2;
+            color: white;
+        }
+
+        #undo-btn:hover {
+            background-color: #60dbb9;
+        }
+
+        .col-form-label {
+            color: grey;
+        }
+
+        .profile-pic-btn {
+            border: 1px solid #dbdbdb;
+            color: grey;
+            background-color: white;
+            padding: 8px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .profile-pic-btn:hover {
+            background-color: #f5f5f5;
+        }
+
+        .profile-pic {
+            height: 50px;
+            width: 50px;
+            border-radius: 30px;"
+        }
+
+        #image-file-label {
+            text-align: left;
+            font-size: 12px;
+            color: grey;
+        }
+
     </style>
 {% endblock %}
 
@@ -63,35 +133,100 @@
             document.querySelector('#my-account').style.display = "block";
             document.querySelector('#my-purchase').style.display = "none";
             document.querySelector('#notif').style.display = "none";
+            document.querySelector('#edit').style.display = "none";
         }
 
         function loadMyAccount() {
             document.querySelector('#my-account').style.display = "block";
             document.querySelector('#my-purchase').style.display = "none";
             document.querySelector('#notif').style.display = "none";
+            document.querySelector('#edit').style.display = "none";
         }
 
         function loadMyPurchase() {
             document.querySelector('#my-account').style.display = "none";
             document.querySelector('#my-purchase').style.display = "block";
             document.querySelector('#notif').style.display = "none";
+            document.querySelector('#edit').style.display = "none";
         }
 
         function loadNotif() {
             document.querySelector('#my-account').style.display = "none";
             document.querySelector('#my-purchase').style.display = "none";
             document.querySelector('#notif').style.display = "block";
+            document.querySelector('#edit').style.display = "none";
+        }
+
+        function loadEditForm() {
+            document.querySelector('#my-account').style.display = "none";
+            document.querySelector('#my-purchase').style.display = "none";
+            document.querySelector('#notif').style.display = "none";
+            document.querySelector('#edit').style.display = "block";
+        }
+
+        function updateMyAccount() {
+
+            const updated_email = document.querySelector('#id_email').value;
+            const updated_gender = document.querySelector('#id_gender').value;
+            const updated_phone_number = document.querySelector('#id_phone_number').value;
+            const updated_date_of_birth = document.querySelector('#id_date_of_birth').value;
+
+            document.querySelector('#span-email').innerHTML = updated_email;
+            document.querySelector('#span-gender').innerHTML = updated_gender;
+            document.querySelector('#span-phone-number').innerHTML = updated_phone_number;
+            document.querySelector('#span-date-of-birth').innerHTML = updated_date_of_birth;
+
+            fetch(`/shopping/updateprofile/2`, {
+                method: 'PUT',
+                body: JSON.stringify({
+                    email: updated_email,
+                    gender: updated_gender,
+                    phone_number: updated_phone_number,
+                    date_of_birth: updated_date_of_birth
+                })
+            });
+
+            loadMyAccount();
+            return false;
+        }
+
+        function loadFile(event) {
+            var output = document.getElementById('output');
+                output.src = URL.createObjectURL(event.target.files[0]);
+                output.onload = function() {
+                URL.revokeObjectURL(output.src) // free memory
+            }
+
+            document.querySelector('#profile-pic-btn').style.display = "block";
+            document.querySelector('#profile-pic-btn').style.position = "absolute";
+            document.querySelector('#profile-pic-btn').style.right = "0";
+            document.querySelector('#profile-pic-btn').style.marginTop = "5%";
+            document.querySelector('#profile-pic-btn').style.fontSize = "12px";
+        }
+
+        function loadImageFileName() {
+            $(".custom-file-input").on("change", function() {
+                var fileName = $(this).val().split("\\").pop();
+                $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+            });
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-            loadProfilePage();
-
             document.querySelector('#my-account-btn').addEventListener(
                 'click', () => loadMyAccount());
             document.querySelector('#my-purchase-btn').addEventListener(
                 'click', () => loadMyPurchase());
             document.querySelector('#notif-btn').addEventListener(
                 'click', () => loadNotif());
+            document.querySelector('#edit-profile-btn').addEventListener(
+                'click', () => loadEditForm());
+            document.querySelector('#undo-btn').addEventListener(
+                'click', () => loadMyAccount());
+            document.querySelector('#edit-profile-form').onsubmit =
+                updateMyAccount;
+
+            loadProfilePage();
+            loadImageFileName();
         });
     </script>
 {% endblock %}
@@ -168,8 +303,17 @@
                 <div class="col-4">
                     <div class="row mt-2" style="justify-content: center;">
                         <div class="image-border">
-                            <img  style="height: 50px; width: 50px; border-radius: 30px;" src="https://user-images.githubusercontent.com/59989652/88834961-2aa0b280-d207-11ea-9e3d-24c488a75569.jpg" alt="Profile Picture">
-                            <span style="margin-left: 5px;">{{ user.username }}</span>
+                            {% if profile.profile_pic.url is not None %}
+                                <img class="profile-pic" src="{% static profile.profile_pic.url %}" alt="user-profile-pic">
+                            {% else %}
+                                <img class="profile-pic" src="{% static 'images/placeholder.png' %}" alt="placeholder-profile-pic">
+                            {% endif %}
+                            <span style="margin-left: 5px;">{{ user.username }}
+                                <button id="edit-profile-btn">
+                                    <i class="fa fa-edit"></i>
+                                    Edit profile
+                                </button>
+                            </span>
                         </div>
                     </div>
 
@@ -191,30 +335,56 @@
                             <span class="user-links">Notifications</span>
                         </button>
                     </div>
+
+                    <hr>
+
+                    <!-- Add profile picture section -->
+                    <div class="row mt-4 ml-1 mb-4" style="justify-content: center;">
+                        <img id="output" style="height: 100px; width: 100px; border-radius: 50px;" src="https://user-images.githubusercontent.com/59989652/88834961-2aa0b280-d207-11ea-9e3d-24c488a75569.jpg" alt="Profile Picture">
+                    </div>
+                    <div class="row mt-4 ml-1 mb-4" style="justify-content: center; text-align: center;">
+                        <form class="custom-file" id="profile-pic-form" action="{% url 'update_profile_pic' %}" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="" style="text-align: center; justify-content: center;">
+                                <input id="file-upload" class="custom-file-input" type="file" name="myfile" accept=".jpg,.jpeg,.png" onchange="loadFile(event)">
+                                <input style="display: none;" type="submit" id="profile-pic-btn" class="profile-pic-btn" value="Save">
+                                <label id="image-file-label" class="custom-file-label" for="file-upload">Image extensions: .JPEG .PNG</label>
+                            </div>
+
+                        </form>
+                    </div>
+                    <div class="row mt-4 ml-1 mb-4 mt-4" style="justify-content: center;">
+                        <p style="color: grey;"></p>
+                    </div>
                 </div>
-                <div id="user-profile-content" class="col-8 mt-3">
+                <div id="user-profile-content" class="col-8 mt-3 mb-3">
                     <div id="my-account">
                         <h4>My Account Information</h4>
+
                         <div class="container-fluid bg-light mt-4 pt-5 pl-5 pb-5">
                             <div class="row">
                                 <p class="account-tags">Username:</p>
-                                <span>{{ user.username }}</span>
+                                <span id="span-username">{{ user.username }}</span>
                             </div>
                             <div class="row">
                                 <p class="account-tags">Name:</p>
-                                <span>{{ profile.full_name }}</span>
+                                <span id="span-full-name">{{ profile.full_name }}</span>
+                            </div>
+                            <div class="row">
+                                <p class="account-tags">Email:</p>
+                                <span id="span-email">{{ user.email }}</span>
                             </div>
                             <div class="row">
                                 <p class="account-tags">Gender:</p>
-                                <span>{{ profile.gender }} </span>
+                                <span id="span-gender">{{ profile.gender }} </span>
                             </div>
                             <div class="row">
                                 <p class="account-tags">Phone Number:</p>
-                                <span>{{ hexed_phone_number }}</span>
+                                <span id="span-phone-number">{{ hexed_phone_number }}</span>
                             </div>
                             <div class="row">
                                 <p class="account-tags">Date of Birth:</p>
-                                <span>{{ profile.date_of_birth }}</span>
+                                <span id="span-date-of-birth">{{ profile.date_of_birth }}</span>
                             </div>
                         </div>
                     </div>
@@ -233,6 +403,55 @@
                         {% else %}
                             <p>You have no notifications currently.</p>
                         {% endif %}
+                    </div>
+
+                    <!-- Edit form -->
+                    <div id="edit">
+                        <h4>Edit Your Profile</h4>
+                        <div class="container-fluid bg-light mt-4">
+                            <form id="edit-profile-form" class="" action="" method="post">
+                                {% csrf_token %}
+                                <div class="form-group row pt-3 pb-3">
+                                    <label for="id_username" class="col-sm-2 col-form-label">Username:</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" readonly class="form-control-plaintext" id="id_username" value="{{ user.username }}">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="id_email" class="col-sm-2 col-form-label">Email:</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" required class="form-control" id="id_email" value="">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="id_phone_number" class="col-sm-2 col-form-label">Phone Number:</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" required class="form-control" id="id_phone_number" value="">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="id_gender" class="col-sm-2 col-form-label">Gender:</label>
+                                    <div class="col-sm-10">
+                                        <select id="id_gender" class="form-control" name="gender" required>
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="id_date_of_birth" class="col-sm-2 col-form-label">Date of Birth:</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" required class="form-control" id="id_date_of_birth" placeholder="YYYY-MM-DD" value="">
+                                    </div>
+                                </div>
+
+                                <div class="" style="text-align: right;">
+                                    <input id="save-btn" data="{{ profile.id }}" class="btn" type="submit" name="" value="Save">
+                                    <input id="undo-btn" data="{{ profile.id }}" class="btn" type="button" name="" value="Undo">
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
