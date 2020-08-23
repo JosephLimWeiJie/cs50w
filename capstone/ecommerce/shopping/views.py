@@ -11,7 +11,7 @@ from datetime import datetime
 import json
 from django import forms
 
-from .models import User, Profile
+from .models import User, Profile, Listing
 
 # Create your views here.
 
@@ -162,6 +162,11 @@ def update_profile_pic(request):
             "hexed_phone_number": hex_phone_number(
                 profile_to_update.phone_number)
         })
+
+
+def create_listing_view(request):
+    pass
+
 
 
 """ Utility Functions """

@@ -13,6 +13,10 @@ urlpatterns = [
     path(
         "updateprofilepic", views.update_profile_pic,
         name="update_profile_pic"),
+    path(
+        "createlisting",views.create_listing_view, 
+        name="create_listing"),
+
 
     # API Routes
     path(

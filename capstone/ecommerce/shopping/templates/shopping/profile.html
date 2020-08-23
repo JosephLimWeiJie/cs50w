@@ -2,233 +2,11 @@
 {% load static %}
 
 {% block style %}
-    <style>
-        .user-profile-links:hover {
-            color: teal;
-            border: none;
-        }
-
-        .user-profile-links:active {
-            border-style: outset;
-            border: none;
-        }
-
-        .user-profile-links {
-            -webkit-border-radius: 0px;
-            -moz-border-radius: 0px;
-            -ms-border-radius: 0px;
-            -o-border-radius: 0px;
-            border-radius: 0px;
-            outline: none !important;
-            border: none;
-            background-color: white;
-        }
-
-        .account-tags {
-            width: 140px;
-            color: grey;
-        }
-
-        .home-logo {
-            color: white;
-        }
-
-        .home-logo:hover {
-            text-decoration: none;
-            color: #60dbb9;
-        }
-
-        .cart-logo i:hover {
-            color: #60dbb9;
-        }
-
-        .line-divider {
-            background-color: #42f5c2;
-            width: 100%;
-        }
-
-        .line-divider p {
-            color: #42f5c2;
-            font-size: 4px;
-            margin-bottom: 0px;
-        }
-
-        #edit-profile-btn {
-            -webkit-border-radius: 0px;
-            -moz-border-radius: 0px;
-            -ms-border-radius: 0px;
-            -o-border-radius: 0px;
-            border-radius: 0px;
-            outline: none !important;
-            border: none;
-            background-color: white;
-            color: grey;
-        }
-
-        #edit-profile-btn:hover {
-            border-style: outset;
-            border: none;
-            text-decoration: underline;
-        }
-
-        #edit-profile-btn:active {
-            border-style: outset;
-            border: none;
-        }
-
-        #save-btn {
-            background-color: #42f5c2;
-            color: white;
-        }
-
-        #save-btn:hover {
-            background-color: #60dbb9;
-        }
-
-        #undo-btn {
-            background-color: #42f5c2;
-            color: white;
-        }
-
-        #undo-btn:hover {
-            background-color: #60dbb9;
-        }
-
-        .col-form-label {
-            color: grey;
-        }
-
-        .profile-pic-btn {
-            border: 1px solid #dbdbdb;
-            color: grey;
-            background-color: white;
-            padding: 8px 20px;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-
-        .profile-pic-btn:hover {
-            background-color: #f5f5f5;
-        }
-
-        .profile-pic {
-            height: 50px;
-            width: 50px;
-            border-radius: 30px;"
-        }
-
-        #image-file-label {
-            text-align: left;
-            font-size: 12px;
-            color: grey;
-        }
-
-    </style>
+    <link href="{% static 'shopping/profile/profile.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block script %}
-    <script>
-
-        function loadProfilePage() {
-            document.querySelector('#my-account').style.display = "block";
-            document.querySelector('#my-purchase').style.display = "none";
-            document.querySelector('#notif').style.display = "none";
-            document.querySelector('#edit').style.display = "none";
-        }
-
-        function loadMyAccount() {
-            document.querySelector('#my-account').style.display = "block";
-            document.querySelector('#my-purchase').style.display = "none";
-            document.querySelector('#notif').style.display = "none";
-            document.querySelector('#edit').style.display = "none";
-        }
-
-        function loadMyPurchase() {
-            document.querySelector('#my-account').style.display = "none";
-            document.querySelector('#my-purchase').style.display = "block";
-            document.querySelector('#notif').style.display = "none";
-            document.querySelector('#edit').style.display = "none";
-        }
-
-        function loadNotif() {
-            document.querySelector('#my-account').style.display = "none";
-            document.querySelector('#my-purchase').style.display = "none";
-            document.querySelector('#notif').style.display = "block";
-            document.querySelector('#edit').style.display = "none";
-        }
-
-        function loadEditForm() {
-            document.querySelector('#my-account').style.display = "none";
-            document.querySelector('#my-purchase').style.display = "none";
-            document.querySelector('#notif').style.display = "none";
-            document.querySelector('#edit').style.display = "block";
-        }
-
-        function updateMyAccount() {
-
-            const updated_email = document.querySelector('#id_email').value;
-            const updated_gender = document.querySelector('#id_gender').value;
-            const updated_phone_number = document.querySelector('#id_phone_number').value;
-            const updated_date_of_birth = document.querySelector('#id_date_of_birth').value;
-
-            document.querySelector('#span-email').innerHTML = updated_email;
-            document.querySelector('#span-gender').innerHTML = updated_gender;
-            document.querySelector('#span-phone-number').innerHTML = updated_phone_number;
-            document.querySelector('#span-date-of-birth').innerHTML = updated_date_of_birth;
-
-            fetch(`/shopping/updateprofile/2`, {
-                method: 'PUT',
-                body: JSON.stringify({
-                    email: updated_email,
-                    gender: updated_gender,
-                    phone_number: updated_phone_number,
-                    date_of_birth: updated_date_of_birth
-                })
-            });
-
-            loadMyAccount();
-            return false;
-        }
-
-        function loadFile(event) {
-            var output = document.getElementById('output');
-                output.src = URL.createObjectURL(event.target.files[0]);
-                output.onload = function() {
-                URL.revokeObjectURL(output.src) // free memory
-            }
-
-            document.querySelector('#profile-pic-btn').style.display = "block";
-            document.querySelector('#profile-pic-btn').style.position = "absolute";
-            document.querySelector('#profile-pic-btn').style.right = "0";
-            document.querySelector('#profile-pic-btn').style.marginTop = "5%";
-            document.querySelector('#profile-pic-btn').style.fontSize = "12px";
-        }
-
-        function loadImageFileName() {
-            $(".custom-file-input").on("change", function() {
-                var fileName = $(this).val().split("\\").pop();
-                $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
-            });
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            document.querySelector('#my-account-btn').addEventListener(
-                'click', () => loadMyAccount());
-            document.querySelector('#my-purchase-btn').addEventListener(
-                'click', () => loadMyPurchase());
-            document.querySelector('#notif-btn').addEventListener(
-                'click', () => loadNotif());
-            document.querySelector('#edit-profile-btn').addEventListener(
-                'click', () => loadEditForm());
-            document.querySelector('#undo-btn').addEventListener(
-                'click', () => loadMyAccount());
-            document.querySelector('#edit-profile-form').onsubmit =
-                updateMyAccount;
-
-            loadProfilePage();
-            loadImageFileName();
-        });
-    </script>
+    <script src="{% static 'shopping/profile/profile.js' %}"></script>
 {% endblock %}
 
 {% block body %}
@@ -330,6 +108,11 @@
                             <span class="user-links">My Purchase</span>
                         </button>
                         <div class="w-100 d-none d-md-block"></div>
+                        <button id="my-shop-btn" class="user-profile-links">
+                            <i class="fa fa-store" style="font-size: 15px; width: 30px; color: red; background-color: red;"></i>
+                            <span class="user-links">My Shop</span>
+                        </button>
+                        <div class="w-100 d-none d-md-block"></div>
                         <button id="notif-btn" class="user-profile-links">
                             <i class="fa fa-bell" style="font-size: 16px; width: 30px; color: orange;"></i>
                             <span class="user-links">Notifications</span>
@@ -387,6 +170,14 @@
                                 <span id="span-date-of-birth">{{ profile.date_of_birth }}</span>
                             </div>
                         </div>
+                    </div>
+
+                    <div id="my-shop">
+                        <h4>My Shop</h4>
+                        {% if hasListings %}
+                        {% else %}
+                            <p>You have no item on the market currently.</p>
+                        {% endif %}
                     </div>
 
                     <div id="my-purchase">

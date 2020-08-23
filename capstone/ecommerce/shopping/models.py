@@ -37,3 +37,41 @@ class Profile(models.Model):
             "phone_number": self.phone_number,
             "date_of_birth": self.date_of_birth
         }
+
+
+class Listing(models.Model):
+    CATEGORY = (
+        ("Men's Wear", "Men's Wear"),
+        ("Women's Apparel", "Women's Apparel"),
+        ("Mobile & Gadgets", "Mobile & Gadgets"),
+        ("Beauty & Personal Care", "Beauty & Personal Care"),
+        ("Home Appliances", "Home Appliances"),
+        ("Home & Living", "Home & Living"),
+        ("Kids Fashion", "Kids Fashion"),
+        ("Toys, Kids & Babies", "Toys, Kids & Babies"),
+        ("Video Games", "Video Games"),
+        ("Food & Beverages", "Food & Beverages"),
+        ("Computers & Peripherals", "Computers & Peripherals"),
+        ("Hobbies & Books", "Hobbies & Books"),
+        ("Health & Wellness", "Health & Wellness"),
+        ("Women's Bags", "Women's Bags"),
+        ("Travel & Luggage", "Travel & Luggage"),
+        ("Pet Food & Supplies", "Pet Food & Supplies"),
+        ("Watches", "Watches"),
+        ("Jewellery & Accessory", "Jewellery & Accessory"),
+        ("Men's Shoes", "Men's Shoes"),
+        ("Women's Shoes", "Women's Shoes"),
+        ("Sports & Outdoors", "Sports & Outdoors"),
+        ("Automotive", "Automotive"),
+        ("Men's Bags", "Men's Bags"),
+        ("Cameras & Drones", "Cameras & Drones"),
+        ("Dining, Travel & Services", "Dining, Travel & Services"),
+        ("Miscellaneous", "Miscellaneous"))
+
+    title = models.CharField(max_length=64)
+    desrc = models.TextField()
+    image_url = models.URLField(blank=True)
+    category = models.CharField(max_length=64, blank=True, choices=CATEGORY)
+    date = models.DateField(auto_now_add=True)
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="listing", default=1)

@@ -1,0 +1,119 @@
+.user-profile-links:hover {
+    color: teal;
+    border: none;
+}
+
+.user-profile-links:active {
+    border-style: outset;
+    border: none;
+}
+
+.user-profile-links {
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    -ms-border-radius: 0px;
+    -o-border-radius: 0px;
+    border-radius: 0px;
+    outline: none !important;
+    border: none;
+    background-color: white;
+}
+
+.account-tags {
+    width: 140px;
+    color: grey;
+}
+
+.home-logo {
+    color: white;
+}
+
+.home-logo:hover {
+    text-decoration: none;
+    color: #60dbb9;
+}
+
+.cart-logo i:hover {
+    color: #60dbb9;
+}
+
+.line-divider {
+    background-color: #42f5c2;
+    width: 100%;
+}
+
+.line-divider p {
+    color: #42f5c2;
+    font-size: 4px;
+    margin-bottom: 0px;
+}
+
+#edit-profile-btn {
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    -ms-border-radius: 0px;
+    -o-border-radius: 0px;
+    border-radius: 0px;
+    outline: none !important;
+    border: none;
+    background-color: white;
+    color: grey;
+}
+
+#edit-profile-btn:hover {
+    border-style: outset;
+    border: none;
+    text-decoration: underline;
+}
+
+#edit-profile-btn:active {
+    border-style: outset;
+    border: none;
+}
+
+#save-btn {
+    background-color: #42f5c2;
+    color: white;
+}
+
+#save-btn:hover {
+    background-color: #60dbb9;
+}
+
+#undo-btn {
+    background-color: #42f5c2;
+    color: white;
+}
+
+#undo-btn:hover {
+    background-color: #60dbb9;
+}
+
+.col-form-label {
+    color: grey;
+}
+
+.profile-pic-btn {
+    border: 1px solid #dbdbdb;
+    color: grey;
+    background-color: white;
+    padding: 8px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.profile-pic-btn:hover {
+    background-color: #f5f5f5;
+}
+
+.profile-pic {
+    height: 50px;
+    width: 50px;
+    border-radius: 30px;"
+}
+
+#image-file-label {
+    text-align: left;
+    font-size: 12px;
+    color: grey;
+}
