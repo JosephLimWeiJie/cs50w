@@ -6,6 +6,8 @@
 {% endblock %}
 
 {% block script %}
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="{% static 'shopping/profile/profile.js' %}"></script>
 {% endblock %}
 
@@ -104,12 +106,12 @@
                         </button>
                         <div class="w-100 d-none d-md-block"></div>
                         <button id="my-purchase-btn" class="user-profile-links" id="my-purchase">
-                            <i class="fa fa-shopping-cart" style="font-size: 15px; width: 30px; color: #03f0fc;"></i>
+                            <i class="fa fa-shopping-cart" style="font-size: 15px; width: 30px; color: lightblue;"></i>
                             <span class="user-links">My Purchase</span>
                         </button>
                         <div class="w-100 d-none d-md-block"></div>
                         <button id="my-shop-btn" class="user-profile-links">
-                            <i class="fa fa-store" style="font-size: 15px; width: 30px; color: red; background-color: red;"></i>
+                            <i class="fa fa-shopping-bag" style="font-size: 15px; width: 30px; color: red;"></i>
                             <span class="user-links">My Shop</span>
                         </button>
                         <div class="w-100 d-none d-md-block"></div>
@@ -173,12 +175,50 @@
                     </div>
 
                     <div id="my-shop">
-                        <h4>My Shop</h4>
-                        {% if hasListings %}
-                        {% else %}
-                            <p>You have no item on the market currently.</p>
-                        {% endif %}
+                        <div class="row">
+                            <div class="col-6">
+                                <h4>My Shop</h4>
+                            </div>
+                            <div class="col-6 text-right">
+                                <button class="btn" id="add-listing-btn" type="button" name="button">Add New Listing</button>
+                            </div>
+                        </div>
+
+                        <hr>
+                        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="pills-listing-tab" data-toggle="pill" href="#pills-listing" role="tab" aria-controls="pills-listing" aria-selected="true">My Listings</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="pills-sold-tab" data-toggle="pill" href="#pills-sold" role="tab" aria-controls="pills-sold" aria-selected="false">Items Sold</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="pills-review-tab" data-toggle="pill" href="#pills-review" role="tab" aria-controls="pills-review" aria-selected="false">Customers' Reviews</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="pills-tabContent">
+                            <div class="tab-pane fade show active" id="pills-listing" role="tabpanel" aria-labelledby="pills-listing-tab">
+                                {% if hasListings %}
+                                {% else %}
+                                    <p>You have no listings in the market currently.</p>
+                                {% endif %}
+                            </div>
+                            <div class="tab-pane fade" id="pills-sold" role="tabpanel" aria-labelledby="pills-sold-tab">
+                                {% if itemsSold %}
+                                {% else %}
+                                    <p>You have no items sold in the market currently.</p>
+                                {% endif %}
+                            </div>
+                            <div class="tab-pane fade" id="pills-review" role="tabpanel" aria-labelledby="pills-review-tab">
+                                {% if hasReviews%}
+                                {% else %}
+                                    <p>You have no customers' reviews currently.</p>
+                                {% endif %}
+                            </div>
+                        </div>
                     </div>
+
+
 
                     <div id="my-purchase">
                         <h4>My Purchase</h4>

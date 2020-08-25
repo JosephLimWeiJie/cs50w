@@ -117,3 +117,18 @@
     font-size: 12px;
     color: grey;
 }
+
+#add-listing-btn {
+    background-color: #42f5c2;
+    color: white;
+}
+
+#add-listing-btn:hover {
+    background-color: #60dbb9;
+}
+
+.nav-link.active:active {
+    color: #fff;
+    cursor: default;
+    background-color: green;
+}
