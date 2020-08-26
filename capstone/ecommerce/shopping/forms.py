@@ -27,5 +27,6 @@ class NewListingForm(forms.Form):
     title = forms.CharField(label="Title of Listing")
     desrc = forms.CharField(label="Description of Listing")
     category = forms.CharField(label="Category of Listing")
+    price = forms.FloatField(label="Selling Price of Listing")
     quantity = forms.IntegerField(label="Quantity for Sale")
     image_file = forms.ImageField(label="Listing Images")

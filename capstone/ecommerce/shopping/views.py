@@ -87,10 +87,17 @@ def logout_view(request):
 
 def profile_view(request, name):
     profile = Profile.objects.get(user=request.user)
+    listing_list = Listing.objects.all().filter(user=request.user)
+    paginator = Paginator(listing_list, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     return render(request, "shopping/profile.html", {
         "name": name,
         "profile": profile,
-        "hexed_phone_number": hex_phone_number(profile.phone_number)
+        "hexed_phone_number": hex_phone_number(profile.phone_number),
+        "hasListings": has_listings(request.user),
+        "page_obj": page_obj
     })
 
 
@@ -152,16 +159,24 @@ def create_listing_view(request):
         desrc = request.POST['desrc']
         category = request.POST['category']
         quantity = request.POST['quantity']
+        price = request.POST['price']
         listing = Listing.objects.create(
             title=title, desrc=desrc, category=category, quantity=quantity,
-            user=request.user)
-        listing.save()
+            price=price, user=request.user)
 
         images = request.FILES.getlist('image_files')
+
+        count = 0
         for image in images:
             listing_image = ListingImage.objects.create(
                 listing=listing, image=image)
             listing_image.save()
+
+            if count == 0:
+                listing.listing_main_pic = image
+                count += 1
+
+        listing.save()
 
         return render(request, "shopping/profile.html", {
             "name": request.user.username,
@@ -203,3 +218,9 @@ def hex_phone_number(number):
         + phone_number_string[phone_number_length - 1])
 
     return hexed_phone_number
+
+
+def has_listings(user):
+    if user.listing.all().count() != 0:
+        return True
+    return False

@@ -73,11 +73,19 @@ class Listing(models.Model):
     category = models.CharField(max_length=64, blank=True, choices=CATEGORY)
     date = models.DateField(auto_now_add=True)
     quantity = models.IntegerField(default=0)
+    price = models.FloatField(default=0.00)
+    listing_main_pic = models.ImageField(null=True, blank=True)
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="listing", default=1)
+
+    def __str__(self):
+        return f"{self.title}"
 
 
 class ListingImage(models.Model):
     listing = models.ForeignKey(
         Listing, on_delete=models.CASCADE, related_name="images", default=1)
     image = models.ImageField(null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.image}"

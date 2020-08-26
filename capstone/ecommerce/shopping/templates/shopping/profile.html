@@ -181,7 +181,7 @@
                             </div>
                             <div class="col-6 text-right">
                                 <button class="btn" id="add-listing-btn" type="button" name="button" data-toggle="modal" data-target="#listingModal">Add New Listing</button>
-                                <!-- Listing Modal -->
+                                <!-- Create Listing Modal -->
                                 <div class="modal fade" id="listingModal" tabindex="-1" role="dialog">
                                     <div class="modal-dialog modal-lg" role="document">
                                         <div class="modal-content">
@@ -204,6 +204,12 @@
                                                         <label for="id_description" class="col-sm-2 col-form-label">Description:</label>
                                                         <div class="col-sm-10">
                                                             <input type="text" required class="form-control" id="id_description" name="desrc" value="">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label for="id_price" class="col-sm-2 col-form-label">Selling Price: (in dollars)</label>
+                                                        <div class="col-sm-10">
+                                                            <input type="text" required class="form-control" id="id_price" name="price" value="" placeholder="Input format: 00.00">
                                                         </div>
                                                     </div>
                                                     <div class="form-group row">
@@ -284,6 +290,64 @@
                         <div class="tab-content" id="pills-tabContent">
                             <div class="tab-pane fade show active" id="pills-listing" role="tabpanel" aria-labelledby="pills-listing-tab">
                                 {% if hasListings %}
+                                    {% for listing in page_obj %}
+                                        <div id="indv-listing-{{ listing.id }}" class="container p-3 my-3 border">
+                                            <div class="row">
+                                                <div class="col-4 p-3" style="text-align: center;">
+                                                    {% if listing.images is None %}
+                                                        <img class="listing-images" src="{% static 'shopping/categories/listing_placeholder.jpg' %}" alt="listing-placeholder-image">
+                                                    {% else %}
+                                                        <img class="listing-images" src="{% static listing.listing_main_pic.url %}" alt="listing-image">
+                                                    {% endif %}
+                                                </div>
+                                                <div class="col-8 p-3">
+                                                    <a href="#">{{ listing.title }}</a>
+                                                    <p style="color: grey; font-size: 12px;">Category: <strong>{{ listing.category }}</strong></p>
+                                                    <p style="margin-bottom: 4px;"><strong>Product Description:</strong></p>
+                                                    <p style="color: grey;">{{ listing.desrc }}</p>
+                                                    <div class="row">
+                                                        <div class="col-6" style="text-align: left;">
+                                                            <p style="color: grey;">Quantity left: {{ listing.quantity }}</p>
+                                                        </div>
+                                                        <div class="col-6" style="text-align: right;">
+                                                            <p >Price: <strong>${{ listing.price }}</strong></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                        </div>
+                                    {% endfor %}
+
+
+                                <!-- My listing paginator -->
+                                <nav aria-label="Page navigation example">
+                                    <ul class="pagination justify-content-center">
+                                        {% if page_obj.has_previous %}
+                                            <li class="page-item">
+                                                <a class="page-link" href="?page=1">&laquo; first</a>
+                                            </li>
+                                            <li class="page-item">
+                                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">previous</a>
+                                            </li>
+                                        {% endif %}
+
+                                        <span class="current">
+                                            <p style="margin-top: 10px; margin-right: 10px; margin-left: 10px;">
+                                                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                                            </p>
+                                        </span>
+
+                                        {% if page_obj.has_next %}
+                                            <li class="page-item">
+                                                <a class="page-link" href="?page={{ page_obj.next_page_number }}">next</a>
+                                            </li>
+                                            <li class="page-item">
+                                                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                                            </li>
+                                        {% endif %}
+                                    </ul>
+                                </nav>
                                 {% else %}
                                     <p>You have no listings in the market currently.</p>
                                 {% endif %}
