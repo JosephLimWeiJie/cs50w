@@ -70,8 +70,14 @@ class Listing(models.Model):
 
     title = models.CharField(max_length=64)
     desrc = models.TextField()
-    image_url = models.URLField(blank=True)
     category = models.CharField(max_length=64, blank=True, choices=CATEGORY)
     date = models.DateField(auto_now_add=True)
+    quantity = models.IntegerField(default=0)
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="listing", default=1)
+
+
+class ListingImage(models.Model):
+    listing = models.ForeignKey(
+        Listing, on_delete=models.CASCADE, related_name="images", default=1)
+    image = models.ImageField(null=True, blank=True)

@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     loadProfilePage();
     loadImageFileName();
+    loadCreateNewListingBtn();
 });
 
 function loadProfilePage() {
@@ -111,4 +112,10 @@ function loadImageFileName() {
         var fileName = $(this).val().split("\\").pop();
         $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
     });
+}
+
+function loadCreateNewListingBtn() {
+    $('#listingModal').on('shown.bs.modal', function () {
+      $('#myInput').trigger('focus')
+  });
 }

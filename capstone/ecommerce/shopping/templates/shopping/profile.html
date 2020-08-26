@@ -135,7 +135,6 @@
                                 <input style="display: none;" type="submit" id="profile-pic-btn" class="profile-pic-btn" value="Save">
                                 <label id="image-file-label" class="custom-file-label" for="file-upload">Image extensions: .JPEG .PNG</label>
                             </div>
-
                         </form>
                     </div>
                     <div class="row mt-4 ml-1 mb-4 mt-4" style="justify-content: center;">
@@ -174,17 +173,103 @@
                         </div>
                     </div>
 
+                    <!-- My Shop -->
                     <div id="my-shop">
                         <div class="row">
                             <div class="col-6">
                                 <h4>My Shop</h4>
                             </div>
                             <div class="col-6 text-right">
-                                <button class="btn" id="add-listing-btn" type="button" name="button">Add New Listing</button>
+                                <button class="btn" id="add-listing-btn" type="button" name="button" data-toggle="modal" data-target="#listingModal">Add New Listing</button>
+                                <!-- Listing Modal -->
+                                <div class="modal fade" id="listingModal" tabindex="-1" role="dialog">
+                                    <div class="modal-dialog modal-lg" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Create New Listing</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form id="add-listing-form" class="" action="{% url 'create_listing' %}" method="post" enctype="multipart/form-data">
+                                                    {% csrf_token %}
+                                                    <div class="form-group row pt-3 pb-3">
+                                                        <label for="id_title" class="col-sm-2 col-form-label">Title:</label>
+                                                        <div class="col-sm-10">
+                                                            <input type="text" class="form-control" id="id_title" name="title" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label for="id_description" class="col-sm-2 col-form-label">Description:</label>
+                                                        <div class="col-sm-10">
+                                                            <input type="text" required class="form-control" id="id_description" name="desrc" value="">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label for="id_quantity" class="col-sm-2 col-form-label">Quantity available</label>
+                                                        <div class="col-sm-10">
+                                                            <input type="text" required class="form-control" id="id_quantity" name="quantity" value="" placeholder="Stock available for sale">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label for="id_gender" class="col-sm-2 col-form-label">Category:</label>
+                                                        <div class="col-sm-10">
+                                                            <select class="form-control" name="category" id="id_category" required>
+                                                                <option value="Men's Wear">Men's Wear</option>
+                                                                <option value="Women's Apparel">Women's Apparel</option>
+                                                                <option value="Mobile & Gadgets">Mobile & Gadgets</option>
+                                                                <option value="Beauty & Personal Care">Beauty & Personal Care</option>
+                                                                <option value="Home Appliances">Home Appliances</option>
+                                                                <option value="Home & Living">Home & Living</option>
+                                                                <option value="Kids Fashion">Kids Fashion</option>
+                                                                <option value="Toys, Kids & Babies">Toys, Kids & Babies</option>
+                                                                <option value="Video Games">Video Games</option>
+                                                                <option value="Food & Beverages">Food & Beverages</option>
+                                                                <option value="Computer & Peripherals">Computer & Peripherals</option>
+                                                                <option value="Hobbies & Books">Hobbies & Books</option>
+                                                                <option value="Health & Wellness">Health & Wellness</option>
+                                                                <option value="Women's Bags">Women's Bags</option>
+                                                                <option value="Travel & Luggage">Travel & Luggage</option>
+                                                                <option value="Pet Food & Supplies">Pet Food & Supplies</option>
+                                                                <option value="Watches">Watches</option>
+                                                                <option value="Jewellery & Accessory">Jewellery & Accessory</option>
+                                                                <option value="Men's Shoes">Men's Shoes</option>
+                                                                <option value="Women's Shoes">Women's Shoes</option>
+                                                                <option value="Sports & Outdoors">Sports & Outdoors</option>
+                                                                <option value="Automotive">Automotive</option>
+                                                                <option value="Men's Bags">Men's Bags</option>
+                                                                <option value="Cameras & Drones">Cameras & Drones</option>
+                                                                <option value="Dining, Travel & Services">Dining, Travel & Services</option>
+                                                                <option value="Miscellaneous">Miscellaneous</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label for="id_images" class="col-sm-2 col-form-label">Images</label>
+                                                        <div class="col-sm-10">
+                                                            <div class="custom-file" style="text-align: left;">
+                                                                <input type="file" name="image_files" accept=".jpg,.jpeg,.png" multiple required class="custom-file-input" id="id_images" value="">
+                                                                <label class="custom-file-label" for="customFile">You may upload multiple images.</label>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="submit" id="create-listing-btn" class="btn">Create</button>
+                                                        <button type="button" id="cancel-listing-btn" class="btn" data-dismiss="modal">Cancel</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
                         <hr>
+                        <!-- Listing Nav Bar -->
                         <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                             <li class="nav-item">
                                 <a class="nav-link active" id="pills-listing-tab" data-toggle="pill" href="#pills-listing" role="tab" aria-controls="pills-listing" aria-selected="true">My Listings</a>

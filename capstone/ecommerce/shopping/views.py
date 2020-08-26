@@ -8,34 +8,14 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from datetime import datetime
-import json
+
 from django import forms
 
-from .models import User, Profile, Listing
+from .models import User, Profile, Listing, ListingImage
+from .forms import SignUpForm
+import json
 
 # Create your views here.
-
-
-class SignUpForm(forms.Form):
-    GENDER = [
-     ('Male', 'Male'),
-     ('Female', 'Female'),
-     ('Other', 'Other')
-    ]
-
-    full_name = forms.CharField(label="Full Name")
-    password = forms.CharField(label="Password")
-    gender = forms.ChoiceField(label="Gender", choices=GENDER)
-    phone_number = forms.IntegerField(label="Phone Number")
-    email = forms.EmailField(label="Email")
-
-    birthday = forms.DateField(
-        input_formats=['%d/%m/%Y'],
-        widget=forms.DateTimeInput(attrs={
-            'class': 'form-control datetimepicker-input',
-            'data-target': '#datetimepicker4'
-        })
-    )
 
 
 def index(request):
@@ -165,8 +145,37 @@ def update_profile_pic(request):
 
 
 def create_listing_view(request):
-    pass
+    profile = Profile.objects.get(user=request.user)
 
+    if request.method == 'POST':
+        title = request.POST['title']
+        desrc = request.POST['desrc']
+        category = request.POST['category']
+        quantity = request.POST['quantity']
+        listing = Listing.objects.create(
+            title=title, desrc=desrc, category=category, quantity=quantity,
+            user=request.user)
+        listing.save()
+
+        images = request.FILES.getlist('image_files')
+        for image in images:
+            listing_image = ListingImage.objects.create(
+                listing=listing, image=image)
+            listing_image.save()
+
+        return render(request, "shopping/profile.html", {
+            "name": request.user.username,
+            "profile": profile,
+            "hexed_phone_number": hex_phone_number(
+                profile.phone_number)
+        })
+    else:
+        return render(request, "shopping/profile.html", {
+            "name": request.user.username,
+            "profile": profile,
+            "hexed_phone_number": hex_phone_number(
+                profile.phone_number)
+        })
 
 
 """ Utility Functions """

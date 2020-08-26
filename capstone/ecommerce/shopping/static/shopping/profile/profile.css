@@ -132,3 +132,21 @@
     cursor: default;
     background-color: green;
 }
+
+#create-listing-btn {
+    background-color: #42f5c2;
+    color: white;
+}
+
+#create-listing-btn:hover {
+    background-color: #60dbb9;
+}
+
+#cancel-listing-btn {
+    background-color: #42f5c2;
+    color: white;
+}
+
+#cancel-listing-btn:hover {
+    background-color: #60dbb9;
+}
