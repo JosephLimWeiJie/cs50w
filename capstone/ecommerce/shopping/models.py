@@ -73,7 +73,7 @@ class Listing(models.Model):
     category = models.CharField(max_length=64, blank=True, choices=CATEGORY)
     date = models.DateField(auto_now_add=True)
     quantity = models.IntegerField(default=0)
-    price = models.FloatField(default=0.00)
+    price = models.DecimalField(default=0.00, max_digits=20, decimal_places=2)
     listing_main_pic = models.ImageField(null=True, blank=True)
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="listing", default=1)
