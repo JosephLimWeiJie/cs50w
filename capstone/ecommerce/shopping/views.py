@@ -193,6 +193,17 @@ def create_listing_view(request):
         })
 
 
+def listing_view(request, listing_id):
+    listing = Listing.objects.get(id=listing_id)
+    listing_images = ListingImage.objects.all().filter(listing=listing)
+    listing_images_count = listing_images.count()
+    return render(request, "shopping/listing.html", {
+        "listing": listing,
+        "listing_images": listing_images,
+        "listing_images_count": listing_images_count
+    })
+
+
 """ Utility Functions """
 
 

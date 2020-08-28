@@ -1,0 +1,29 @@
+.carousel-item:active {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+.carousel-item img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+#add-to-cart-btn {
+    background-color: #42f5c2;
+    color: white;
+}
+
+#add-to-cart-btn:hover {
+    background-color: #60dbb9;
+}
+
+#buy-btn {
+    background-color: #42f5c2;
+    color: white;
+}
+
+#buy-btn:hover {
+    background-color: #60dbb9;
+}
