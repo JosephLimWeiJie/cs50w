@@ -11,7 +11,7 @@ from datetime import datetime
 
 from django import forms
 
-from .models import User, Profile, Listing, ListingImage
+from .models import User, Profile, Listing, ListingImage, Review
 from .forms import SignUpForm
 import json
 
@@ -197,10 +197,13 @@ def listing_view(request, listing_id):
     listing = Listing.objects.get(id=listing_id)
     listing_images = ListingImage.objects.all().filter(listing=listing)
     listing_images_count = listing_images.count()
+
     return render(request, "shopping/listing.html", {
         "listing": listing,
         "listing_images": listing_images,
-        "listing_images_count": listing_images_count
+        "listing_images_count": listing_images_count,
+        "hasReviews": check_listing_review(listing),
+        "reviews": Review.objects.all()
     })
 
 
@@ -234,18 +237,31 @@ def update_listing_desrc_view(request, listing_id):
         listing.price = price
         listing.desrc = edited_product_desrc
         listing.save()
-        
+
         return render(request, "shopping/listing.html", {
             "listing": listing,
             "listing_images": listing_images,
-            "listing_images_count": listing_images_count
+            "listing_images_count": listing_images_count,
+            "reviews": Review.objects.all()
         })
     else:
         return render(request, "shopping/listing.html", {
             "listing": listing,
             "listing_images": listing_images,
-            "listing_images_count": listing_images_count
+            "listing_images_count": listing_images_count,
+            "reviews": Review.objects.all()
         })
+
+
+def review_view(request, listing_id):
+    if request.method == 'POST':
+        listing = Listing.objects.get(id=listing_id)
+        review = request.POST['review_text']
+        review = Review.objects.create(
+            listing=listing, user=request.user, review=review)
+        return listing_view(request, listing_id)
+    else:
+        return listing_view(request, listing_id)
 
 
 """ Utility Functions """
@@ -279,3 +295,9 @@ def has_listings(user):
     if user.listing.all().count() != 0:
         return True
     return False
+
+
+def check_listing_review(listing):
+    if listing.review.all().count == 0:
+        return False
+    return True

@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
         'click', () => minusQuantity());
 
     loadImageCarousel();
+    loadReviewWidget();
 });
 
 function loadImageCarousel() {
@@ -55,5 +56,11 @@ function minusQuantity() {
         $('#minus-btn').click(function() {
             $("quantity_count:text").val(currQuantityCount);
         });
+    });
+}
+
+function loadReviewWidget() {
+    $(document).ready(function() {
+        $('#listingReview').mdbRate();
     });
 }

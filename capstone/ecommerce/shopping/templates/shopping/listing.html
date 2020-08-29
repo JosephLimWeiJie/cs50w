@@ -6,6 +6,7 @@
 {% endblock %}
 
 {% block script %}
+    <script src="js/addons/rating.js"></script>
     <script src="{% static 'shopping/listing/listing.js' %}"></script>
 {% endblock %}
 
@@ -133,7 +134,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" id="close-desrc-btn" class="btn" data-dismiss="modal">Close</button>
-                                    <button type="submit" id="save-desrc-btn" class="btn">Save changes</button>
+                                    <button type="submit" id="save-desrc-btn" class="btn">Save</button>
                                 </div>
                                 </div>
                             </div>
@@ -200,7 +201,67 @@
 
     <!-- Product review -->
     <div class="container-fluid m-3">
-        <p><strong>Product Review:</strong></p>
+        {% if hasReviews %}
+            {% if request.user.is_authenticated %}
+                <div class="row">
+                    <div class="col-6 pt-2">
+                        <p style="margin-bottom: 0;"><strong>Product Review:</strong></p>
+                    </div>
+                    <div class="col-6 pt-2" style="text-align: right;">
+                        <button type="button" class="btn" name="button" data-toggle="modal" data-target="#reviewModal">
+                            <span style="font-size: 17px;"><i class="fa fa-comments"></i></span>
+                            <span>Leave A Review</span>
+                        </button>
+
+                        <!-- Review Modal -->
+                        <div class="modal fade" id="reviewModal" tabindex="-1" role="dialog" aria-labelledby="reviewModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <form class="" action="{% url 'review' listing.id %}" method="post">
+                                    {% csrf_token %}
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="reviewModalLabel">Product Review:</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="container">
+                                                <span id="listingReview"></span>
+                                            </div>
+                                            <div class="form-group" style="text-align: left;">
+                                                <label for="desrc">Review:</label>
+                                                <textarea class="form-control" rows="6" name="review_text" value="" placeholder="Leave your review for this listing here."></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" id="cancel-review-btn" class="btn" data-dismiss="modal">Close</button>
+                                            <button type="submit" id="post-review-btn" class="btn">Post</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Review's section -->
+                {% for review in reviews %}
+                    <div class="row border">
+                        <div class="col-3">
+                            <img src="" alt="">
+                        </div>
+                        <div class="col-9">
+                            <p>{{ review.review }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% else %}
+            <div class="container-fluid">
+                <p>There is no reviews left by any user.</p>
+            </div>
+        {% endif %}
 
     </div>
 

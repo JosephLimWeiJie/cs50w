@@ -89,3 +89,14 @@ class ListingImage(models.Model):
 
     def __str__(self):
         return f"{self.image}"
+
+
+class Review(models.Model):
+    listing = models.ForeignKey(
+        Listing, on_delete=models.CASCADE, related_name="review", default=1)
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="review", default=1)
+    review = models.TextField(null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.user}"

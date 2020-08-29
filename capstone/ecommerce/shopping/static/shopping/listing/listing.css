@@ -82,3 +82,21 @@
 #save-desrc-btn:hover {
     background-color: #60dbb9;
 }
+
+#cancel-review-btn {
+    background-color: #42f5c2;
+    color: white;
+}
+
+#cancel-review-btn:hover {
+    background-color: #60dbb9;
+}
+
+#post-review-btn {
+    background-color: #42f5c2;
+    color: white;
+}
+
+#post-review-btn:hover {
+    background-color: #60dbb9;
+}
