@@ -204,6 +204,50 @@ def listing_view(request, listing_id):
     })
 
 
+def update_listing_desrc_view(request, listing_id):
+    listing = Listing.objects.get(id=listing_id)
+    listing_images = ListingImage.objects.all().filter(listing=listing)
+    listing_images_count = listing_images.count()
+
+    if request.method == 'POST':
+        title = request.POST['title']
+        category = request.POST['category']
+        quantity = request.POST['quantity']
+        price = request.POST['price']
+        edited_product_desrc = request.POST['edited_desrc_text']
+
+        images = request.FILES.getlist('image_files')
+
+        count = 0
+        for image in images:
+            listing_image = ListingImage.objects.create(
+                listing=listing, image=image)
+            listing_image.save()
+
+            if count == 0:
+                listing.listing_main_pic = image
+                count += 1
+
+        listing.title = title
+        listing.category = category
+        listing.quantity = quantity
+        listing.price = price
+        listing.desrc = edited_product_desrc
+        listing.save()
+        
+        return render(request, "shopping/listing.html", {
+            "listing": listing,
+            "listing_images": listing_images,
+            "listing_images_count": listing_images_count
+        })
+    else:
+        return render(request, "shopping/listing.html", {
+            "listing": listing,
+            "listing_images": listing_images,
+            "listing_images_count": listing_images_count
+        })
+
+
 """ Utility Functions """
 
 

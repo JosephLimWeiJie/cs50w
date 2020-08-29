@@ -12,11 +12,11 @@ function loadImageCarousel() {
 
     var i;
     for (i = 1; i <= imageCount; i++) {
-        newLiElement = document.createElement('li');
-        newLiElement.dataset['target'] = "#listingImageIndicators";
-        newLiElement.dataset['slide'] = i;
+        var newLiElement = document.createElement('li');
+        newLiElement.dataset.target = "#listingImageIndicators";
+        newLiElement.dataset.slide = i;
 
-        document.querySelector('.carousel-indicators').appendChild(newLiElement);
+        document.querySelector('#carouselIndicators').appendChild(newLiElement);
     }
 }
 
@@ -29,6 +29,7 @@ function plusQuantity() {
     } else if (currQuantityCount < quantityLeft) {
         currQuantityCount += 1;
         document.querySelector('#quantity-count').value = currQuantityCount;
+        document.querySelector('#minus-btn').disabled = false;
     }
 
     $(document).ready(function() {
@@ -46,6 +47,7 @@ function minusQuantity() {
         document.querySelector('#minus-btn').disabled = true;
     } else if (currQuantityCount > 0) {
         currQuantityCount -= 1;
+        document.querySelector('#plus-btn').disabled = false;
         document.querySelector('#quantity-count').value = currQuantityCount;
     }
 

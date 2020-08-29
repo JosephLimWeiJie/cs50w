@@ -11,21 +11,21 @@
 
 {% block content %}
     <div class="row">
-        <div class="col-5">
+        <div class="col-5" style="display: block; max-height: 400px; height: auto; width: 100%">
             <!-- Listing image carousel -->
             <div id="listingImageIndicators" class="carousel slide" data-ride="carousel">
                 <div id="imagesCount" style="display: none;">{{ listing_images_count }}</div>
-                <ol class="carousel-indicators">
+                <ol class="carousel-indicators" id="carouselIndicators">
                     <li data-target="#listingImageIndicators" data-slide-to="0" class="active"></li>
                 </ol>
                 <div class="carousel-inner">
                     <div class="carousel-item active p-3">
-                        <img class="d-block w-100" style="display: block; height: 400px; width: 400px;" src="{% static listing.listing_main_pic.url %}" alt="Listing Image">
+                        <img class="d-block w-100" style="display: block; max-height: 400px; height: auto; width: 100%;" src="{% static listing.listing_main_pic.url %}" alt="Listing Image">
                     </div>
                     {% for image in listing_images %}
                         {% if image.image.url != listing.listing_main_pic.url %}
                             <div class="carousel-item p-3">
-                                <img class="d-block w-100" style="display: block; height: 400px; width: 400px;" src="{% static image.image.url %}" alt="Listing Image">
+                                <img class="d-block w-100" style="display: block; max-height: 400px; height: auto; width: 100%" src="{% static image.image.url %}" alt="Listing Image">
                             </div>
                         {% endif %}
                     {% endfor %}
@@ -40,9 +40,107 @@
                 </a>
             </div>
         </div>
-        <div class="col-7">
+        <div class="col-7 p-2">
             <div class="row m-3">
-                <h4>{{ listing.title }}</h4>
+                <div class="col-6">
+                    <h4>{{ listing.title }}</h4>
+                </div>
+                {% if request.user == listing.user %}
+                <div class="col-6" style="text-align: right;">
+                    <button type="button" name="button" class="btn" data-toggle="modal" data-target="#editDesrcModal">
+                        <i class="fa fa-edit" style="font-size: 20px;"></i>
+                        <span>Edit Listing</span>
+                    </button>
+
+                    <!-- Edit Form Modal -->
+                    <form class="" id="edit-desrc-form" action="{% url 'update_product_listing' listing.id %}" method="post">
+                        {% csrf_token %}
+                        <div class="modal fade" id="editDesrcModal" tabindex="-1" role="dialog" aria-labelledby="editDesrcModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="editDesrcModalLabel">Edit Product Description</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body modal-lg">
+                                    <div class="form-group row pt-3 pb-3">
+                                        <label for="id_title" class="col-sm-2 col-form-label">Title:</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="id_title" name="title" value="{{ listing.title }}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="id_price" class="col-sm-2 col-form-label">Selling Price: (in dollars)</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="id_price" name="price" value="{{ listing.price }}" placeholder="Input format: 00.00">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="id_quantity" class="col-sm-2 col-form-label">Quantity available</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="id_quantity" name="quantity" value="{{ listing.quantity }}" placeholder="Stock available for sale">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="id_gender" class="col-sm-2 col-form-label">Category:</label>
+                                        <div class="col-sm-10">
+                                            <select class="form-control" name="category" id="id_category" value="{{ listing.category }}">
+                                                <option value="Men's Wear">Men's Wear</option>
+                                                <option value="Women's Apparel">Women's Apparel</option>
+                                                <option value="Mobile & Gadgets">Mobile & Gadgets</option>
+                                                <option value="Beauty & Personal Care">Beauty & Personal Care</option>
+                                                <option value="Home Appliances">Home Appliances</option>
+                                                <option value="Home & Living">Home & Living</option>
+                                                <option value="Kids Fashion">Kids Fashion</option>
+                                                <option value="Toys, Kids & Babies">Toys, Kids & Babies</option>
+                                                <option value="Video Games">Video Games</option>
+                                                <option value="Food & Beverages">Food & Beverages</option>
+                                                <option value="Computer & Peripherals">Computer & Peripherals</option>
+                                                <option value="Hobbies & Books">Hobbies & Books</option>
+                                                <option value="Health & Wellness">Health & Wellness</option>
+                                                <option value="Women's Bags">Women's Bags</option>
+                                                <option value="Travel & Luggage">Travel & Luggage</option>
+                                                <option value="Pet Food & Supplies">Pet Food & Supplies</option>
+                                                <option value="Watches">Watches</option>
+                                                <option value="Jewellery & Accessory">Jewellery & Accessory</option>
+                                                <option value="Men's Shoes">Men's Shoes</option>
+                                                <option value="Women's Shoes">Women's Shoes</option>
+                                                <option value="Sports & Outdoors">Sports & Outdoors</option>
+                                                <option value="Automotive">Automotive</option>
+                                                <option value="Men's Bags">Men's Bags</option>
+                                                <option value="Cameras & Drones">Cameras & Drones</option>
+                                                <option value="Dining, Travel & Services">Dining, Travel & Services</option>
+                                                <option value="Miscellaneous">Miscellaneous</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="id_images" class="col-sm-2 col-form-label">Images</label>
+                                        <div class="col-sm-10">
+                                            <div class="custom-file" style="text-align: left;">
+                                                <input type="file" name="image_files" accept=".jpg,.jpeg,.png" multiple class="custom-file-input" id="id_images" value="">
+                                                <label class="custom-file-label" for="customFile">You may upload multiple images.</label>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group" style="text-align: left;">
+                                        <label for="desrc">New Description</label>
+                                        <textarea class="form-control" rows="6" name="edited_desrc_text" value="">{{ listing.desrc }}</textarea>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" id="close-desrc-btn" class="btn" data-dismiss="modal">Close</button>
+                                    <button type="submit" id="save-desrc-btn" class="btn">Save changes</button>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                {% endif %}
             </div>
             <div class="row m-3">
                 <span style="color: grey; width: 120px;">Seller:</span>
@@ -86,8 +184,16 @@
 
     <!-- Product description -->
     <div class="container-fluid m-3">
-        <p><strong>Product Description:</strong></p>
-        <p>{{ listing.desrc }}</p>
+        <div class="row">
+            <div class="col-6 pt-2">
+                <p><strong>Product Description:</strong></p>
+            </div>
+        </div>
+
+        <div class="container-fluid" id="product-desrc">
+            <p>{{ listing.desrc }}</p>
+        </div>
+
     </div>
 
     <hr>

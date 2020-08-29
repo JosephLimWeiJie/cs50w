@@ -17,6 +17,10 @@ urlpatterns = [
         "createlisting", views.create_listing_view,
         name="create_listing"),
     path("listing/<int:listing_id>", views.listing_view, name="listing"),
+    path(
+        "updateproductdesrc/<int:listing_id>",
+        views.update_listing_desrc_view,
+        name="update_product_listing"),
 
 
     # API Routes
