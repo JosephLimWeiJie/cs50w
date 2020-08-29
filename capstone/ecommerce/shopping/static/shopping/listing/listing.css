@@ -10,6 +10,19 @@
     height: auto;
 }
 
+.home-logo {
+    color: white;
+}
+
+.home-logo:hover {
+    text-decoration: none;
+    color: #60dbb9;
+}
+
+.cart-logo i:hover {
+    color: #60dbb9;
+}
+
 #add-to-cart-btn {
     background-color: #42f5c2;
     color: white;

@@ -73,8 +73,10 @@
             <div class="container-fluid sticky-top" style="background-color: #42f5c2;">
                 <div class="row">
                     <div class="col-3" style="font-size: 2rem; text-align: center; color: white;">
-                        <i class="fa fa-shopping-bag"></i>
-                        <p>Shopping</p>
+                        <a class="home-logo" href="{% url 'index' %}" style="color: white;">
+                            <i class="fa fa-shopping-bag"></i>
+                            <p>Shopping</p>
+                        </a>
                     </div>
                     <div class="col-7 mt-4 form-group">
                         <form class="form-inline" action="index.html" method="post">
@@ -85,7 +87,7 @@
                         </form>
                     </div>
                     <div class="col-2 mt-3">
-                        <a href="{% url 'index' %}" style="font-size: 2rem; color: white;">
+                        <a class="cart-logo" href="" style="font-size: 2rem; color: white;">
                             <i class="fa fa-shopping-cart"></i>
                         </a>
                     </div>

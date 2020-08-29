@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
     loadProfilePage();
     loadImageFileName();
     loadCreateNewListingBtn();
+    limitListingDesrc();
 });
 
 function loadProfilePage() {
@@ -118,4 +119,13 @@ function loadCreateNewListingBtn() {
     $('#listingModal').on('shown.bs.modal', function () {
       $('#myInput').trigger('focus')
   });
+}
+
+function limitListingDesrc() {
+    const listingDesrcParagraph = document.querySelector('.listing-desrc');
+    if (listingDesrcParagraph.innerHTML.length >= 30) {
+        var limitedDesrcParagraph = listingDesrcParagraph.innerHTML.substring(0, 30);
+        limitedDesrcParagraph += "...";
+        listingDesrcParagraph.innerHTML = limitedDesrcParagraph;
+    }
 }

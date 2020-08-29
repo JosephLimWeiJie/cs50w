@@ -1,3 +1,16 @@
 .carousel-indicators li {
     background-color: red;
 }
+
+.home-logo {
+    color: white;
+}
+
+.home-logo:hover {
+    text-decoration: none;
+    color: #60dbb9;
+}
+
+.cart-logo i:hover {
+    color: #60dbb9;
+}
