@@ -18,8 +18,10 @@ import json
 
 
 def index(request):
-    return render(request, "shopping/index.html")
-
+    all_listing = Listing.objects.all()
+    return render(request, "shopping/index.html", {
+        "all_listing": all_listing
+    })
 
 def signup_view(request):
     if request.method == "POST":

@@ -2,57 +2,11 @@
 {% load static %}
 
 {% block style %}
-    <style>
-        @media (min-width: 1250px) {
-            .col-1 p {
-                font-size: 10px;
-                text-align: center;
-                justify-content: center;
-            }
+    <link href="{% static 'shopping/index/index.css' %}" rel="stylesheet">
+{% endblock %}
 
-            .col-1 img {
-                margin-left: 9px;
-                margin-top: 9px;
-                margin-bottom: 9px;
-                height: 32px;
-                width: 32px;
-            }
-        }
-
-        @media (max-width: 1249px) {
-            .col-1 p {
-                font-size: 8px;
-                text-align: center;
-                justify-content: center;
-            }
-
-            .col-1 img {
-                margin-left: 5px;
-                margin-top: 9px;
-                margin-bottom: 9px;
-                height: 16px;
-                width: 16px;
-            }
-        }
-
-        .shopping-descr p {
-            font-size: 13px;
-            color: grey;
-        }
-
-        #line-divider {
-            width: 100%;
-            background-color: #42f5c2;
-            font-size: 10px;
-        }
-
-        #line-divider p {
-            color: #42f5c2;
-            font-size: 10px;
-        }
-
-    </style>
-
+{% block script %}
+    <script src="{% static 'shopping/index/index.js' %}"></script>
 {% endblock %}
 
 {% block categories %}
@@ -61,74 +15,74 @@
             <p style="margin-left: 15px;">CATEGORIES:</p>
         </div>
 
-        <div class="row">
-            <div class="col-1">
+        <div class="row m-2" style="justify-content: center;">
+            <div class="col-1" style="min-width: 100px; max-width: 101px; text-align: center;">
                 <a href="" class="category-border">
                     <img src="{% static 'shopping/categories/menwear.jpg' %}" alt="Men's Wear">
                     <p>Men's Wear</p>
                 </a>
             </div>
-            <div class="col-1">
+            <div class="col-1" style="min-width: 100px; max-width: 101px; text-align: center;"">
                 <a href="#">
                     <img src="{% static 'shopping/categories/mobile.jpeg' %}" alt="Mobile & Gadgets">
                     <p>Mobile & Gadgets</p>
                 </a>
             </div>
-            <div class="col-1">
+            <div class="col-1" style="min-width: 100px; max-width: 101px; text-align: center;"">
                 <a href="#">
                     <img src="{% static 'shopping/categories/homeappliances.jpeg' %}" alt="Home Appliances">
                     <p>Home Appliances</p>
                 </a>
             </div>
-            <div class="col-1">
+            <div class="col-1" style="min-width: 100px; max-width: 101px; text-align: center;"">
                 <a href="#">
                     <img src="{% static 'shopping/categories/kidsfashion.jpg' %}" alt="Kids Fashion">
                     <p>Kids Fashion</p>
                 </a>
             </div>
-            <div class="col-1">
+            <div class="col-1" style="min-width: 100px; max-width: 101px; text-align: center;"">
                 <a href="#">
                     <img src="{% static 'shopping/categories/videogames.webp' %}" alt="Video Games">
                     <p>Video Games</p>
                 </a>
             </div>
-            <div class="col-1">
+            <div class="col-1" style="min-width: 100px; max-width: 101px; text-align: center;"">
                 <a href="#">
                     <img src="{% static 'shopping/categories/computer.jpeg' %}" alt="Computer & Peripherals">
                     <p>Computer & Peripherals</p>
                 </a>
             </div>
-            <div class="col-1">
+            <div class="col-1" style="min-width: 100px; max-width: 101px; text-align: center;"">
                 <a href="#">
                     <img src="{% static 'shopping/categories/health.jpeg' %}" alt="Health & Wellness">
                     <p>Health & Wellness</p>
                 </a>
             </div>
-            <div class="col-1">
+            <div class="col-1" style="min-width: 100px; max-width: 101px; text-align: center;"">
                 <a href="#">
                     <img src="{% static 'shopping/categories/travel.jpg' %}" alt="Travel & Luggage">
                     <p>Travel & Luggage</p>
                 </a>
             </div>
-            <div class="col-1">
+            <div class="col-1" style="min-width: 100px; max-width: 101px; text-align: center;"">
                 <a href="#">
                     <img src="{% static 'shopping/categories/watches.webp' %}" alt="Watches">
                     <p>Watches</p>
                 </a>
             </div>
-            <div class="col-1">
+            <div class="col-1" style="min-width: 100px; max-width: 101px; text-align: center;"">
                 <a href="#">
                     <img src="{% static 'shopping/categories/menshoes.jpeg' %}" alt="Men's Shoes">
                     <p>Men's Shoes</p>
                 </a>
             </div>
-            <div class="col-1">
+            <div class="col-1" style="min-width: 100px; max-width: 101px; text-align: center;"">
                 <a href="#">
                     <img src="{% static 'shopping/categories/womenapparel.jpeg' %}" alt="Women's Apparel">
                     <p>Women's Apparel</p>
                 </a>
             </div>
-            <div class="col-1">
+            <div class="col-1" style="min-width: 100px; max-width: 101px; text-align: center;"">
                 <a href="#">
                     <img src="{% static 'shopping/categories/beauty.jpeg' %}" alt="Beauty & Personal Care">
                     <p>Beauty & Personal Care</p>
@@ -138,74 +92,74 @@
 
         <div class="w-100 d-none d-md-block"></div>
 
-        <div class="row">
-            <div class="col-1">
+        <div class="row m-2" style="justify-content: center;">
+            <div class="col-1" style="min-width: 100px; max-width: 101px; text-align: center;"">
                 <a href="#">
                     <img src="{% static 'shopping/categories/homeliving.jpeg' %}" alt="Home & Living">
                     <p>Home & Living</p>
                 </a>
             </div>
-            <div class="col-1">
+            <div class="col-1" style="min-width: 100px; max-width: 101px; text-align: center;"">
                 <a href="#">
                     <img src="{% static 'shopping/categories/toys.webp' %}" alt="Toys, Kids & Babies">
                     <p>Toys, Kids & Babies</p>
                 </a>
             </div>
-            <div class="col-1">
+            <div class="col-1" style="min-width: 100px; max-width: 101px; text-align: center;"">
                 <a href="#">
                     <img src="{% static 'shopping/categories/food.jpeg' %}" alt="Food & Beverages">
                     <p>Food & Beverages</p>
                 </a>
             </div>
-            <div class="col-1">
+            <div class="col-1" style="min-width: 100px; max-width: 101px; text-align: center;"">
                 <a href="#">
                     <img src="{% static 'shopping/categories/hobbies.jpg' %}" alt="Hobbies & Books">
                     <p>Hobbies & Books</p>
                 </a>
             </div>
-            <div class="col-1">
+            <div class="col-1" style="min-width: 100px; max-width: 101px; text-align: center;"">
                 <a href="#">
                     <img src="{% static 'shopping/categories/womenbag.jpeg' %}" alt="Women's Bags">
                     <p>Women's Bags</p>
                 </a>
             </div>
-            <div class="col-1">
+            <div class="col-1" style="min-width: 100px; max-width: 101px; text-align: center;"">
                 <a href="#">
                     <img src="{% static 'shopping/categories/petfood.jpeg' %}" alt="Pet Food & Supplies">
                     <p>Pet Food & Supplies</p>
                 </a>
             </div>
-            <div class="col-1">
+            <div class="col-1" style="min-width: 100px; max-width: 101px; text-align: center;"">
                 <a href="#">
                     <img src="{% static 'shopping/categories/jewellery.jpg' %}" alt="Jewellery & Accessories">
                     <p>Jewellery & Accessories</p>
                 </a>
             </div>
-            <div class="col-1">
+            <div class="col-1" style="min-width: 100px; max-width: 101px; text-align: center;"">
                 <a href="#">
                     <img src="{% static 'shopping/categories/womenshoes.jpeg' %}" alt="Women's Shoes">
                     <p>Women's Shoes</p>
                 </a>
             </div>
-            <div class="col-1">
+            <div class="col-1" style="min-width: 100px; max-width: 101px; text-align: center;"">
                 <a href="#">
                     <img src="{% static 'shopping/categories/sport.jpg' %}" alt="Sports & Outdoors">
                     <p>Sports & Outdoors</p>
                 </a>
             </div>
-            <div class="col-1">
+            <div class="col-1" style="min-width: 100px; max-width: 101px; text-align: center;"">
                 <a href="#">
                     <img src="{% static 'shopping/categories/menbag.jpeg' %}" alt="Men's Bags">
                     <p>Men's Bags</p>
                 </a>
             </div>
-            <div class="col-1">
+            <div class="col-1" style="min-width: 100px; max-width: 101px; text-align: center;"">
                 <a href="#">
                     <img src="{% static 'shopping/categories/dining.jpeg' %}" alt="Dining, Travel & Services">
                     <p>Dining, Travel & Services</p>
                 </a>
             </div>
-            <div class="col-1">
+            <div class="col-1" style="min-width: 100px; max-width: 101px; text-align: center;"">
                 <a href="#">
                     <img src="{% static 'shopping/categories/misc.jpeg' %}" alt="Misc">
                     <p>Misc</p>
@@ -230,10 +184,24 @@
 {% endblock %}
 
 {% block all_products %}
-    <div class="row">
-        <p style="margin-left: 15px;">ALL PRODUCTS:</p>
-    </div>
+    <p style="margin-left: 15px;">ALL PRODUCTS:</p>
 
+    <div id="all-listing-grid-counter" style="display: none;">1</div>
+    <div class="row m-4" style="justify-content: left;">
+        {% for listing in all_listing %}
+            <div class="col-2 m-1 border" style="max-height: 290px; width: 100%; min-width: 186px; max-width: 198px;">
+                <a href="{% url 'listing' listing.id %}" style="text-docoration: none;">
+                    <div class="row">
+                        <img class="all_listing_img" src="{% static listing.listing_main_pic.url %}" alt="listing_main_pic">
+                    </div>
+                    <div class="row p-2" style="max-width: 170px;">
+                        <div class="listing-title" style="color: black; max-width: 145px;">{{ listing.title }}</div>
+                        <div style="color: #42f5c2"><strong>${{ listing.price }}</strong></div><br>
+                    </div>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}
 
 {% block line_divider %}
