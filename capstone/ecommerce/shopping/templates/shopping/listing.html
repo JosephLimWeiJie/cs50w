@@ -320,40 +320,40 @@
                             </div>
 
                             <!-- Rating stars -->
-                            <div id="rating-stars" data-ratingvalue="{{ review.rating }}"></div>
+                            <div id="{{ review.id }}" class="rating-stars" data-ratingvalue="{{ review.rating }}"></div>
                             <p style="font-size: 13px; color:grey;">{{ review.date }}</p>
                             <p>{{ review.review }}</p>
                             <hr>
                         </div>
                     </div>
                 {% endfor %}
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-center">
-                        {% if page_obj.has_previous %}
-                            <li class="page-item">
-                                <a class="page-link" href="?page=1">&laquo; first</a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">previous</a>
-                            </li>
-                        {% endif %}
+                    <nav aria-label="Review pagination">
+                        <ul class="pagination justify-content-center">
+                            {% if page_obj.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page=1">&laquo; first</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}">previous</a>
+                                </li>
+                            {% endif %}
 
-                        <span class="current">
-                            <p style="margin-top: 10px; margin-right: 10px; margin-left: 10px;">
-                                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-                            </p>
-                        </span>
+                            <span class="current">
+                                <p style="margin-top: 10px; margin-right: 10px; margin-left: 10px;">
+                                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                                </p>
+                            </span>
 
-                        {% if page_obj.has_next %}
-                            <li class="page-item">
-                                <a class="page-link" href="?page={{ page_obj.next_page_number }}">next</a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
-                            </li>
-                        {% endif %}
-                    </ul>
-                </nav>
+                            {% if page_obj.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">next</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
             {% endif %}
         {% else %}
             <div class="container-fluid">

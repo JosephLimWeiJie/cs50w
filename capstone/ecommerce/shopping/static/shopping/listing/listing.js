@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', function() {
     loadRatingFormWidget();
     loadReviewRating();
     loadEditRatingFormWidget();
-    loadEditReviewRating();
 });
 
 function loadImageCarousel() {
@@ -94,14 +93,17 @@ function setRatingValue(value) {
 }
 
 function loadReviewRating() {
-    const ratingValue = document.querySelector('#rating-stars').dataset.ratingvalue;
-    var i;
-    for (i = 1; i <= ratingValue; i++) {
-        const spanForStars = document.createElement('span');
-        spanForStars.innerHTML = '<i class="fa fa-star">';
-        spanForStars.style.color = "#42f5c2";
-        document.querySelector('#rating-stars').appendChild(spanForStars);
-    }
+    document.querySelectorAll('.rating-stars').forEach(function(reviewDiv) {
+        var ratingValue = reviewDiv.dataset.ratingvalue;
+
+        var i;
+        for (i = 1; i <= ratingValue; i++) {
+            const spanForStars = document.createElement('span');
+            spanForStars.innerHTML = '<i class="fa fa-star">';
+            spanForStars.style.color = "#42f5c2";
+            reviewDiv.appendChild(spanForStars);
+        }
+    });
 }
 
 function loadEditRatingFormWidget() {

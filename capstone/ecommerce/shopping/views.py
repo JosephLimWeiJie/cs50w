@@ -275,7 +275,7 @@ def review_view(request, listing_id):
 def update_review_view(request, listing_id):
     if request.method == 'POST':
         listing = Listing.objects.get(id=listing_id)
-        review = Review.objects.get(listing=listing)
+        review = Review.objects.get(user=request.user, listing=listing)
         review.review = request.POST['edited-review-text']
         review.rating = request.POST['edited-rating-form-input']
         review.save()
