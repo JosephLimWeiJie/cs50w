@@ -100,3 +100,44 @@
 #post-review-btn:hover {
     background-color: #60dbb9;
 }
+
+#save-review-btn {
+    background-color: #42f5c2;
+    color: white;
+}
+
+#save-review-btn:hover {
+    background-color: #60dbb9;
+}
+
+.profile-pic {
+    height: 30px;
+    width: 30px;
+    border-radius: 30px;"
+}
+
+#rating1:hover {
+    color: #42f5c2;
+}
+
+#rating2:hover {
+    color: #42f5c2;
+}
+
+#rating3:hover {
+    color: #42f5c2;
+}
+
+#rating4:hover {
+    color: #42f5c2;
+}
+
+#rating5:hover {
+    color: #42f5c2;
+}
+
+.profile-pic {
+    margin-top: 1rem;
+    height: 50px;
+    width: 50px;
+}

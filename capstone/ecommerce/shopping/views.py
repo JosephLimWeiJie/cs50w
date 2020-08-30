@@ -8,7 +8,6 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from datetime import datetime
-
 from django import forms
 
 from .models import User, Profile, Listing, ListingImage, Review
@@ -203,7 +202,8 @@ def listing_view(request, listing_id):
         "listing_images": listing_images,
         "listing_images_count": listing_images_count,
         "hasReviews": check_listing_review(listing),
-        "reviews": Review.objects.all()
+        "reviews": Review.objects.all(),
+        "profile": Profile.objects.get(user=request.user)
     })
 
 
@@ -242,14 +242,16 @@ def update_listing_desrc_view(request, listing_id):
             "listing": listing,
             "listing_images": listing_images,
             "listing_images_count": listing_images_count,
-            "reviews": Review.objects.all()
+            "reviews": Review.objects.all(),
+            "profile": Profile.objects.get(user=request.user)
         })
     else:
         return render(request, "shopping/listing.html", {
             "listing": listing,
             "listing_images": listing_images,
             "listing_images_count": listing_images_count,
-            "reviews": Review.objects.all()
+            "reviews": Review.objects.all(),
+            "profile": Profile.objects.get(user=request.user)
         })
 
 
@@ -257,8 +259,21 @@ def review_view(request, listing_id):
     if request.method == 'POST':
         listing = Listing.objects.get(id=listing_id)
         review = request.POST['review_text']
+        rating = request.POST['rating-form-input']
         review = Review.objects.create(
-            listing=listing, user=request.user, review=review)
+            listing=listing, user=request.user, review=review, rating=rating)
+        return listing_view(request, listing_id)
+    else:
+        return listing_view(request, listing_id)
+
+
+def update_review_view(request, listing_id):
+    if request.method == 'POST':
+        listing = Listing.objects.get(id=listing_id)
+        review = Review.objects.get(listing=listing)
+        review.review = request.POST['edited-review-text']
+        review.rating = request.POST['edited-rating-form-input']
+        review.save()
         return listing_view(request, listing_id)
     else:
         return listing_view(request, listing_id)

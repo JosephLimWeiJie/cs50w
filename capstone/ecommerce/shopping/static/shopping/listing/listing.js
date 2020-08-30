@@ -5,7 +5,10 @@ document.addEventListener('DOMContentLoaded', function() {
         'click', () => minusQuantity());
 
     loadImageCarousel();
-    loadReviewWidget();
+    loadRatingFormWidget();
+    loadReviewRating();
+    loadEditRatingFormWidget();
+    loadEditReviewRating();
 });
 
 function loadImageCarousel() {
@@ -22,8 +25,10 @@ function loadImageCarousel() {
 }
 
 function plusQuantity() {
-    var currQuantityCount = parseInt(document.querySelector('#quantity-count').value);
-    const quantityLeft = parseInt(document.querySelector('#quantity-count').dataset.quantity);
+    var currQuantityCount = parseInt(
+        document.querySelector('#quantity-count').value);
+    const quantityLeft = parseInt(
+        document.querySelector('#quantity-count').dataset.quantity);
 
     if (currQuantityCount === quantityLeft) {
         document.querySelector('#plus-btn').disabled = true;
@@ -38,11 +43,11 @@ function plusQuantity() {
             $("quantity_count:text").val(currQuantityCount);
         });
     });
-
 }
 
 function minusQuantity() {
-    var currQuantityCount = parseInt(document.querySelector('#quantity-count').value);
+    var currQuantityCount = parseInt(
+        document.querySelector('#quantity-count').value);
 
     if (currQuantityCount === 0) {
         document.querySelector('#minus-btn').disabled = true;
@@ -59,8 +64,71 @@ function minusQuantity() {
     });
 }
 
-function loadReviewWidget() {
-    $(document).ready(function() {
-        $('#listingReview').mdbRate();
-    });
+function loadRatingFormWidget() {
+    document.querySelector('#rating1').addEventListener(
+        'click', () => setRatingValue(1));
+    document.querySelector('#rating2').addEventListener(
+        'click', () => setRatingValue(2));
+    document.querySelector('#rating3').addEventListener(
+        'click', () => setRatingValue(3));
+    document.querySelector('#rating4').addEventListener(
+        'click', () => setRatingValue(4));
+    document.querySelector('#rating5').addEventListener(
+        'click', () => setRatingValue(5));
+}
+
+function setRatingValue(value) {
+    document.querySelector('#rating-form-input').value = value;
+
+    // Reset all the stars color to black.
+    var i;
+    for (i = 1; i <= 5; i++) {
+        document.querySelector(`#rating${i}`).style.color = "black";
+    }
+
+    // Set stars' color to respective values.
+    var j;
+    for (j = 1; j <= value; j++) {
+        document.querySelector(`#rating${j}`).style.color = "#42f5c2";
+    }
+}
+
+function loadReviewRating() {
+    const ratingValue = document.querySelector('#rating-stars').dataset.ratingvalue;
+    var i;
+    for (i = 1; i <= ratingValue; i++) {
+        const spanForStars = document.createElement('span');
+        spanForStars.innerHTML = '<i class="fa fa-star">';
+        spanForStars.style.color = "#42f5c2";
+        document.querySelector('#rating-stars').appendChild(spanForStars);
+    }
+}
+
+function loadEditRatingFormWidget() {
+    document.querySelector('#newrating1').addEventListener(
+        'click', () => setNewRatingValue(1));
+    document.querySelector('#newrating2').addEventListener(
+        'click', () => setNewRatingValue(2));
+    document.querySelector('#newrating3').addEventListener(
+        'click', () => setNewRatingValue(3));
+    document.querySelector('#newrating4').addEventListener(
+        'click', () => setNewRatingValue(4));
+    document.querySelector('#newrating5').addEventListener(
+        'click', () => setNewRatingValue(5));
+}
+
+function setNewRatingValue(value) {
+    document.querySelector('#edited-rating-form-input').value = value;
+
+    // Reset all the stars color to black.
+    var i;
+    for (i = 1; i <= 5; i++) {
+        document.querySelector(`#newrating${i}`).style.color = "black";
+    }
+
+    // Set stars' color to respective values.
+    var j;
+    for (j = 1; j <= value; j++) {
+        document.querySelector(`#newrating${j}`).style.color = "#42f5c2";
+    }
 }

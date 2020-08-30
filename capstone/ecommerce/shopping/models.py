@@ -97,6 +97,8 @@ class Review(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="review", default=1)
     review = models.TextField(null=True, blank=True)
+    date = models.DateField(auto_now_add=True, null=True, blank=True)
+    rating = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
         return f"{self.user}"

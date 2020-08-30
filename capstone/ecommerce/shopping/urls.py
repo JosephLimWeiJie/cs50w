@@ -22,6 +22,9 @@ urlpatterns = [
         views.update_listing_desrc_view,
         name="update_product_listing"),
     path("review/<int:listing_id>", views.review_view, name="review"),
+    path(
+        "updatereview/<int:listing_id>", views.update_review_view,
+        name="update_review"),
 
 
     # API Routes
