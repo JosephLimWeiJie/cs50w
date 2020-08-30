@@ -96,6 +96,8 @@ class Review(models.Model):
         Listing, on_delete=models.CASCADE, related_name="review", default=1)
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="review", default=1)
+    profile = models.ForeignKey(
+        Profile, on_delete=models.CASCADE, related_name="review", default=1)
     review = models.TextField(null=True, blank=True)
     date = models.DateField(auto_now_add=True, null=True, blank=True)
     rating = models.IntegerField(null=True, blank=True)

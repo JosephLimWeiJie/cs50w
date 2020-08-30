@@ -176,19 +176,18 @@ def create_listing_view(request):
                 count += 1
 
         listing.save()
-
         return render(request, "shopping/profile.html", {
             "name": request.user.username,
             "profile": profile,
             "hexed_phone_number": hex_phone_number(
-                profile.phone_number)
+                profile.phone_number),
         })
     else:
         return render(request, "shopping/profile.html", {
             "name": request.user.username,
             "profile": profile,
             "hexed_phone_number": hex_phone_number(
-                profile.phone_number)
+                profile.phone_number),
         })
 
 
@@ -196,6 +195,10 @@ def listing_view(request, listing_id):
     listing = Listing.objects.get(id=listing_id)
     listing_images = ListingImage.objects.all().filter(listing=listing)
     listing_images_count = listing_images.count()
+    review_list = Review.objects.all()
+    paginator = Paginator(review_list, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
 
     return render(request, "shopping/listing.html", {
         "listing": listing,
@@ -203,7 +206,7 @@ def listing_view(request, listing_id):
         "listing_images_count": listing_images_count,
         "hasReviews": check_listing_review(listing),
         "reviews": Review.objects.all(),
-        "profile": Profile.objects.get(user=request.user)
+        "page_obj": page_obj
     })
 
 
@@ -243,7 +246,6 @@ def update_listing_desrc_view(request, listing_id):
             "listing_images": listing_images,
             "listing_images_count": listing_images_count,
             "reviews": Review.objects.all(),
-            "profile": Profile.objects.get(user=request.user)
         })
     else:
         return render(request, "shopping/listing.html", {
@@ -251,17 +253,20 @@ def update_listing_desrc_view(request, listing_id):
             "listing_images": listing_images,
             "listing_images_count": listing_images_count,
             "reviews": Review.objects.all(),
-            "profile": Profile.objects.get(user=request.user)
         })
 
 
 def review_view(request, listing_id):
     if request.method == 'POST':
         listing = Listing.objects.get(id=listing_id)
+        profile = Profile.objects.get(user=request.user)
         review = request.POST['review_text']
         rating = request.POST['rating-form-input']
         review = Review.objects.create(
-            listing=listing, user=request.user, review=review, rating=rating)
+            listing=listing, user=request.user, profile=profile,
+            review=review, rating=rating)
+
+        review.save()
         return listing_view(request, listing_id)
     else:
         return listing_view(request, listing_id)

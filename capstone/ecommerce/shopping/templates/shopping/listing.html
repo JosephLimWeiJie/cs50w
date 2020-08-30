@@ -254,12 +254,12 @@
                 </div>
 
                 <!-- Review's section -->
-                {% for review in reviews %}
+                {% for review in page_obj %}
                     <div class="row">
                         <div class="col-sm-1 m-3" style="text-align: center; max-width: 45px;">
                             <div class="image-border" style="text-align: center;">
-                                {% if profile.profile_pic.url is not None %}
-                                    <img class="profile-pic" src="{% static profile.profile_pic.url %}" alt="user-profile-pic">
+                                {% if review.profile.profile_pic.url is not None %}
+                                    <img class="profile-pic" src="{% static review.profile.profile_pic.url %}" alt="user-profile-pic">
                                 {% else %}
                                     <img class="profile-pic" src="{% static 'images/placeholder.png' %}" alt="placeholder-profile-pic">
                                 {% endif %}
@@ -268,8 +268,10 @@
                         <div class="col-10 m-3">
                             <div class="row">
                                 <div class="col-6">
-                                    <h6 style="padding-top: 1rem;">{{ user.username }}</h6>
+                                    <h6 style="padding-top: 1rem;">{{ review.user.username }}</h6>
                                 </div>
+
+                                {% if request.user == review.user %}
                                 <div class="col-6" style="text-align: right;">
                                     <button type="button" class="btn" name="button" data-toggle="modal" data-target="#updateReviewModal" style="color: grey;">
                                         <i class="fa fa-edit"></i> Edit
@@ -314,6 +316,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                {% endif %}
                             </div>
 
                             <!-- Rating stars -->
@@ -324,6 +327,33 @@
                         </div>
                     </div>
                 {% endfor %}
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                        {% if page_obj.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page=1">&laquo; first</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">previous</a>
+                            </li>
+                        {% endif %}
+
+                        <span class="current">
+                            <p style="margin-top: 10px; margin-right: 10px; margin-left: 10px;">
+                                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                            </p>
+                        </span>
+
+                        {% if page_obj.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.next_page_number }}">next</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
             {% endif %}
         {% else %}
             <div class="container-fluid">
