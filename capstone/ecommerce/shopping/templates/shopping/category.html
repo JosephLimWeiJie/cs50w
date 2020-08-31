@@ -1,0 +1,80 @@
+{% extends "shopping/layout.html" %}
+{% load static %}
+
+{% block style %}
+    <link href="{% static 'shopping/categories/category.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'shopping/categories/category.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-2 p-4">
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-list"></i>  All Categories:
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="{% url 'category' 'menswear' %}">Men's Wear</a>
+                    <a class="dropdown-item" href="{% url 'category' 'womenapparel' %}">Women's Apparel</a>
+                    <a class="dropdown-item" href="{% url 'category' 'mobile' %}">Mobile & Gadgets</a>
+                    <a class="dropdown-item" href="{% url 'category' 'beauty' %}">Beauty & Personal Care</a>
+                    <a class="dropdown-item" href="{% url 'category' 'homeappliance' %}">Home Appliances</a>
+                    <a class="dropdown-item" href="{% url 'category' 'kidsfashion' %}">Kids Fashion</a>
+                    <a class="dropdown-item" href="{% url 'category' 'toyskids' %}">Toys, Kids & Babies</a>
+                    <a class="dropdown-item" href="{% url 'category' 'games' %}">Video Games</a>
+                    <a class="dropdown-item" href="{% url 'category' 'food' %}">Food & Beverages</a>
+                    <a class="dropdown-item" href="{% url 'category' 'computer' %}">Computer & Peripherals</a>
+                    <a class="dropdown-item" href="{% url 'category' 'hobbies' %}">Hobbies & Books</a>
+                    <a class="dropdown-item" href="{% url 'category' 'health' %}">Health & Wellness</a>
+                    <a class="dropdown-item" href="{% url 'category' 'womensbags' %}">Women's Bags</a>
+                    <a class="dropdown-item" href="{% url 'category' 'travel' %}">Travel & Luggage</a>
+                    <a class="dropdown-item" href="{% url 'category' 'pet' %}">Pet Food & Supplies</a>
+                    <a class="dropdown-item" href="{% url 'category' 'watches' %}">Watches</a>
+                    <a class="dropdown-item" href="{% url 'category' 'jewel' %}">Jewellery & Accessory</a>
+                    <a class="dropdown-item" href="{% url 'category' 'menshoes' %}">Men's Shoes</a>
+                    <a class="dropdown-item" href="{% url 'category' 'womenshoes' %}">Women's Shoes</a>
+                    <a class="dropdown-item" href="{% url 'category' 'sport' %}">Sports & Outdoors</a>
+                    <a class="dropdown-item" href="{% url 'category' 'automotive' %}">Automotive</a>
+                    <a class="dropdown-item" href="{% url 'category' 'menbags' %}">Men's Bags</a>
+                    <a class="dropdown-item" href="{% url 'category' 'camera' %}">Cameras & Drones</a>
+                    <a class="dropdown-item" href="{% url 'category' 'dining' %}">Dining, Travel & Services</a>
+                    <a class="dropdown-item" href="{% url 'category' 'misc' %}">Miscellaneous</a>
+                </div>
+            </div>
+            <hr>
+            <div class="dropdown-menu">
+                Filter by:
+                <a class="dropdown-item">Shipping Options</a>
+            </div>
+        </div>
+        <div class="col-10">
+            <div class="container-fluid bg-light m-4">
+                <span>
+                    Sort by
+                    <button type="button" class="btn" name="button">Popular</button>
+                    <button type="button" class="btn" name="button">Latest</button>
+                    <button type="button" class="btn" name="button">Price</button>
+                </span>
+            </div>
+            <div class="row m-4" style="justify-content: left;">
+                {% for listing in relevant_listings %}
+                    <div class="col-2 m-1 border" style="max-height: 290px; width: 100%; min-width: 186px; max-width: 198px;">
+                        <a href="{% url 'listing' listing.id %}" style="text-docoration: none;">
+                            <div class="row">
+                                <img class="all_listing_img" src="{% static listing.listing_main_pic.url %}" alt="listing_main_pic">
+                            </div>
+                            <div class="row p-3" style="max-width: 170px;">
+                                <div class="listing-title" style="color: black; min-width: 145px;">{{ listing.title }}</div>
+                                <div style="position: absolute; bottom: 10px;"><span style="color: lightgrey">From: </span><strong style="color: #42f5c2">${{ listing.price }}</strong></div><br>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

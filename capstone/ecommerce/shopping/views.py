@@ -14,6 +14,35 @@ from .models import User, Profile, Listing, ListingImage, Review
 from .forms import SignUpForm
 import json
 
+category_dict = {
+    "menswear": "Men's Wear",
+    "womenapparel": "Women's Apparel",
+    "mobile": "Mobile & Gadgets",
+    "beauty": "Beauty & Personal Care",
+    "homeappliance": "Home Appliances",
+    "homeliving": "Home & Living",
+    "kidsfashion": "Kids Fashion",
+    "toyskids": "Toys, Kids & Babies",
+    "games": "Video Games",
+    "food": "Food & Beverages",
+    "computer": "Computer & Peripherals",
+    "hobbies": "Hobbies & Books",
+    "health": "Health & Wellness",
+    "womensbags": "Women's Bags",
+    "travel": "Travel & Luggage",
+    "pet": "Pet Food & Supplies",
+    "watches": "Watches",
+    "jewel": "Jewellery & Accessory",
+    "menshoes": "Men's Shoes",
+    "womenshoes": "Women's Shoes",
+    "sport": "Sports & Outdoors",
+    "automotive": "Automotive",
+    "menbags": "Men's Bags",
+    "camera": "Cameras & Drones",
+    "dining": "Dining, Travel & Services",
+    "misc": "Miscellaneous"
+}
+
 # Create your views here.
 
 
@@ -284,6 +313,14 @@ def update_review_view(request, listing_id):
         return listing_view(request, listing_id)
     else:
         return listing_view(request, listing_id)
+
+
+def category_view(request, category_name):
+    category_value = category_dict[category_name]
+    relevant_listings = Listing.objects.all().filter(category=category_value)
+    return render(request, "shopping/category.html", {
+        "relevant_listings": relevant_listings
+    })
 
 
 """ Utility Functions """
