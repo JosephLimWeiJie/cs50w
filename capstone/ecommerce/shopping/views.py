@@ -319,8 +319,41 @@ def category_view(request, category_name):
     category_value = category_dict[category_name]
     relevant_listings = Listing.objects.all().filter(category=category_value)
     return render(request, "shopping/category.html", {
+        "category_name": category_name,
         "relevant_listings": relevant_listings
     })
+
+
+def category_sort_view(request):
+    if request.method == "GET":
+        category_name = request.GET.get('category-name')
+        category_value = category_dict[category_name]
+        if 'popular-btn' in request.GET:
+            sorted_popular_listings = Listing.objects.all().filter(
+                category=category_value).order_by("rating_score").reverse()
+
+            return render(request, "shopping/category.html", {
+                "category_name": category_name,
+                "relevant_listings": sorted_popular_listings
+            })
+        elif 'lastest-btn' in request.GET:
+            sorted_latest_listings = Listing.objects.all().filter(
+                category=category_value).order_by("date").reverse()
+
+            return render(request, "shopping/category.html", {
+                "category_name": category_name,
+                "relevant_listings": sorted_latest_listings
+            })
+        elif 'price-btn' in request.GET:
+            sorted_price_listings = Listing.objects.all().filter(
+                category=category_value).order_by("price").reverse()
+
+            return render(request, "shopping/category.html", {
+                "category_name": category_name,
+                "relevant_listings": sorted_price_listings
+            })
+
+
 
 
 """ Utility Functions """

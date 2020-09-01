@@ -77,6 +77,7 @@ class Listing(models.Model):
     listing_main_pic = models.ImageField(null=True, blank=True)
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="listing", default=1)
+    rating_score = models.IntegerField(default=0)
 
     def __str__(self):
         return f"{self.title}"

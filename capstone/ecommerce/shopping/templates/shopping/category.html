@@ -51,13 +51,16 @@
             </div>
         </div>
         <div class="col-10">
-            <div class="container-fluid bg-light m-4">
-                <span>
-                    Sort by
-                    <button type="button" class="btn" name="button">Popular</button>
-                    <button type="button" class="btn" name="button">Latest</button>
-                    <button type="button" class="btn" name="button">Price</button>
-                </span>
+            <div class="container-fluid bg-light">
+                <div class="container-fluid p-2 m-3">
+                    <form class="" action="{% url 'categorysort' %}" method="get">
+                        Sort by
+                        <input type="text" style="display: none;" name="category-name" value="{{ category_name }}">
+                        <input type="submit" name="popular-btn" value="Popular">
+                        <input type="submit" name="lastest-btn" value="Latest">
+                        <input type="submit" name="price-btn" value="Price">
+                    </form>
+                </div>
             </div>
             <div class="row m-4" style="justify-content: left;">
                 {% for listing in relevant_listings %}

@@ -26,6 +26,7 @@ urlpatterns = [
         "updatereview/<int:listing_id>", views.update_review_view,
         name="update_review"),
     path("category/<str:category_name>", views.category_view, name="category"),
+    path("categorysort", views.category_sort_view, name="categorysort"),
 
 
     # API Routes
