@@ -237,7 +237,10 @@ def listing_view(request, listing_id):
         "listing_images_count": listing_images_count,
         "hasReviews": check_listing_review(listing),
         "reviews": Review.objects.all(),
-        "page_obj": page_obj
+        "page_obj": page_obj,
+        "total_review_count": Review.objects.filter(listing=listing).count(),
+        "listing_rating_score": parse_rating_score_one_decimal_place(
+            listing.rating_score)
     })
 
 
@@ -298,6 +301,7 @@ def review_view(request, listing_id):
             review=review, rating=rating)
 
         review.save()
+        update_listing_rating_score(listing)
         return listing_view(request, listing_id)
     else:
         return listing_view(request, listing_id)
@@ -310,6 +314,7 @@ def update_review_view(request, listing_id):
         review.review = request.POST['edited-review-text']
         review.rating = request.POST['edited-rating-form-input']
         review.save()
+        update_listing_rating_score()
         return listing_view(request, listing_id)
     else:
         return listing_view(request, listing_id)
@@ -354,8 +359,6 @@ def category_sort_view(request):
             })
 
 
-
-
 """ Utility Functions """
 
 
@@ -393,3 +396,20 @@ def check_listing_review(listing):
     if listing.review.all().count == 0:
         return False
     return True
+
+
+def update_listing_rating_score(listing):
+    total_review_count = Review.objects.filter(listing=listing).count()
+    total_score = 0
+    for review in Review.objects.filter(listing=listing):
+        total_score = total_score + review.rating
+
+    if (total_review_count) == 0:
+        listing.rating_score = 0
+    else:
+        listing.rating_score = total_score / total_review_count
+    listing.save()
+
+
+def parse_rating_score_one_decimal_place(score):
+    return ("{:.1f}".format(score))

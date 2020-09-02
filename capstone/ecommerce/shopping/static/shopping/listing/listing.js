@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
     loadRatingFormWidget();
     loadReviewRating();
     loadEditRatingFormWidget();
+    loadListingRatingStars();
 });
 
 function loadImageCarousel() {
@@ -133,4 +134,21 @@ function setNewRatingValue(value) {
     for (j = 1; j <= value; j++) {
         document.querySelector(`#newrating${j}`).style.color = "#42f5c2";
     }
+}
+
+function loadListingRatingStars() {
+    const listing_rating_section = document.querySelector(
+            '#listing_rating_section');
+    var rating_score = listing_rating_section.dataset.ratingscore;
+
+    var i;
+    var innerHTMLContent = " "
+    for (i = 1; i <= rating_score; i++) {
+        innerHTMLContent += '<i class="fa fa-star" style="color: #42f5c2;"></i>';
+    }
+
+    if (rating_score % 10 > 0 && rating_score % 10 < 9) {
+        innerHTMLContent += '<i class="fa fa-star-half" style="color: #42f5c2;"></i>';
+    }
+    listing_rating_section.innerHTML = innerHTMLContent
 }

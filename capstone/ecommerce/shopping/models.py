@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 # Create your models here.
 
@@ -77,7 +78,9 @@ class Listing(models.Model):
     listing_main_pic = models.ImageField(null=True, blank=True)
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="listing", default=1)
-    rating_score = models.IntegerField(default=0)
+    rating_score = models.FloatField(
+        null=True, blank=True,
+        validators=[MinValueValidator(0.0), MaxValueValidator(5.0)])
 
     def __str__(self):
         return f"{self.title}"
@@ -101,7 +104,9 @@ class Review(models.Model):
         Profile, on_delete=models.CASCADE, related_name="review", default=1)
     review = models.TextField(null=True, blank=True)
     date = models.DateField(auto_now_add=True, null=True, blank=True)
-    rating = models.IntegerField(null=True, blank=True)
+    rating = models.FloatField(
+        default=0.0,
+        validators=[MinValueValidator(0.0), MaxValueValidator(5.0)])
 
     def __str__(self):
-        return f"{self.user}"
+        return f"{self.user}: {self.listing}"

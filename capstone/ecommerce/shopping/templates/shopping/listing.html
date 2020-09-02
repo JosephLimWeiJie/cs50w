@@ -41,9 +41,13 @@
             </div>
         </div>
         <div class="col-7 p-2">
-            <div class="row m-3">
+            <div class="row p-3">
                 <div class="col-6">
                     <h4>{{ listing.title }}</h4>
+                    <span style="font-size: 18px; color: #42f5c2; text-decoration: underline;"><strong>{{ listing_rating_score }}</strong></span>
+                    <span id="listing_rating_section" data-ratingscore={{ listing_rating_score }}>
+                    </span>
+
                 </div>
                 {% if request.user == listing.user %}
                 <div class="col-6" style="text-align: right;">
@@ -255,6 +259,7 @@
 
                 <!-- Review's section -->
                 {% for review in page_obj %}
+                    {% if review.listing == listing %}
                     <div class="row">
                         <div class="col-sm-1 m-3" style="text-align: center; max-width: 45px;">
                             <div class="image-border" style="text-align: center;">
@@ -326,6 +331,7 @@
                             <hr>
                         </div>
                     </div>
+                    {% endif %}
                 {% endfor %}
                     <nav aria-label="Review pagination">
                         <ul class="pagination justify-content-center">
