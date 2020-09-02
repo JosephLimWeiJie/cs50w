@@ -211,11 +211,12 @@
                         <p style="margin-bottom: 0;"><strong>Product Review:</strong></p>
                     </div>
                     <div class="col-6 pt-2" style="text-align: right;">
-                        <button type="button" class="btn" name="button" data-toggle="modal" data-target="#reviewModal">
-                            <span style="font-size: 17px;"><i class="fa fa-comments"></i></span>
-                            <span>Leave A Review</span>
-                        </button>
-
+                        {% if not hasReviewed %}
+                            <button type="button" class="btn" name="button" data-toggle="modal" data-target="#reviewModal">
+                                <span style="font-size: 17px;"><i class="fa fa-comments"></i></span>
+                                <span>Leave A Review</span>
+                            </button>
+                        {% endif %}
                         <!-- Review Modal -->
                         <div class="modal fade" id="reviewModal" tabindex="-1" role="dialog" aria-labelledby="reviewModalLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">

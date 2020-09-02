@@ -52,6 +52,7 @@ def index(request):
         "all_listing": all_listing
     })
 
+
 def signup_view(request):
     if request.method == "POST":
         username = request.POST["username"]
@@ -236,7 +237,9 @@ def listing_view(request, listing_id):
         "listing_images": listing_images,
         "listing_images_count": listing_images_count,
         "hasReviews": check_listing_review(listing),
-        "reviews": Review.objects.all(),
+        "reviews": Review.objects.filter(listing=listing),
+        "hasReviewed": check_user_has_reviewed(
+            request.user, Review.objects.filter(listing=listing)),
         "page_obj": page_obj,
         "total_review_count": Review.objects.filter(listing=listing).count(),
         "listing_rating_score": parse_rating_score_one_decimal_place(
@@ -413,3 +416,10 @@ def update_listing_rating_score(listing):
 
 def parse_rating_score_one_decimal_place(score):
     return ("{:.1f}".format(score))
+
+
+def check_user_has_reviewed(user, relevant_reviews):
+    for review in relevant_reviews:
+        if user == review.user:
+            return True
+    return False
