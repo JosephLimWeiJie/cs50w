@@ -137,7 +137,7 @@ function setNewRatingValue(value) {
 }
 
 function loadListingRatingStars() {
-    const listing_rating_section = document.querySelector(
+    const listingRatingSection = document.querySelector(
             '#listing_rating_section');
     var rating_score = listing_rating_section.dataset.ratingscore;
 
@@ -150,5 +150,5 @@ function loadListingRatingStars() {
     if (rating_score % 10 > 0 && rating_score % 10 < 9) {
         innerHTMLContent += '<i class="fa fa-star-half" style="color: #42f5c2;"></i>';
     }
-    listing_rating_section.innerHTML = innerHTMLContent
+    listingRatingSection.innerHTML = innerHTMLContent
 }

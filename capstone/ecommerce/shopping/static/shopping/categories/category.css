@@ -3,3 +3,8 @@
     width: 100%;
     display: block;
 }
+
+.listing-rating-star-section {
+    font-size: 12px;
+    padding-top: 1em;
+}
