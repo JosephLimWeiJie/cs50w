@@ -11,7 +11,7 @@
 
 {% block content %}
     <div class="row">
-        <div class="col-5" style="display: block; max-height: 400px; height: auto; width: 100%">
+        <div class="col-5" style="display: block; max-height: 450px; height: auto; width: 100%">
             <!-- Listing image carousel -->
             <div id="listingImageIndicators" class="carousel slide" data-ride="carousel">
                 <div id="imagesCount" style="display: none;">{{ listing_images_count }}</div>
@@ -25,7 +25,7 @@
                     {% for image in listing_images %}
                         {% if image.image.url != listing.listing_main_pic.url %}
                             <div class="carousel-item p-3">
-                                <img class="d-block w-100" style="display: block; max-height: 400px; height: auto; width: 100%" src="{% static image.image.url %}" alt="Listing Image">
+                                <img class="d-block w-100" style="display: block; max-height: 450px; height: auto; width: 100%" src="{% static image.image.url %}" alt="Listing Image">
                             </div>
                         {% endif %}
                     {% endfor %}
@@ -45,8 +45,12 @@
                 <div class="col-6">
                     <h4>{{ listing.title }}</h4>
                     <span style="font-size: 18px; color: #42f5c2; text-decoration: underline;"><strong>{{ listing_rating_score }}</strong></span>
-                    <span id="listing_rating_section" data-ratingscore={{ listing_rating_score }}>
-                    </span>
+                    <span id="listing-rating-section" class="listing-rating-section-score" data-ratingscore={{ listing_rating_score }}></span>
+                    <span class="rating-text"> |</span>
+                    <span class="listing-rating-section-rating"><strong>{{ total_review_count }}</strong> </span>
+                    <span class="rating-text"> Rating | </span>
+                    <span class="listing-rating-section-quantity-sold"><strong>{{ listing.quantity_sold }}</strong></span>
+                    <span class="rating-text"> Sold</span>
 
                 </div>
                 {% if request.user == listing.user %}

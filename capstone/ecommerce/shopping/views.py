@@ -121,14 +121,21 @@ def profile_view(request, name):
     listing_list = Listing.objects.all().filter(user=request.user)
     paginator = Paginator(listing_list, 10)
     page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
+    listing_page_obj = paginator.get_page(page_number)
+
+    review_list = Review.objects.all()
+    paginator = Paginator(review_list, 10)
+    review_page_number = request.GET.get('page')
+    review_page_obj = paginator.get_page(review_page_number)
 
     return render(request, "shopping/profile.html", {
         "name": name,
         "profile": profile,
         "hexed_phone_number": hex_phone_number(profile.phone_number),
         "hasListings": has_listings(request.user),
-        "page_obj": page_obj
+        "listing_page_obj": listing_page_obj,
+        "review_page_obj": review_page_obj,
+        "hasReviews": check_user_has_reviewed(request.user, review_list)
     })
 
 

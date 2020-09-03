@@ -81,6 +81,7 @@ class Listing(models.Model):
     rating_score = models.FloatField(
         null=True, blank=True,
         validators=[MinValueValidator(0.0), MaxValueValidator(5.0)])
+    quantity_sold = models.IntegerField(default=0)
 
     def __str__(self):
         return f"{self.title}"

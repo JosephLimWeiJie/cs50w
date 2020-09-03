@@ -141,3 +141,21 @@
     height: 50px;
     width: 50px;
 }
+
+.listing-rating-section-score {
+    min-width: 50px;
+}
+
+.listing-rating-section-quantity-sold {
+    min-width: 100px;
+    text-decoration: underline;
+}
+
+.listing-rating-section-rating {
+    min-width: 100px;
+    text-decoration: underline;
+}
+
+.rating-text {
+    color: grey;
+}

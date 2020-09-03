@@ -138,8 +138,8 @@ function setNewRatingValue(value) {
 
 function loadListingRatingStars() {
     const listingRatingSection = document.querySelector(
-            '#listing_rating_section');
-    var rating_score = listing_rating_section.dataset.ratingscore;
+            '#listing-rating-section');
+    var rating_score = listingRatingSection.dataset.ratingscore;
 
     var i;
     var innerHTMLContent = " "

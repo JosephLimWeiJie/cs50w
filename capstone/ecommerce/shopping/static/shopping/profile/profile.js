@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
     loadImageFileName();
     loadCreateNewListingBtn();
     limitListingDesrc();
+    loadReviewRating();
 });
 
 function loadProfilePage() {
@@ -128,4 +129,18 @@ function limitListingDesrc() {
         limitedDesrcParagraph += "...";
         listingDesrcParagraph.innerHTML = limitedDesrcParagraph;
     }
+}
+
+function loadReviewRating() {
+    document.querySelectorAll('.rating-stars').forEach(function(reviewDiv) {
+        var ratingValue = reviewDiv.dataset.ratingvalue;
+
+        var i;
+        for (i = 1; i <= ratingValue; i++) {
+            const spanForStars = document.createElement('span');
+            spanForStars.innerHTML = '<i class="fa fa-star">';
+            spanForStars.style.color = "#42f5c2";
+            reviewDiv.appendChild(spanForStars);
+        }
+    });
 }
