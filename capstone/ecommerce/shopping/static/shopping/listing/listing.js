@@ -32,6 +32,7 @@ function plusQuantity() {
 
     if (currQuantityCount === quantityLeft) {
         document.querySelector('#plus-btn').disabled = true;
+        return;
     } else if (currQuantityCount < quantityLeft) {
         currQuantityCount += 1;
         document.querySelector('#quantity-count').value = currQuantityCount;
@@ -49,9 +50,10 @@ function minusQuantity() {
     var currQuantityCount = parseInt(
         document.querySelector('#quantity-count').value);
 
-    if (currQuantityCount === 0) {
+    if (currQuantityCount === 1) {
         document.querySelector('#minus-btn').disabled = true;
-    } else if (currQuantityCount > 0) {
+        return;
+    } else if (currQuantityCount > 1) {
         currQuantityCount -= 1;
         document.querySelector('#plus-btn').disabled = false;
         document.querySelector('#quantity-count').value = currQuantityCount;

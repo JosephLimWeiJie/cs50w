@@ -62,7 +62,7 @@
     background-color: #60dbb9;
 }
 
-#quantity-count {
+.quantity-count {
     min-width: 40px;
     color: grey;
     height: 30px;
