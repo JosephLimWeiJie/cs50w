@@ -1,0 +1,17 @@
+.products-orders-nav{
+    text-align: center;
+    color: grey;
+}
+
+#place-order-btn {
+    background-color: #42f5c2;
+    min-width: 200px;
+    min-height: 40px;
+    border: none;
+    color: white;
+    text-align: center;
+}
+
+#place-order-btn:hover {
+    background-color: #60dbb9;
+}

@@ -27,6 +27,8 @@ class Profile(models.Model):
     date_of_birth = models.DateField(
         blank=False, null=False, default="2000-12-30")
     profile_pic = models.ImageField(null=True, blank=True)
+    delivery_address = models.CharField(
+        max_length=200, blank=True, null=True)
 
     def __str__(self):
         return self.full_name

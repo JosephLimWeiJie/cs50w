@@ -14,6 +14,9 @@ urlpatterns = [
         "updateprofilepic", views.update_profile_pic,
         name="update_profile_pic"),
     path(
+        "updateprofileaddr", views.update_profile_delivery_addr,
+        name="update_profile_delivery_addr"),
+    path(
         "createlisting", views.create_listing_view,
         name="create_listing"),
     path("listing/<int:listing_id>", views.listing_view, name="listing"),
@@ -29,6 +32,7 @@ urlpatterns = [
     path("categorysort", views.category_sort_view, name="categorysort"),
     path("cart", views.cart_view, name="cart"),
     path("updatecart", views.update_cart_view, name="updatecart"),
+    path("checkout", views.checkout_view, name="checkout"),
 
     # API Routes
     path(

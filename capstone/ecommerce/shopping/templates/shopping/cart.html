@@ -83,33 +83,33 @@
                 </div>
                 <hr>
             {% endfor %}
-                <nav aria-label="Orders pagination">
-                    <ul class="pagination justify-content-center">
-                        {% if orders.has_previous %}
-                            <li class="page-item">
-                                <a class="page-link" href="?page=1">&laquo; first</a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link" href="?page={{ orders.previous_page_number }}">previous</a>
-                            </li>
-                        {% endif %}
+            <nav aria-label="Orders pagination">
+                <ul class="pagination justify-content-center">
+                    {% if orders.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page=1">&laquo; first</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ orders.previous_page_number }}">previous</a>
+                        </li>
+                    {% endif %}
 
-                        <span class="current">
-                            <p style="margin-top: 10px; margin-right: 10px; margin-left: 10px;">
-                                Page {{ orders.number }} of {{ orders.paginator.num_pages }}.
-                            </p>
-                        </span>
+                    <span class="current">
+                        <p style="margin-top: 10px; margin-right: 10px; margin-left: 10px;">
+                            Page {{ orders.number }} of {{ orders.paginator.num_pages }}.
+                        </p>
+                    </span>
 
-                        {% if orders.has_next %}
-                            <li class="page-item">
-                                <a class="page-link" href="?page={{ orders.next_page_number }}">next</a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link" href="?page={{ orders.paginator.num_pages }}">last &raquo;</a>
-                            </li>
-                        {% endif %}
-                    </ul>
-                </nav>
+                    {% if orders.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ orders.next_page_number }}">next</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ orders.paginator.num_pages }}">last &raquo;</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
         {% else %}
             <div class="container-fluid" style="min-height: 500px; text-align: center;">
                 <img src="{% static 'images/shopping_bag.jpg' %}" alt="shopping-bag-icon">
@@ -132,7 +132,7 @@
                 {% endif %}
             </div>
             <div class="col-3 p-3" style="text-align: center;">
-                <form class="" action="" method="post">
+                <form class="" action="{% url 'checkout' %}" method="post">
                     {% csrf_token %}
                     <input type="submit" name="checkout-btn" id="checkout-btn" value="Check Out" style="">
                 </form>

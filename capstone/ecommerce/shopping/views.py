@@ -189,6 +189,21 @@ def update_profile_pic(request):
         })
 
 
+def update_profile_delivery_addr(request):
+    if request.method == 'POST':
+        profile_to_update = Profile.objects.get(user=request.user)
+        profile_to_update.delivery_address = request.POST['addr_text']
+        profile_to_update.save()
+
+        return render(request, "shopping/checkout.html", {
+            "profile": profile_to_update
+        })
+    else:
+        return render(request, "shopping/checkout.html", {
+            "profile": profile_to_update
+        })
+
+
 def create_listing_view(request):
     profile = Profile.objects.get(user=request.user)
 
@@ -455,6 +470,18 @@ def update_order(request, order_id):
         return JsonResponse({
             "error": "GET or PUT request required."
         }, status=400)
+
+
+def checkout_view(request):
+    order_list = Order.objects.filter(user=request.user)
+    paginator = Paginator(order_list, 10)
+    page_number = request.GET.get('page')
+    orders = paginator.get_page(page_number)
+
+    return render(request, "shopping/checkout.html", {
+        "profile": Profile.objects.get(user=request.user),
+        "orders": orders
+    })
 
 
 """ Utility Functions """

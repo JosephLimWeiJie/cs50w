@@ -1,0 +1,203 @@
+{% extends "shopping/layout.html" %}
+{% load static %}
+
+{% block title %}
+    Shopping Check Out
+{% endblock %}
+
+{% block style %}
+    <link href="{% static 'shopping/checkout/checkout.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'shopping/checkout/checkout.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    <!-- Delivery address section -->
+    <div class="container-fluid mt-3 mb-3 p-3 bg-light border">
+        <div class="row m-3">
+            <h5>Delivery Address</h5>
+        </div>
+        <div class="row m-3">
+            {% if profile.delivery_address is None %}
+                <div class="col-10">
+                    <p>You have not added any delivery address yet.</p>
+                </div>
+                <div class="col-2" style="text-align: right;">
+                    <button type="button" class="btn" name="button" data-toggle="modal" data-target="#addressModal">
+                        <span>Add</span>
+                    </button>
+                </div>
+                <!-- Add Address Modal -->
+                <div class="modal fade" id="addressModal" tabindex="-1" role="dialog" aria-labelledby="addressModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <form class="" action="{% url 'update_profile_delivery_addr' %}" method="post">
+                            {% csrf_token %}
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="addressModalLabel">Add Address:</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="container">
+                                        <span id="listingReview"></span>
+                                    </div>
+                                    <div class="form-group" style="text-align: left;">
+                                        <label for="desrc">Address:</label>
+                                        <textarea class="form-control" rows="6" name="addr_text" value="" placeholder="Enter your new address here."></textarea>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" id="cancel-addr-btn" class="btn" data-dismiss="modal">Cancel</button>
+                                    <button type="submit" id="update-addr-btn" class="btn">Save</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            {% else %}
+                <div class="col-10">
+                    <p>{{ profile.delivery_address }}</p>
+                </div>
+                <div class="col-2" style="text-align: right;">
+                    <button type="button" class="btn" name="button" data-toggle="modal" data-target="#editAddressModal">
+                        <span>Add</span>
+                    </button>
+                </div>
+                <!-- Edit Address Modal -->
+                <div class="modal fade" id="editAddressModal" tabindex="-1" role="dialog" aria-labelledby="editAddressModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <form class="" action="{% url 'update_profile_delivery_addr' %}" method="post">
+                            {% csrf_token %}
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="editAddressModalLabel">Add Address:</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="container">
+                                        <span id="listingReview"></span>
+                                    </div>
+                                    <div class="form-group" style="text-align: left;">
+                                        <label for="desrc">Edit Address:</label>
+                                        <textarea class="form-control" rows="6" name="addr_text" value="" placeholder="Edit your address here.">{{ request.user.profile.delivery_address }}</textarea>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" id="cancel-addr-btn" class="btn" data-dismiss="modal">Cancel</button>
+                                    <button type="submit" id="update-addr-btn" class="btn">Save</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <!-- Products ordered section -->
+    <div class="container-fluid mt-3 mb-3 p-3 bg-light border">
+        <div class="row m-3">
+            <div class="col-6 p-3">
+                <h5>Products Ordered</h5>
+            </div>
+            <div class="col-2 p-3">
+                <p class="products-orders-nav">Unit Price</p>
+            </div>
+            <div class="col-2 p-3">
+                <p class="products-orders-nav">Quantity</p>
+            </div>
+            <div class="col-2 p-3">
+                <p class="products-orders-nav">Subtotal</p>
+            </div>
+        </div>
+        {% for order in orders %}
+            <div class="row m-3">
+                <div class="col-6 p-3" style="text-align: left; justify-content: center;">
+                    {% if order.listing.images is None %}
+                        <img style="height: 50px; width: 50px;" class="listing-images" src="{% static 'shopping/categories/listing_placeholder.jpg' %}" alt="listing-placeholder-image">
+                        <a class="listing-title" style="padding-left: 2rem;" href="{% url 'listing' order.listing.id %}">{{ order.listing.title }}</a>
+                    {% else %}
+                        <img style="height: 50px; width: 50px;" class="listing-images" src="{% static order.listing.listing_main_pic.url %}" alt="listing-image">
+                        <a class="listing-title" style="padding-left: 2rem;" href="{% url 'listing' order.listing.id %}">{{ order.listing.title }}</a>
+                    {% endif %}
+                </div>
+                <div class="col-2 p-3 my-auto">
+                    <p style="text-align: center;" class="order-price" id="order-price-{{ order.id }}">${{ order.listing.price }}</p>
+                </div>
+                <div class="col-2 p-3 my-auto">
+                    <p style="text-align: center;" id="order-quantity-{{ order.id }}">{{ order.quantity_demanded }}</p>
+                </div>
+                <div class="col-2 p-3 my-auto">
+                    <p style="text-align: center;" class="order-subtotal" id="order-subtotal-{{ order.id }}"></p>
+                </div>
+            </div>
+            <hr>
+        {% endfor %}
+        <nav aria-label="Orders pagination">
+            <ul class="pagination justify-content-center">
+                {% if orders.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page=1">&laquo; first</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ orders.previous_page_number }}">previous</a>
+                    </li>
+                {% endif %}
+
+                <span class="current">
+                    <p style="margin-top: 10px; margin-right: 10px; margin-left: 10px;">
+                        Page {{ orders.number }} of {{ orders.paginator.num_pages }}.
+                    </p>
+                </span>
+
+                {% if orders.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ orders.next_page_number }}">next</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ orders.paginator.num_pages }}">last &raquo;</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+    <!-- Payment method -->
+    <div class="container-fluid mt-3 mb-3 p-3 bg-light border">
+        <div class="row m-3">
+            <div class="col-6 p-3">
+                <h5>Payment Method</h5>
+            </div>
+            <div class="col-6 p-3" style="text-align: right;">
+                <button type="button" id="bank-transfer-btn" name="button">Bank Transfer</button>
+                <button type="button" id="credit-debit-btn" name="button">Credit Card/Debit Card</button>
+            </div>
+        </div>
+        <!-- Payment form -->
+        <div class="row m-3">
+            <div id="bank-transfer" style="display: none;">
+                <form class="" action="{% url 'checkout' %}" method="post">
+                    <p>hi</p>
+                </form>
+            </div>
+            <div id="credit-debit" style="display: none;">
+                <form class="" action="{% url 'checkout' %}" method="post">
+
+                </form>
+            </div>
+        </div>
+        <div class="row m-3" style="justify-content: flex-end;">
+            <p style="color: grey; padding-right: 1rem;">Total Payment:</p>
+            <h3 id="total-price" style="padding-right: 1rem;"></h3>
+        </div>
+        <div class="row m-3" style="justify-content: flex-end;">
+            <form class="" action="index.html" method="post">
+                <input type="submit" name="place-order-btn" id="place-order-btn" value="Place Order" style="">
+            </form>
+        </div>
+    </div>
+{% endblock %}
