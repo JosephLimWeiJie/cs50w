@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelector('#minus-btn').addEventListener(
         'click', () => minusQuantity());
 
+    limitListingDesrc();
 });
 
 function plusQuantity() {
@@ -43,5 +44,36 @@ function minusQuantity() {
         $('#minus-btn').click(function() {
             $("quantity_count:text").val(currQuantityCount);
         });
+    });
+}
+
+function loadTotalPrice() {
+    var totalPrice = calculateTotalPrice();
+    document.querySelector('#total-price').innerHTML = totalPrice;
+}
+
+function calculateTotalPrice() {
+    var totalPrice = 0.00;
+    document.querySelectorAll(".order-price").forEach(function(order) {
+        const orderPrice = parseOrderPrice(order.innerHTML);
+        totalPrice += orderPrice;
+    });
+    return totalPrice;
+}
+
+function parseOrderPrice(order) {
+    parsedOrderPrice = parseFloat(order.substring(1, order.length));
+    return parsedOrderPrice;
+}
+
+function limitListingDesrc() {
+    document.querySelectorAll('.listing-desrc').forEach(
+        function(listingDesrcParagraph) {
+            if (listingDesrcParagraph.innerHTML.length >= 30) {
+                var limitedDesrcParagraph = listingDesrcParagraph
+                    .innerHTML.substring(0, 30);
+                limitedDesrcParagraph += "...";
+                listingDesrcParagraph.innerHTML = limitedDesrcParagraph;
+            }
     });
 }

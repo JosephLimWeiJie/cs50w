@@ -32,6 +32,11 @@
     background-color: #60dbb9;
 }
 
+#add-to-cart-btn:disabled {
+    background-color: lightgrey;
+    color: white;
+}
+
 #buy-btn {
     background-color: #42f5c2;
     color: white;

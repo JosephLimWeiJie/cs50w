@@ -250,7 +250,8 @@ def listing_view(request, listing_id):
         "page_obj": page_obj,
         "total_review_count": Review.objects.filter(listing=listing).count(),
         "listing_rating_score": parse_rating_score_one_decimal_place(
-            listing.rating_score)
+            listing.rating_score),
+        "hasListingInCart": check_listing_exist_in_cart(listing, request.user)
     })
 
 
@@ -375,18 +376,37 @@ def cart_view(request):
         listing_id = request.POST['listing-id']
         listing = Listing.objects.get(id=listing_id)
 
-        quantity_demanded = request.POST['quantity_count']
+        quantity_demanded = request.POST['quantity-demanded']
         order = Order.objects.create(
             user=request.user, listing=listing,
             quantity_demanded=quantity_demanded)
 
         order.save()
+        total_order_price = parse_order_total_price_two_decimal_pace(
+            get_total_price_in_cart(request.user))
+
+        order_list = Order.objects.filter(user=request.user)
+        paginator = Paginator(order_list, 10)
+        page_number = request.GET.get('page')
+        orders = paginator.get_page(page_number)
+
         return render(request, "shopping/cart.html", {
-            "orders": Order.objects.filter(user=request.user)
+            "orders": orders,
+            "total_order_price": total_order_price,
+            "hasOrderInCart": check_user_has_order_in_cart(request.user)
         })
     else:
+        order_list = Order.objects.filter(user=request.user)
+        paginator = Paginator(order_list, 10)
+        page_number = request.GET.get('page')
+        orders = paginator.get_page(page_number)
+
+        total_order_price = parse_order_total_price_two_decimal_pace(
+            get_total_price_in_cart(request.user))
         return render(request, "shopping/cart.html", {
-            "orders": Order.objects.filter(user=request.user)
+            "orders": orders,
+            "total_order_price": total_order_price,
+            "hasOrderInCart": check_user_has_order_in_cart(request.user)
         })
 
 
@@ -470,9 +490,29 @@ def check_user_has_reviewed(user, relevant_reviews):
     return False
 
 
-def check_listing_exist_in_cart(listing, cart):
-    for order in cart.order:
-        for order_listing in order.listing:
-            if order_listing == listing:
-                return True
+def check_user_has_order_in_cart(user):
+    if Order.objects.filter(user=user) is None:
+        return False
+    return True
+
+
+def check_listing_exist_in_cart(listing, user):
+    for order in Order.objects.filter(user=user, listing=listing):
+        if order.listing == listing:
+            return True
     return False
+
+
+def get_total_price_in_cart(user):
+    total_price = 0.00
+
+    for order in Order.objects.filter(user=user):
+        total_price += (order.quantity_demanded * float(order.listing.price))
+
+    user.order_total_price = total_price
+    user.save()
+    return total_price
+
+
+def parse_order_total_price_two_decimal_pace(total_price):
+    return ("{0:.2f}".format(total_price))

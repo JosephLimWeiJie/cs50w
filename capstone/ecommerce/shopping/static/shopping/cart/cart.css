@@ -1,3 +1,7 @@
+.cart-logo i:hover {
+    color: #60dbb9;
+}
+
 #plus-btn {
     min-width: 40px;
     color: grey;
@@ -20,4 +24,40 @@
 
 #minus-btn:hover {
     background-color: #e6e5e3;
+}
+
+#delete-btn {
+    margin-left: 0.8rem;
+    background-color: white;
+    border: none;
+}
+
+#delete-btn:hover {
+    color: #42f5c2;
+}
+
+#checkout-btn {
+    background-color: #42f5c2;
+    min-width: 200px;
+    min-height: 40px;
+    border: none;
+    color: white;
+    text-align: center;
+}
+
+#checkout-btn:hover {
+    background-color: #60dbb9;
+}
+
+#shop-now-btn {
+    background-color: #42f5c2;
+    min-width: 200px;
+    min-height: 40px;
+    border: none;
+    color: white;
+    text-align: center;
+}
+
+#shop-now-btn:hover {
+    background-color: #60dbb9;
 }

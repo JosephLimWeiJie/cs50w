@@ -6,6 +6,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 
 
 class User(AbstractUser):
+    order_total_price = models.FloatField(null=True, blank=True)
 
     def serialize(self):
         return {
@@ -106,7 +107,7 @@ class Order(models.Model):
         null=True, blank=True)
 
     def __str__(self):
-        return f"{self.user}'s Order"
+        return f"{self.user}'s Order: {self.listing}"
 
 
 class Review(models.Model):

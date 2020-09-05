@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-    Shopping | Cart
+    Shopping Cart
 {% endblock %}
 
 {% block style %}
@@ -14,14 +14,14 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container-fluid" style="min-height: 1000px; min-width: 1100px;">
+    <div class="container-fluid" style="min-height: 1000px;">
         <div class="row bg-light m-3 p-2">
-            <div class="col-6 pt-3 pb-3">
+            <div class="col-6 pt-3 pb-3 my-auto">
                 <div class="" style="text-align: left;">
                     <p style="margin-left: 2.2rem;">Product</p>
                 </div>
             </div>
-            <div class="col-2 p-3" style="">
+            <div class="col-2 p-3">
                 <p style="margin-left: 2.2rem;">Quantity</p>
             </div>
             <div class="col-2 p-3">
@@ -31,57 +31,113 @@
                 <p style="margin-left: 1.3rem;"">Actions</p>
             </div>
         </div>
-        {% for order in orders %}
-            <div class="row m-3">
-                <div class="col-3 p-3" style="text-align: left; justify-content: center;">
-                    {% if order.listing.images is None %}
-                        <img style="height: 100;" class="listing-images" src="{% static 'shopping/categories/listing_placeholder.jpg' %}" alt="listing-placeholder-image">
-                    {% else %}
-                        <img class="listing-images" src="{% static order.listing.listing_main_pic.url %}" alt="listing-image">
-                    {% endif %}
-                </div>
-                <div class="col-3 p-3">
-                    <a href="{% url 'listing' order.listing.id %}">{{ order.listing.title }}</a>
-                    <p style="color: grey; font-size: 12px;">Category: <strong>{{ order.listing.category }}</strong></p>
-                    <p style="margin-bottom: 4px;"><strong>Product Description:</strong></p>
-                    <p class="listing-desrc" style="color: grey; font-size: 13px;">{{ order.listing.desrc }}</p>
-                    <div class="row">
-                        <div class="col-6" style="text-align: left;">
-                            <p>Quantity left: <strong>{{ order.listing.quantity }}</strong></p>
-                        </div>
+        {% if hasOrderInCart %}
+            {% for order in orders %}
+                <div class="row m-3">
+                    <div class="col-3 p-3" style="text-align: left; justify-content: center;">
+                        {% if order.listing.images is None %}
+                            <img style="height: 200px; width: 200px;" class="listing-images" src="{% static 'shopping/categories/listing_placeholder.jpg' %}" alt="listing-placeholder-image">
+                        {% else %}
+                            <img style="height: 200px; width: 200px;" class="listing-images" src="{% static order.listing.listing_main_pic.url %}" alt="listing-image">
+                        {% endif %}
                     </div>
-                </div>
-                <div class="col-2 p-3">
-                    <span>
-                        <!-- Input quantity -->
-                        <div class="container-fluid" style="justify-content: left;">
-                            <div class="row">
-                                <div class="col-xs-3" style="display: inline;">
-                                    <button id="plus-btn" type="button" name="plus-btn">+</button>
-                                </div>
-                                <div class="col-xs-2" style="display: inline; max-width: 50px;">
-                                    <input id="quantity-count" data-quantity="{{ listing.quantity }}" style="max-width: 50px; text-align: center;" type="text" name="quantity_count" value="1">
-                                </div>
-                                <div class="col-xs-3" style="display: inline;">
-                                    <button id="minus-btn" type="button" name="minus-btn">-</button>
-                                </div>
+                    <div class="col-3 p-3">
+                        <a href="{% url 'listing' order.listing.id %}">{{ order.listing.title }}</a>
+                        <p style="color: grey; font-size: 12px;">Category: <strong>{{ order.listing.category }}</strong></p>
+                        <p style="margin-bottom: 4px;"><strong>Product Description:</strong></p>
+                        <p class="listing-desrc" style="color: grey; font-size: 13px;">{{ order.listing.desrc }}</p>
+                        <div class="row">
+                            <div class="col-6" style="text-align: left;">
+                                <p>Quantity left: <strong>{{ order.listing.quantity }}</strong></p>
                             </div>
                         </div>
-                    </span>
+                    </div>
+                    <div class="col-2 p-3 my-auto">
+                        <span>
+                            <!-- Input quantity -->
+                            <div class="container-fluid" style="justify-content: left;">
+                                <div class="row">
+                                    <div class="col-xs-3" style="display: inline;">
+                                        <button id="plus-btn" type="button" name="plus-btn">+</button>
+                                    </div>
+                                    <div class="col-xs-2" style="display: inline; max-width: 50px;">
+                                        <input class="quantity-count" id="quantity-count" disabled data-quantity="{{ order.listing.quantity }}" style="max-width: 50px; text-align: center;" type="text" name="quantity_count" value="{{ order.quantity_demanded }}">
+                                    </div>
+                                    <div class="col-xs-3" style="display: inline;">
+                                        <button id="minus-btn" type="button" name="minus-btn">-</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </span>
+                    </div>
+                    <div class="col-2 p-3 my-auto">
+                        <p class="order-price">${{ order.listing.price }}</p>
+                    </div>
+                    <div class="col-2 p-3 my-auto">
+                        <form class="" action="{% url 'updatecart' %}" method="post">
+                            {% csrf_token %}
+                            <input type="text" style="display: none;" name="listing-to-remove" value="{{ order.listing.id }}">
+                            <button type="submit" class="delete-btn" id="delete-btn" name="button">Delete</button>
+                        </form>
+                    </div>
                 </div>
-                <div class="col-2 p-3">
-                    <p>${{ order.listing.price }}</p>
-                </div>
-                <div class="col-2 p-3">
-                    <form class="" action="{% url 'updatecart' %}" method="post">
-                        {% csrf_token %}
-                        <input type="text" style="display: none;" name="listing-to-remove" value="{{ order.listing.id }}">
-                        <button type="submit" class="btn" name="button">Delete</button>
-                    </form>
-                </div>
+                <hr>
+            {% endfor %}
+                <nav aria-label="Orders pagination">
+                    <ul class="pagination justify-content-center">
+                        {% if orders.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page=1">&laquo; first</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ orders.previous_page_number }}">previous</a>
+                            </li>
+                        {% endif %}
+
+                        <span class="current">
+                            <p style="margin-top: 10px; margin-right: 10px; margin-left: 10px;">
+                                Page {{ orders.number }} of {{ orders.paginator.num_pages }}.
+                            </p>
+                        </span>
+
+                        {% if orders.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ orders.next_page_number }}">next</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ orders.paginator.num_pages }}">last &raquo;</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+        {% else %}
+            <div class="container-fluid" style="min-height: 500px; text-align: center;">
+                <img src="{% static 'images/shopping_bag.jpg' %}" alt="shopping-bag-icon">
+                <p>Your shopping cart is empty</p>
+                <form class="" action="{% url 'index' %}" method="post">
+                    {% csrf_token %}
+                    <input type="submit" name="" id="shop-now-btn" value="Shop Now">
+                </form>
             </div>
-            <hr>
-        {% endfor %}
+        {% endif %}
+    </div>
+    <div class="container-fluid">
+        <div class="row bg-light m-3 p-2" style="text-align: right;">
+            <div class="col-9 p-3">
+                <h5>Total Price:</h5>
+                {% if hasOrderInCart %}
+                    <h2 id="total-price">${{ total_order_price }}</h2>
+                {% else %}
+                    <h2>$0.00</h2>
+                {% endif %}
+            </div>
+            <div class="col-3 p-3" style="text-align: center;">
+                <form class="" action="" method="post">
+                    {% csrf_token %}
+                    <input type="submit" name="checkout-btn" id="checkout-btn" value="Check Out" style="">
+                </form>
+            </div>
+        </div>
     </div>
 
 {% endblock %}
