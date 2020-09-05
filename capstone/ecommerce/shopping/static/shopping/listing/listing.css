@@ -164,3 +164,11 @@
 .rating-text {
     color: grey;
 }
+
+#quantity-count {
+    min-width: 40px;
+    color: grey;
+    height: 30px;
+    background-color: white;
+    border: 1px solid lightgrey;
+}

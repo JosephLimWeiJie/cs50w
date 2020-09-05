@@ -70,7 +70,6 @@ function loadEditForm() {
 }
 
 function updateMyAccount() {
-
     const updated_email = document.querySelector('#id_email').value;
     const updated_gender = document.querySelector('#id_gender').value;
     const updated_phone_number = document.querySelector('#id_phone_number').value;

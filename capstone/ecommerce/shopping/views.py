@@ -147,7 +147,7 @@ def update_profile(request, profile_id):
     try:
         profile = Profile.objects.get(pk=profile_id)
     except profile.DoesNotExist:
-        return JsonResponse({"error": "Post not found."}, status=404)
+        return JsonResponse({"error": "Profile not found."}, status=404)
 
     # Return profile contents
     if request.method == "GET":
@@ -425,6 +425,36 @@ def update_cart_view(request):
         return render(request, "shopping/cart.html", {
             "orders": Order.objects.filter(user=request.user)
         })
+
+
+@csrf_exempt
+@login_required
+def update_order(request, order_id):
+
+    # Query for requested order
+    try:
+        order = Order.objects.get(pk=order_id)
+    except order.DoesNotExist:
+        return JsonResponse({"error": "Order not found."}, status=404)
+
+    # Return order contents
+    if request.method == "GET":
+        return JsonResponse(order.serialize())
+
+    # Update order contents
+    elif request.method == "PUT":
+        data = json.loads(request.body)
+        if data.get("quantity_demanded") is not None:
+            order.quantity_demanded = data["quantity_demanded"]
+        order.save()
+        request.user.save()
+        return HttpResponse(status=204)
+
+    # Order must be via GET or PUT
+    else:
+        return JsonResponse({
+            "error": "GET or PUT request required."
+        }, status=400)
 
 
 """ Utility Functions """

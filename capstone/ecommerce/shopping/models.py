@@ -109,6 +109,12 @@ class Order(models.Model):
     def __str__(self):
         return f"{self.user}'s Order: {self.listing}"
 
+    def serialize(self):
+        return {
+            "id": self.id,
+            "quantity_demanded": self.quantity_demanded,
+        }
+
 
 class Review(models.Model):
     listing = models.ForeignKey(

@@ -34,6 +34,9 @@ urlpatterns = [
     path(
         "updateprofile/<int:profile_id>", views.update_profile,
         name="updateprofile"),
+    path(
+        "updateorder/<int:order_id>", views.update_order,
+        name="updateorder"),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

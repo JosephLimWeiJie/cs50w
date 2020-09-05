@@ -58,20 +58,20 @@
                             <div class="container-fluid" style="justify-content: left;">
                                 <div class="row">
                                     <div class="col-xs-3" style="display: inline;">
-                                        <button id="plus-btn" type="button" name="plus-btn">+</button>
+                                        <button id="plus-btn-{{ order.id }}" class="plus-btn" type="button" name="plus-btn">+</button>
                                     </div>
                                     <div class="col-xs-2" style="display: inline; max-width: 50px;">
-                                        <input class="quantity-count" id="quantity-count" disabled data-quantity="{{ order.listing.quantity }}" style="max-width: 50px; text-align: center;" type="text" name="quantity_count" value="{{ order.quantity_demanded }}">
+                                        <input class="quantity-count" id="quantity-count-{{ order.id }}" readonly data-quantity="{{ order.listing.quantity }}" style="max-width: 50px; text-align: center;" type="text" name="quantity_count" value="{{ order.quantity_demanded }}">
                                     </div>
                                     <div class="col-xs-3" style="display: inline;">
-                                        <button id="minus-btn" type="button" name="minus-btn">-</button>
+                                        <button id="minus-btn-{{ order.id }}" class="minus-btn" type="button" name="minus-btn">-</button>
                                     </div>
                                 </div>
                             </div>
                         </span>
                     </div>
                     <div class="col-2 p-3 my-auto">
-                        <p class="order-price">${{ order.listing.price }}</p>
+                        <p class="order-price" id="order-price-{{ order.id }}">${{ order.listing.price }}</p>
                     </div>
                     <div class="col-2 p-3 my-auto">
                         <form class="" action="{% url 'updatecart' %}" method="post">
@@ -80,7 +80,7 @@
                             <button type="submit" class="delete-btn" id="delete-btn" name="button">Delete</button>
                         </form>
                     </div>
-                </div>
+                </div> {{ order.id }}
                 <hr>
             {% endfor %}
                 <nav aria-label="Orders pagination">
