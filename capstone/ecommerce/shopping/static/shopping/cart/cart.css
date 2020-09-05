@@ -1,0 +1,23 @@
+#plus-btn {
+    min-width: 40px;
+    color: grey;
+    height: 30px;
+    background-color: white;
+    border: 1px solid lightgrey;
+}
+
+#plus-btn:hover {
+    background-color: #e6e5e3;
+}
+
+#minus-btn {
+    min-width: 40px;
+    color: grey;
+    height: 30px;
+    background-color: white;
+    border: 1px solid lightgrey;
+}
+
+#minus-btn:hover {
+    background-color: #e6e5e3;
+}

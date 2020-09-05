@@ -96,6 +96,19 @@ class ListingImage(models.Model):
         return f"{self.image}"
 
 
+class Order(models.Model):
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="order",
+        null=True, blank=True)
+    quantity_demanded = models.IntegerField(default=0)
+    listing = models.ForeignKey(
+        Listing, on_delete=models.CASCADE, related_name="order",
+        null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.user}'s Order"
+
+
 class Review(models.Model):
     listing = models.ForeignKey(
         Listing, on_delete=models.CASCADE, related_name="review", default=1)

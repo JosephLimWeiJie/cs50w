@@ -27,12 +27,13 @@ urlpatterns = [
         name="update_review"),
     path("category/<str:category_name>", views.category_view, name="category"),
     path("categorysort", views.category_sort_view, name="categorysort"),
-
+    path("cart", views.cart_view, name="cart"),
+    path("updatecart", views.update_cart_view, name="updatecart"),
 
     # API Routes
     path(
         "updateprofile/<int:profile_id>", views.update_profile,
-        name="updateprofile")
+        name="updateprofile"),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

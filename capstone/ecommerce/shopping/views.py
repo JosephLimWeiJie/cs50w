@@ -10,7 +10,7 @@ from django.http import JsonResponse
 from datetime import datetime
 from django import forms
 
-from .models import User, Profile, Listing, ListingImage, Review
+from .models import User, Profile, Listing, ListingImage, Review, Order
 from .forms import SignUpForm
 import json
 
@@ -369,6 +369,44 @@ def category_sort_view(request):
             })
 
 
+@login_required
+def cart_view(request):
+    if request.method == 'POST':
+        listing_id = request.POST['listing-id']
+        listing = Listing.objects.get(id=listing_id)
+
+        quantity_demanded = request.POST['quantity_count']
+        order = Order.objects.create(
+            user=request.user, listing=listing,
+            quantity_demanded=quantity_demanded)
+
+        order.save()
+        return render(request, "shopping/cart.html", {
+            "orders": Order.objects.filter(user=request.user)
+        })
+    else:
+        return render(request, "shopping/cart.html", {
+            "orders": Order.objects.filter(user=request.user)
+        })
+
+
+@login_required
+def update_cart_view(request):
+    if request.method == 'POST':
+        listing_to_remove_id = request.POST['listing-to-remove']
+        listing_to_remove = Listing.objects.get(id=listing_to_remove_id)
+        order_to_remove = Order.objects.filter(listing=listing_to_remove)
+        order_to_remove.delete()
+
+        return render(request, "shopping/cart.html", {
+            "orders": Order.objects.filter(user=request.user)
+        })
+    else:
+        return render(request, "shopping/cart.html", {
+            "orders": Order.objects.filter(user=request.user)
+        })
+
+
 """ Utility Functions """
 
 
@@ -429,4 +467,12 @@ def check_user_has_reviewed(user, relevant_reviews):
     for review in relevant_reviews:
         if user == review.user:
             return True
+    return False
+
+
+def check_listing_exist_in_cart(listing, cart):
+    for order in cart.order:
+        for order_listing in order.listing:
+            if order_listing == listing:
+                return True
     return False
