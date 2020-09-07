@@ -3,12 +3,6 @@ document.addEventListener('DOMContentLoaded', function() {
         loadOrderSubtotal(order.id);
     });
 
-    document.querySelector('#bank-transfer-btn').addEventListener(
-        'click', () => toggleBankTransferForm());
-
-    document.querySelector('#credit-debit-btn').addEventListener(
-        'click', () => toggleCreditDebitForm());
-
     limitListingTitle();
     loadTotalPrice();
 });

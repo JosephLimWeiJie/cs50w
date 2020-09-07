@@ -64,7 +64,7 @@
                 </div>
                 <div class="col-2" style="text-align: right;">
                     <button type="button" class="btn" name="button" data-toggle="modal" data-target="#editAddressModal">
-                        <span>Add</span>
+                        <span>Edit</span>
                     </button>
                 </div>
                 <!-- Edit Address Modal -->
@@ -169,35 +169,50 @@
     <!-- Payment method -->
     <div class="container-fluid mt-3 mb-3 p-3 bg-light border">
         <div class="row m-3">
-            <div class="col-6 p-3">
-                <h5>Payment Method</h5>
-            </div>
-            <div class="col-6 p-3" style="text-align: right;">
-                <button type="button" id="bank-transfer-btn" name="button">Bank Transfer</button>
-                <button type="button" id="credit-debit-btn" name="button">Credit Card/Debit Card</button>
-            </div>
+            <h5>Payment Method</h5>
         </div>
+        <hr>
         <!-- Payment form -->
-        <div class="row m-3">
-            <div id="bank-transfer" style="display: none;">
-                <form class="" action="{% url 'checkout' %}" method="post">
-                    <p>hi</p>
-                </form>
+        <form class="" action="{% url 'checkout' %}" method="post">
+            {% csrf_token %}
+            <div class="form-group row m-3" id="credit-debit" style="display: none;">
+                <label for="id_card_name" class="col-sm-2 col-form-label">Card Name</label>
+                <div class="col-sm-10">
+                    <input type="text" required class="form-control" id="id_card_name">
+                </div>
             </div>
-            <div id="credit-debit" style="display: none;">
-                <form class="" action="{% url 'checkout' %}" method="post">
-
-                </form>
+            <div class="form-group row m-3">
+                <label for="id_card_no" class="col-sm-2 col-form-label">Credit Card No</label>
+                <div class="col-sm-10">
+                    <input type="text" required class="form-control" id="id_card_no">
+                </div>
             </div>
-        </div>
-        <div class="row m-3" style="justify-content: flex-end;">
-            <p style="color: grey; padding-right: 1rem;">Total Payment:</p>
-            <h3 id="total-price" style="padding-right: 1rem;"></h3>
-        </div>
-        <div class="row m-3" style="justify-content: flex-end;">
-            <form class="" action="index.html" method="post">
+            <div class="form-group row m-3">
+                <label for="id_card_expiry" class="col-sm-2 col-form-label">Card Expiry Date</label>
+                <div class="col-sm-10">
+                    <input type="text" required class="form-control" id="id_card_expiry" placeholder="MM/YY">
+                </div>
+            </div>
+            <div class="form-group row m-3">
+                <label for="id_card_cvv" class="col-sm-2 col-form-label">Card CVV</label>
+                <div class="col-sm-10">
+                    <input type="password" required class="form-control" id="id_card_cvv" placeholder="000">
+                </div>
+            </div>
+            <div class="form-group row m-3">
+                <label for="id_delivery_addr" class="col-sm-2 col-form-label">Delivery Address</label>
+                <div class="col-sm-10">
+                    <input type="text" required class="form-control" id="id_delivery_addr" value="{{ user.profile.delivery_address }}">
+                </div>
+            </div>
+            <hr>
+            <div class="row m-3" style="justify-content: flex-end;">
+                <p style="color: grey; padding-right: 1rem;">Total Payment:</p>
+                <h3 id="total-price" style="padding-right: 1rem;"></h3>
+            </div>
+            <div class="row m-3" style="justify-content: flex-end;">
                 <input type="submit" name="place-order-btn" id="place-order-btn" value="Place Order" style="">
-            </form>
-        </div>
+            </div>
+        </form>
     </div>
 {% endblock %}
