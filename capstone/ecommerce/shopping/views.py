@@ -142,7 +142,8 @@ def profile_view(request, name):
         "review_page_obj": review_page_obj,
         "order_page_obj": order_page_obj,
         "hasPurchases": check_user_has_purchases(request.user, order_list),
-        "hasReviews": check_user_has_reviewed(request.user, review_list)
+        "hasReviews": check_user_has_reviewed(request.user, review_list),
+        "hasItemSold": check_user_has_item_sold(request.user, order_list)
     })
 
 
@@ -602,7 +603,7 @@ def check_user_has_purchases(user, relevant_orders):
 
 
 def check_user_has_order_in_cart(user):
-    if Order.objects.filter(user=user) is None:
+    if Order.objects.filter(user=user, has_purchased=False).count() == 0:
         return False
     return True
 
@@ -623,6 +624,13 @@ def check_user_has_order_in_cart_exist_in_cart(listing, user):
 
 def check_user_has_order(user):
     for order in Order.objects.filter(user=user):
+        if order.has_purchased is True:
+            return False
+    return True
+
+
+def check_user_has_item_sold(user, relevant_orders):
+    for order in relevant_orders:
         if order.has_purchased is True:
             return True
     return False

@@ -315,7 +315,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <hr>
                                         </div>
                                     {% endfor %}
 
@@ -353,13 +352,84 @@
                                 {% endif %}
                             </div>
                             <div class="tab-pane fade" id="pills-sold" role="tabpanel" aria-labelledby="pills-sold-tab">
-                                {% if itemsSold %}
+                                {% if hasItemSold %}
+                                    {% for order in order_page_obj %}
+                                        {% if order.has_purchased is True %}
+                                            <div id="indv-listing-{{ order.listing.id }}" class="container p-3 my-3 border">
+                                                <div class="row">
+                                                    <div class="col-4 p-3" style="text-align: center; justify-content: center;">
+                                                        {% if order.listing.images is None %}
+                                                            <img style="height: 100;" class="listing-images" src="{% static 'shopping/categories/listing_placeholder.jpg' %}" alt="listing-placeholder-image">
+                                                        {% else %}
+                                                            <img class="listing-images" src="{% static order.listing.listing_main_pic.url %}" alt="listing-image">
+                                                        {% endif %}
+                                                    </div>
+                                                    <div class="col-8 p-3">
+                                                        <a href="{% url 'listing' order.listing.id %}">{{ order.listing.title }}</a>
+                                                        <p style="color: grey; font-size: 12px;">Category: <strong>{{ order.listing.category }}</strong></p>
+                                                        <p style="margin-bottom: 4px;"><strong>Product Description:</strong></p>
+                                                        <p class="listing-desrc" style="color: grey; font-size: 13px;">{{ order.listing.desrc }}</p>
+                                                        <div class="row">
+                                                            <div class="col-6" style="text-align: left;">
+                                                                <p>Quantity sold: <strong>{{ order.quantity_demanded }}</strong></p>
+                                                            </div>
+                                                            <div class="col-6" style="text-align: right;">
+                                                                <p >Price: <strong>${{ order.listing.price }}</strong></p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-6">
+                                                                <p id="order-status-{{ order.id }}">Order Status: <strong>{{ order.status }}</strong></p>
+                                                            </div>
+                                                            <div class="col-6" style="text-align: right">
+                                                                <select id="select-order-status-{{ order.id }}" class="" name="">
+                                                                    <option value="To Ship">To Ship</option>
+                                                                    <option value="To Receive">To Receive</option>
+                                                                    <option value="Completed">Completed</option>
+                                                                    <option value="Cancelled">Cancelled</option>
+                                                                    <option value="Return">Return</option>
+                                                                </select>
+                                                                <input type="button" id="update-order-status-{{ order.id }}" class="update-order-status-btn" name="update-order-status-btn" value="Update Order Status">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <nav aria-label="My purchases pagination">
+                                        <ul class="pagination justify-content-center">
+                                            {% if order_page_obj.has_previous %}
+                                                <li class="page-item">
+                                                    <a class="page-link" href="?page=1">&laquo; first</a>
+                                                </li>
+                                                <li class="page-item">
+                                                    <a class="page-link" href="?page={{ orders.previous_page_number }}">previous</a>
+                                                </li>
+                                            {% endif %}
+
+                                            <span class="current">
+                                                <p style="margin-top: 10px; margin-right: 10px; margin-left: 10px;">
+                                                    Page {{ order_page_obj.number }} of {{ order_page_obj.paginator.num_pages }}.
+                                                </p>
+                                            </span>
+
+                                            {% if order_page_obj.has_next %}
+                                                <li class="page-item">
+                                                    <a class="page-link" href="?page={{ orders.next_page_number }}">next</a>
+                                                </li>
+                                                <li class="page-item">
+                                                    <a class="page-link" href="?page={{ orders.paginator.num_pages }}">last &raquo;</a>
+                                                </li>
+                                            {% endif %}
+                                        </ul>
+                                    </nav>
                                 {% else %}
                                     <p>You have no items sold in the market currently.</p>
                                 {% endif %}
                             </div>
                             <div class="tab-pane fade" id="pills-review" role="tabpanel" aria-labelledby="pills-review-tab">
-                                {% if hasReviews%}
+                                {% if hasReviews %}
                                     {% for review in review_page_obj %}
                                         {% for listing in listing_page_obj %}
                                             {% if review.listing == listing and review.user != request.user %}
@@ -436,30 +506,33 @@
                         <h4>My Purchase</h4>
                         {% if hasPurchases %}
                             {% for order in order_page_obj %}
-                                <div class="row m-3">
-                                    <div class="col-4 p-3" style="text-align: left; justify-content: center;">
-                                        {% if order.listing.images is None %}
-                                            <img style="height: 200px; width: 200px;" class="listing-images" src="{% static 'shopping/categories/listing_placeholder.jpg' %}" alt="listing-placeholder-image">
-                                        {% else %}
-                                            <img style="height: 200px; width: 200px;" class="listing-images" src="{% static order.listing.listing_main_pic.url %}" alt="listing-image">
-                                        {% endif %}
-                                    </div>
-                                    <div class="col-6 p-3">
-                                        <a href="{% url 'listing' order.listing.id %}">{{ order.listing.title }}</a>
-                                        <p style="color: grey; font-size: 12px;">Category: <strong>{{ order.listing.category }}</strong></p>
-                                        <p style="margin-bottom: 4px;"><strong>Product Description:</strong></p>
-                                        <p class="listing-desrc" style="color: grey; font-size: 13px;">{{ order.listing.desrc }}</p>
-                                        <p>Quantity Bought: <strong>{{ order.quantity_demanded }}</strong></p>
-                                    </div>
-                                    <div class="col-2 p-3 my-auto" style="text-align: center;">
-                                        <p>{{ order.status }}</p>
-                                        <form class="" action="{% url 'receive_order' %}" method="post">
-                                            {% csrf_token %}
-                                            <input type="text" style="display: none;" name="order_id" value="{{ order.id }}">
-                                            <button type="submit" class="return-btn" id="return-btn" name="button">Return</button>
-                                        </form>
+                                <div class="container p-3 my-3 border">
+                                    <div class="row m-3 p-3">
+                                        <div class="col-4 p-3" style="text-align: left; justify-content: center;">
+                                            {% if order.listing.images is None %}
+                                                <img style="height: 200px; width: 200px;" class="listing-images" src="{% static 'shopping/categories/listing_placeholder.jpg' %}" alt="listing-placeholder-image">
+                                            {% else %}
+                                                <img style="height: 200px; width: 200px;" class="listing-images" src="{% static order.listing.listing_main_pic.url %}" alt="listing-image">
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-6 p-3">
+                                            <a href="{% url 'listing' order.listing.id %}">{{ order.listing.title }}</a>
+                                            <p style="color: grey; font-size: 12px;">Category: <strong>{{ order.listing.category }}</strong></p>
+                                            <p style="margin-bottom: 4px;"><strong>Product Description:</strong></p>
+                                            <p class="listing-desrc" style="color: grey; font-size: 13px;">{{ order.listing.desrc }}</p>
+                                            <p>Quantity Bought: <strong>{{ order.quantity_demanded }}</strong></p>
+                                        </div>
+                                        <div class="col-2 p-3 my-auto" style="text-align: center;">
+                                            <p>{{ order.status }}</p>
+                                            <form class="" action="{% url 'receive_order' %}" method="post">
+                                                {% csrf_token %}
+                                                <input type="text" style="display: none;" name="order_id" value="{{ order.id }}">
+                                                <button type="submit" class="return-btn" id="return-btn" name="button">Return</button>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
+                                <hr>
                             {% endfor %}
                             <nav aria-label="My purchases pagination">
                                 <ul class="pagination justify-content-center">

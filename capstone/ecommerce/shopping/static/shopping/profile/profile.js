@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
     loadCreateNewListingBtn();
     limitListingDesrc();
     loadReviewRating();
+    loadUpdateOrderStatus();
 });
 
 function loadProfilePage() {
@@ -94,6 +95,33 @@ function updateMyAccount() {
 
     loadMyAccount();
     return false;
+}
+
+function loadUpdateOrderStatus() {
+    document.querySelectorAll('.update-order-status-btn').forEach(function(button) {
+        button.addEventListener(
+            'click', () => updateOrderStatus(button.id));
+    });
+}
+
+function updateOrderStatus(button_id) {
+    const order_id = parseButtonId(button_id);
+    const updated_order_status = document.querySelector(`#select-order-status-${order_id}`).value;
+
+    fetch(`/shopping/updateorder/${order_id}`, {
+        method: 'PUT',
+        body: JSON.stringify({
+            status: updated_order_status
+        })
+    });
+
+    document.querySelector(`#order-status-${order_id}`).innerHTML =
+        `Order Status: <strong>${updated_order_status}</strong>`;
+}
+
+function parseButtonId(button_id) {
+    const id = button_id.split("-").pop();
+    return id;
 }
 
 function loadFile(event) {
