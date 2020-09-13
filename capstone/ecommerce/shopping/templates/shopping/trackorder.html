@@ -52,7 +52,7 @@
                 </div>
             </div>
             {% for order in orders %}
-                {% if order.status == "To Ship" or  order.status == "To Receive" %}
+                {% if not order.has_purchased %}
                 <div class="row m-3">
                     <div class="col-3 p-3" style="text-align: left; justify-content: center;">
                         {% if order.listing.images is None %}

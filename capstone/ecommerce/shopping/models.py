@@ -117,6 +117,7 @@ class Order(models.Model):
         null=True, blank=True)
     status = models.CharField(
         max_length=64, default="To Ship", choices=STATUS)
+    has_purchased = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.user}'s Order: {self.listing}"

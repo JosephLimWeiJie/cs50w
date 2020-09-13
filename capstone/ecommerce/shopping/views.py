@@ -408,7 +408,7 @@ def cart_view(request):
         total_order_price = parse_order_total_price_two_decimal_pace(
             get_total_price_in_cart(request.user))
 
-        order_list = Order.objects.filter(user=request.user)
+        order_list = Order.objects.filter(user=request.user, has_purchased=False)
         paginator = Paginator(order_list, 10)
         page_number = request.GET.get('page')
         orders = paginator.get_page(page_number)
@@ -419,7 +419,7 @@ def cart_view(request):
             "hasOrderInCart": check_user_has_order_in_cart(request.user)
         })
     else:
-        order_list = Order.objects.filter(user=request.user)
+        order_list = Order.objects.filter(user=request.user, has_purchased=False)
         paginator = Paginator(order_list, 10)
         page_number = request.GET.get('page')
         orders = paginator.get_page(page_number)
@@ -622,19 +622,16 @@ def check_user_has_order_in_cart_exist_in_cart(listing, user):
 
 
 def check_user_has_order(user):
-    counter = 0
     for order in Order.objects.filter(user=user):
-        counter += 1
-
-    if counter == 0:
-        return True
+        if order.has_purchased is True:
+            return True
     return False
 
 
 def get_total_price_in_cart(user):
     total_price = 0.00
 
-    for order in Order.objects.filter(user=user):
+    for order in Order.objects.filter(user=user, has_purchased=False):
         total_price += (order.quantity_demanded * float(order.listing.price))
 
     user.order_total_price = total_price
@@ -662,7 +659,9 @@ def update_listing_quantity(orders_in_cart):
                     listing.quantity = 0
                 listing.quantity_sold += 1
                 listing.save()
-        order.delete()
+
+        order.has_purchased = True
+        order.save()
 
 
 def check_listing_has_sold_out(listing):
