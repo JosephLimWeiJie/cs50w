@@ -100,6 +100,14 @@ class ListingImage(models.Model):
 
 
 class Order(models.Model):
+    STATUS = (
+        ("To Ship", "To Ship"),
+        ("To Receive", "To Receive"),
+        ("Completed", "Completed"),
+        ("Cancelled", "Cancelled"),
+        ("Return/Refund", "Return/Refund")
+    )
+
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="order",
         null=True, blank=True)
@@ -107,6 +115,8 @@ class Order(models.Model):
     listing = models.ForeignKey(
         Listing, on_delete=models.CASCADE, related_name="order",
         null=True, blank=True)
+    status = models.CharField(
+        max_length=64, default="To Ship", choices=STATUS)
 
     def __str__(self):
         return f"{self.user}'s Order: {self.listing}"
@@ -115,6 +125,7 @@ class Order(models.Model):
         return {
             "id": self.id,
             "quantity_demanded": self.quantity_demanded,
+            "status": self.status
         }
 
 

@@ -1,0 +1,118 @@
+{% extends "shopping/layout.html" %}
+{% load static %}
+
+{% block title %}
+    Shopping | Track My Order
+{% endblock %}
+
+{% block style %}
+    <link href="{% static 'shopping/trackorder/trackorder.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'shopping/trackorder/trackorder.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid" style="min-height: 1000px;">
+        {% if hasOrders %}
+            <div class="container-fluid" style="min-height: 500px; text-align: center;">
+                <img src="{% static 'images/shopping_bag.jpg' %}" alt="shopping-bag-icon">
+                <p>Your shopping cart is empty</p>
+                <form class="" action="{% url 'index' %}" method="post">
+                    {% csrf_token %}
+                    <input type="submit" name="" id="shop-now-btn" value="Shop Now">
+                </form>
+            </div>
+        {% else %}
+            <!-- Track order nav bar -->
+            <div class="row m-3 p-3">
+                <h4>Orders Tracking</h4>
+            </div>
+            <div class="row bg-light m-3 p-2">
+                <div class="col-6 pt-3 pb-3 my-auto">
+                    <div class="" style="text-align: left;">
+                        <p style="margin-left: 2.2rem;">Product</p>
+                    </div>
+                </div>
+                <div class="col-2 p-3">
+                    <div class="" style="text-align: center;">
+                        <p>Quantity</p>
+                    </div>
+                </div>
+                <div class="col-2 p-3">
+                    <div class="" style="text-align: center;">
+                        <p>Price</p>
+                    </div>
+                </div>
+                <div class="col-2 p-3">
+                    <div class="" style="text-align: center;">
+                        <p>Status</p>
+                    </div>
+                </div>
+            </div>
+            {% for order in orders %}
+                {% if order.status == "To Ship" or  order.status == "To Receive" %}
+                <div class="row m-3">
+                    <div class="col-3 p-3" style="text-align: left; justify-content: center;">
+                        {% if order.listing.images is None %}
+                            <img style="height: 200px; width: 200px;" class="listing-images" src="{% static 'shopping/categories/listing_placeholder.jpg' %}" alt="listing-placeholder-image">
+                        {% else %}
+                            <img style="height: 200px; width: 200px;" class="listing-images" src="{% static order.listing.listing_main_pic.url %}" alt="listing-image">
+                        {% endif %}
+                    </div>
+                    <div class="col-3 p-3">
+                        <a href="{% url 'listing' order.listing.id %}">{{ order.listing.title }}</a>
+                        <p style="color: grey; font-size: 12px;">Category: <strong>{{ order.listing.category }}</strong></p>
+                        <p style="margin-bottom: 4px;"><strong>Product Description:</strong></p>
+                        <p class="listing-desrc" style="color: grey; font-size: 13px;">{{ order.listing.desrc }}</p>
+                    </div>
+                    <div class="col-2 p-3 my-auto" style="text-align: center;">
+                        <p>{{ order.quantity_demanded }}</p>
+                    </div>
+                    <div class="col-2 p-3 my-auto" style="text-align: center;">
+                        <p class="order-price" id="order-price-{{ order.id }}">${{ order.listing.price }}</p>
+                    </div>
+                    <div class="col-2 p-3 my-auto" style="text-align: center;">
+                        <p>{{ order.status }}</p>
+                        <form class="" action="{% url 'receive_order' %}" method="post">
+                            {% csrf_token %}
+                            <input type="text" style="display: none;" name="order_id" value="{{ order.id }}">
+                            <button type="submit" class="receive-btn" id="receive-btn" name="button">Received</button>
+                        </form>
+
+                    </div>
+                </div>
+                {% endif %}
+                <hr>
+            {% endfor %}
+            <nav aria-label="Orders pagination">
+                <ul class="pagination justify-content-center">
+                    {% if orders.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page=1">&laquo; first</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ orders.previous_page_number }}">previous</a>
+                        </li>
+                    {% endif %}
+
+                    <span class="current">
+                        <p style="margin-top: 10px; margin-right: 10px; margin-left: 10px;">
+                            Page {{ orders.number }} of {{ orders.paginator.num_pages }}.
+                        </p>
+                    </span>
+
+                    {% if orders.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ orders.next_page_number }}">next</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ orders.paginator.num_pages }}">last &raquo;</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        {% endif %}
+    </div>
+{% endblock %}

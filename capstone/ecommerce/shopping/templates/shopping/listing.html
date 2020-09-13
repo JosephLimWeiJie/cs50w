@@ -188,7 +188,12 @@
                     {% else %}
                         <input type="submit" style="width: 140px;" id="add-to-cart-btn" class="btn" name="add-to-cart-btn" value="Add To Cart">
                     {% endif %}
-                    <input type="submit" style="width: 140px; margin-left: 8px;" id="buy-btn" class="btn btn" name="buy-btn" value="Buy">
+
+                    {% if hasSoldOut %}
+                        <input disabled type="submit" style="width: 140px; margin-left: 8px;" id="buy-btn" class="btn btn" name="buy-btn" value="Buy">
+                    {% else %}
+                        <input type="submit" style="width: 140px; margin-left: 8px;" id="buy-btn" class="btn btn" name="buy-btn" value="Buy">
+                    {% endif %}
                 </div>
             </form>
         </div>

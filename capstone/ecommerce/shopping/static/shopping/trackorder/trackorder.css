@@ -1,0 +1,26 @@
+#receive-btn {
+    min-width: 50px;
+    color: grey;
+    height: 30px;
+    background-color: #42f5c2;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+#receive-btn:hover {
+    background-color: #60dbb9;;
+}
+
+#shop-now-btn {
+    background-color: #42f5c2;
+    min-width: 200px;
+    min-height: 40px;
+    border: none;
+    color: white;
+    text-align: center;
+}
+
+#shop-now-btn:hover {
+    background-color: #60dbb9;
+}

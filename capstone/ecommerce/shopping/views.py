@@ -119,14 +119,19 @@ def logout_view(request):
 def profile_view(request, name):
     profile = Profile.objects.get(user=request.user)
     listing_list = Listing.objects.all().filter(user=request.user)
-    paginator = Paginator(listing_list, 10)
-    page_number = request.GET.get('page')
-    listing_page_obj = paginator.get_page(page_number)
+    listing_paginator = Paginator(listing_list, 10)
+    listing_page_number = request.GET.get('page')
+    listing_page_obj = listing_paginator.get_page(listing_page_number)
 
     review_list = Review.objects.all()
-    paginator = Paginator(review_list, 10)
+    review_paginator = Paginator(review_list, 10)
     review_page_number = request.GET.get('page')
-    review_page_obj = paginator.get_page(review_page_number)
+    review_page_obj = review_paginator.get_page(review_page_number)
+
+    order_list = Order.objects.all().filter(user=request.user)
+    order_paginator = Paginator(order_list, 10)
+    order_page_number = request.GET.get('page')
+    order_page_obj = order_paginator.get_page(order_page_number)
 
     return render(request, "shopping/profile.html", {
         "name": name,
@@ -135,6 +140,8 @@ def profile_view(request, name):
         "hasListings": has_listings(request.user),
         "listing_page_obj": listing_page_obj,
         "review_page_obj": review_page_obj,
+        "order_page_obj": order_page_obj,
+        "hasPurchases": check_user_has_purchases(request.user, order_list),
         "hasReviews": check_user_has_reviewed(request.user, review_list)
     })
 
@@ -263,6 +270,7 @@ def listing_view(request, listing_id):
         "hasReviewed": check_user_has_reviewed(
             request.user, Review.objects.filter(listing=listing)),
         "page_obj": page_obj,
+        "hasSoldOut": check_listing_has_sold_out(listing),
         "total_review_count": Review.objects.filter(listing=listing).count(),
         "listing_rating_score": parse_rating_score_one_decimal_place(
             listing.rating_score),
@@ -461,6 +469,8 @@ def update_order(request, order_id):
         data = json.loads(request.body)
         if data.get("quantity_demanded") is not None:
             order.quantity_demanded = data["quantity_demanded"]
+        if data.get("status") is not None:
+            order.status = data["status"]
         order.save()
         request.user.save()
         return HttpResponse(status=204)
@@ -473,15 +483,52 @@ def update_order(request, order_id):
 
 
 def checkout_view(request):
+    """
+    Note that this method does not store any credit card
+    information and will just redirect the user to 'Track
+    my Order page'.
+    """
+    if request.method == 'POST':
+        orders_in_cart = Order.objects.filter(user=request.user)
+        update_listing_quantity(orders_in_cart)
+        return HttpResponseRedirect(
+            reverse("trackorder", args=[request.user]))
+    else:
+        order_list = Order.objects.filter(user=request.user)
+        paginator = Paginator(order_list, 10)
+        page_number = request.GET.get('page')
+        orders = paginator.get_page(page_number)
+
+        return render(request, "shopping/checkout.html", {
+            "profile": Profile.objects.get(user=request.user),
+            "orders": orders
+        })
+
+
+def track_order_view(request, name):
     order_list = Order.objects.filter(user=request.user)
     paginator = Paginator(order_list, 10)
     page_number = request.GET.get('page')
     orders = paginator.get_page(page_number)
 
-    return render(request, "shopping/checkout.html", {
+    return render(request, "shopping/trackorder.html", {
         "profile": Profile.objects.get(user=request.user),
-        "orders": orders
+        "orders": orders,
+        "hasOrders": check_user_has_order(request.user)
     })
+
+
+def receive_order(request):
+    if request.method == "POST":
+        order_id = request.POST['order_id']
+        order = Order.objects.get(pk=order_id)
+        order.status = "Completed"
+        order.save()
+        return HttpResponseRedirect(
+            reverse("trackorder", args=[request.user]))
+    else:
+        return HttpResponseRedirect(
+            reverse("trackorder", args=[request.user]))
 
 
 """ Utility Functions """
@@ -547,6 +594,13 @@ def check_user_has_reviewed(user, relevant_reviews):
     return False
 
 
+def check_user_has_purchases(user, relevant_orders):
+    for order in relevant_orders:
+        if user == order.user:
+            return True
+    return False
+
+
 def check_user_has_order_in_cart(user):
     if Order.objects.filter(user=user) is None:
         return False
@@ -557,6 +611,23 @@ def check_listing_exist_in_cart(listing, user):
     for order in Order.objects.filter(user=user, listing=listing):
         if order.listing == listing:
             return True
+    return False
+
+
+def check_user_has_order_in_cart_exist_in_cart(listing, user):
+    for order in Order.objects.filter(user=user, listing=listing):
+        if order.listing == listing:
+            return True
+    return False
+
+
+def check_user_has_order(user):
+    counter = 0
+    for order in Order.objects.filter(user=user):
+        counter += 1
+
+    if counter == 0:
+        return True
     return False
 
 
@@ -573,3 +644,28 @@ def get_total_price_in_cart(user):
 
 def parse_order_total_price_two_decimal_pace(total_price):
     return ("{0:.2f}".format(total_price))
+
+
+def update_listing_quantity(orders_in_cart):
+    """
+    Subtracts quantity_demanded for each order in cart from the respective
+    listing quantity. Deletes the order afterwards.
+    """
+    all_listings = Listing.objects.all()
+
+    for order in orders_in_cart:
+        order_quantity_demanded = order.quantity_demanded
+        for listing in all_listings:
+            if order.listing == listing:
+                listing.quantity -= order_quantity_demanded
+                if listing.quantity < 0:
+                    listing.quantity = 0
+                listing.quantity_sold += 1
+                listing.save()
+        order.delete()
+
+
+def check_listing_has_sold_out(listing):
+    if listing.quantity == 0:
+        return True
+    return False

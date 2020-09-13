@@ -33,6 +33,8 @@ urlpatterns = [
     path("cart", views.cart_view, name="cart"),
     path("updatecart", views.update_cart_view, name="updatecart"),
     path("checkout", views.checkout_view, name="checkout"),
+    path("trackorder/<str:name>", views.track_order_view, name="trackorder"),
+    path("receiveorder", views.receive_order, name="receive_order"),
 
     # API Routes
     path(

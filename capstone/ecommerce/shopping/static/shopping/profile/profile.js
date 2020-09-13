@@ -43,6 +43,8 @@ function loadMyPurchase() {
     document.querySelector('#my-shop').style.display = "none";
     document.querySelector('#notif').style.display = "none";
     document.querySelector('#edit').style.display = "none";
+
+    limitListingDesrc();
 }
 
 function loadMyShop() {
@@ -122,12 +124,14 @@ function loadCreateNewListingBtn() {
 }
 
 function limitListingDesrc() {
-    const listingDesrcParagraph = document.querySelector('.listing-desrc');
-    if (listingDesrcParagraph.innerHTML.length >= 30) {
-        var limitedDesrcParagraph = listingDesrcParagraph.innerHTML.substring(0, 30);
-        limitedDesrcParagraph += "...";
-        listingDesrcParagraph.innerHTML = limitedDesrcParagraph;
-    }
+    document.querySelectorAll('.listing-desrc').forEach(function(listingDesrcParagraph) {
+        if (listingDesrcParagraph.innerHTML.length >= 30) {
+            var limitedDesrcParagraph = listingDesrcParagraph.innerHTML.substring(0, 30);
+            limitedDesrcParagraph += "...";
+            listingDesrcParagraph.innerHTML = limitedDesrcParagraph;
+        }
+    });
+
 }
 
 function loadReviewRating() {
