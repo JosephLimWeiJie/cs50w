@@ -159,7 +159,6 @@ function limitListingDesrc() {
             listingDesrcParagraph.innerHTML = limitedDesrcParagraph;
         }
     });
-
 }
 
 function loadReviewRating() {

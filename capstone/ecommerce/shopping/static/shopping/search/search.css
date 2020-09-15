@@ -1,0 +1,14 @@
+.all_listing_img {
+    height: 185px;
+    width: 100%;
+    display: block;
+}
+
+.listing-container {
+    border: 1px solid lightgrey;
+}
+
+.listing-rating-star-section {
+    font-size: 12px;
+    padding-top: 1em;
+}

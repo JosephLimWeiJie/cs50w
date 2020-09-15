@@ -43,13 +43,12 @@ category_dict = {
     "misc": "Miscellaneous"
 }
 
-# Create your views here.
-
 
 def index(request):
     all_listing = Listing.objects.all()
     top_products = Listing.objects.all().order_by("quantity_sold")
     trending_searches = Listing.objects.all().order_by("click_rate").reverse()
+
     return render(request, "shopping/index.html", {
         "all_listing": all_listing,
         "top_products": top_products,
@@ -566,6 +565,68 @@ def receive_order(request):
             reverse("trackorder", args=[request.user]))
 
 
+def search_view(request):
+    if request.method == "POST":
+        search_keywords = request.POST['search_keywords']
+        relevant_listings = get_relevant_listings(search_keywords)
+        relevant_users = get_relevant_users(search_keywords)
+        relevant_categories = get_relevant_categories(relevant_listings)
+
+        return render(request, "shopping/search.html", {
+            "search_keywords": search_keywords,
+            "relevant_listings": relevant_listings,
+            "relevant_users": relevant_users,
+            "relevant_categories": relevant_categories
+        })
+
+
+def filter_category(request):
+    if request.method == "GET":
+        search_keywords = request.GET['search-keywords']
+        category = request.GET['filter-category']
+        filtered_listings = get_filtered_listings(search_keywords, category)
+
+        relevant_listings = get_relevant_listings(search_keywords)
+        relevant_categories = get_relevant_categories(relevant_listings)
+
+        return render(request, "shopping/search.html", {
+            "search_keywords": search_keywords,
+            "relevant_listings": filtered_listings,
+            "relevant_categories": relevant_categories
+        })
+    else:
+        return search_view(request)
+
+
+def sort_category(request):
+    if request.method == "GET":
+        search_keywords = request.GET['search-keywords']
+        sort_by = request.GET['sort-category']
+        category_filter = request.GET['filter-category']
+
+        if sort_by == "Latest":
+            sorted_listings = get_sorted_listings_by_latest(
+                search_keywords, category_filter)
+        if sort_by == "Price":
+            sorted_listings = get_sorted_listings_by_price(
+                search_keywords, category_filter)
+        if sort_by == "Top Sales":
+            sorted_listings = get_sorted_listings_by_sales(
+                search_keywords, category_filter)
+        if sort_by == "Top Ratings":
+            sorted_listings = get_sorted_listings_by_ratings(
+                search_keywords, category_filter)
+
+        relevant_listings = get_relevant_listings(search_keywords)
+        relevant_categories = get_relevant_categories(relevant_listings)
+
+        return render(request, "shopping/search.html", {
+            "search_keywords": search_keywords,
+            "relevant_listings": sorted_listings,
+            "relevant_categories": relevant_categories
+        })
+
+
 """ Utility Functions """
 
 
@@ -710,3 +771,101 @@ def check_listing_has_sold_out(listing):
     if listing.quantity == 0:
         return True
     return False
+
+
+def get_relevant_listings(search_keywords):
+    relevant_listings = []
+    for listing in Listing.objects.all():
+        if search_keywords.lower() in listing.title.lower():
+            relevant_listings.append(listing)
+    return relevant_listings
+
+
+def get_relevant_users(search_keywords):
+    relevant_users = []
+    for user in User.objects.all():
+        if search_keywords.lower() in user.username.lower():
+            relevant_users.append(user)
+    return relevant_users
+
+
+def get_relevant_categories(relevant_listings):
+    relevant_categories = []
+    for listing in relevant_listings:
+        if listing.category not in relevant_categories:
+            relevant_categories.append(listing.category)
+    return relevant_categories
+
+
+def get_filtered_listings(search_keywords, category):
+    filtered_listings = []
+    for listing in Listing.objects.all().filter(category=category):
+        if search_keywords.lower() in listing.title.lower():
+            filtered_listings.append(listing)
+    return filtered_listings
+
+
+def get_sorted_listings_by_latest(search_keywords, filter_category):
+    sorted_listings = []
+
+    if filter_category == '':
+        for listing in Listing.objects.all().order_by('date').reverse():
+            if search_keywords.lower() in listing.title.lower():
+                sorted_listings.append(listing)
+    else:
+        for listing in Listing.objects.all().filter(
+                category=filter_category).order_by('date'):
+            if search_keywords.lower() in listing.title.lower().reverse():
+                sorted_listings.append(listing)
+
+    return sorted_listings
+
+
+def get_sorted_listings_by_price(search_keywords, filter_category):
+    sorted_listings = []
+
+    if filter_category == '':
+        for listing in Listing.objects.all().order_by('price').reverse():
+            if search_keywords.lower() in listing.title.lower():
+                sorted_listings.append(listing)
+    else:
+        for listing in Listing.objects.all().filter(
+                category=filter_category).order_by('price').reverse():
+            if search_keywords.lower() in listing.title.lower():
+                sorted_listings.append(listing)
+
+    return sorted_listings
+
+
+def get_sorted_listings_by_ratings(search_keywords, filter_category):
+    sorted_listings = []
+
+    if filter_category == '':
+        for listing in Listing.objects.all().order_by(
+                'rating_score').reverse():
+            if search_keywords.lower() in listing.title.lower():
+                sorted_listings.append(listing)
+    else:
+        for listing in Listing.objects.all().filter(
+                category=filter_category).order_by('rating_score').reverse():
+            if search_keywords.lower() in listing.title.lower():
+                sorted_listings.append(listing)
+
+    return sorted_listings
+
+
+def get_sorted_listings_by_sales(search_keywords, filter_category):
+    sorted_listings = []
+
+    if filter_category == '':
+        for listing in Listing.objects.all().order_by(
+                'quantity_sold').reverse():
+            if search_keywords.lower() in listing.title.lower():
+                sorted_listings.append(listing)
+    else:
+        for listing in Listing.objects.all().filter(
+                category=filter_category).order_by('quantity_sold').reverse():
+            if search_keywords.lower() in listing.title.lower():
+                sorted_listings.append(listing)
+
+    return sorted_listings

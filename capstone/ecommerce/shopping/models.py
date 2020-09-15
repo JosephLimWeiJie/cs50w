@@ -93,6 +93,15 @@ class Listing(models.Model):
     def serialize(self):
         return {
             "id": self.id,
+            "title": self.title,
+            "desrc": self.desrc,
+            "date": self.date,
+            "quantity": self.quantity,
+            "price": self.price,
+            "listing_main_pic": self.listing_main_pic,
+            "user": self.user,
+            "rating_score": self.rating_score,
+            "quantity_sold": self.quantity_sold,
             "click_rate": self.click_rate
         }
 

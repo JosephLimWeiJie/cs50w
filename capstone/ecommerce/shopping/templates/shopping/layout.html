@@ -57,7 +57,7 @@
                     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                           <li class="nav-item active">
-                            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                            <a class="nav-link" href="{% url 'index' %}">Home <span class="sr-only">(current)</span></a>
                           </li>
                           <li class="nav-item">
                             <a class="nav-link" href="#">Link</a>
@@ -79,8 +79,9 @@
                             </a>
                         </div>
                         <div class="col-7 mt-4 form-group">
-                            <form class="form-inline" action="index.html" method="post">
-                                <input type="text" name="" value="" placeholder="Search here!" style="width: 85%;" class="form-control">
+                            <form class="form-inline" action="{% url 'search' %}" method="post">
+                                {% csrf_token %}
+                                <input type="text" name="search_keywords" value="" placeholder="Search here!" style="width: 85%;" class="form-control">
                                 <button type="submit" name="button" class="btn btn-warning">
                                     <i class="fa fa-search"></i>
                                 </button>

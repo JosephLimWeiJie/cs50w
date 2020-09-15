@@ -35,6 +35,9 @@ urlpatterns = [
     path("checkout", views.checkout_view, name="checkout"),
     path("trackorder/<str:name>", views.track_order_view, name="trackorder"),
     path("receiveorder", views.receive_order, name="receive_order"),
+    path("search", views.search_view, name="search"),
+    path("filter", views.filter_category, name="filter_category"),
+    path("sort", views.sort_category, name="sort_category"),
 
     # API Routes
     path(
