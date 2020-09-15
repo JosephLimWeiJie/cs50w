@@ -4,6 +4,8 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelector('#minus-btn').addEventListener(
         'click', () => minusQuantity());
 
+    updateListingClickRate();
+    
     loadImageCarousel();
     loadRatingFormWidget();
     loadReviewRating();
@@ -153,4 +155,17 @@ function loadListingRatingStars() {
         innerHTMLContent += '<i class="fa fa-star-half" style="color: #42f5c2;"></i>';
     }
     listingRatingSection.innerHTML = innerHTMLContent
+}
+
+function updateListingClickRate() {
+    const listing_id = parseInt(document.querySelector('#main-listing-id').innerHTML);
+    const curr_click_rate = parseInt(document.querySelector('#main-listing-click-rate').innerHTML);
+    const updated_click_rate = curr_click_rate + 1;
+
+    fetch(`/shopping/updatelisting/${listing_id}`, {
+        method: 'PUT',
+        body: JSON.stringify({
+            click_rate: updated_click_rate
+        })
+    });
 }

@@ -43,6 +43,9 @@ urlpatterns = [
     path(
         "updateorder/<int:order_id>", views.update_order,
         name="updateorder"),
+    path(
+        "updatelisting/<int:listing_id>", views.update_listing,
+        name="updatelisting"),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

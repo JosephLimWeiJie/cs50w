@@ -55,39 +55,39 @@
                 </div>
             </div>
             {% for order in orders %}
-                {% if order.has_purchased %}
-                <div class="row m-3">
-                    <div class="col-3 p-3" style="text-align: left; justify-content: center;">
-                        {% if order.listing.images is None %}
-                            <img style="height: 200px; width: 200px;" class="listing-images" src="{% static 'shopping/categories/listing_placeholder.jpg' %}" alt="listing-placeholder-image">
-                        {% else %}
-                            <img style="height: 200px; width: 200px;" class="listing-images" src="{% static order.listing.listing_main_pic.url %}" alt="listing-image">
-                        {% endif %}
-                    </div>
-                    <div class="col-3 p-3">
-                        <a href="{% url 'listing' order.listing.id %}">{{ order.listing.title }}</a>
-                        <p style="color: grey; font-size: 12px;">Category: <strong>{{ order.listing.category }}</strong></p>
-                        <p style="margin-bottom: 4px;"><strong>Product Description:</strong></p>
-                        <p class="listing-desrc" style="color: grey; font-size: 13px;">{{ order.listing.desrc }}</p>
-                    </div>
-                    <div class="col-2 p-3 my-auto" style="text-align: center;">
-                        <p>{{ order.quantity_demanded }}</p>
-                    </div>
-                    <div class="col-2 p-3 my-auto" style="text-align: center;">
-                        <p class="order-price" id="order-price-{{ order.id }}">${{ order.listing.price }}</p>
-                    </div>
-                    <div class="col-2 p-3 my-auto" style="text-align: center;">
-                        <p>{{ order.status }}</p>
-                        <form class="" action="{% url 'receive_order' %}" method="post">
-                            {% csrf_token %}
-                            <input type="text" style="display: none;" name="order_id" value="{{ order.id }}">
-                            <button type="submit" class="receive-btn" id="receive-btn" name="button">Received</button>
-                        </form>
+                {% if order.has_purchased and order.status != "Completed" %}
+                    <div class="row m-3">
+                        <div class="col-3 p-3" style="text-align: left; justify-content: center;">
+                            {% if order.listing.images is None %}
+                                <img style="height: 200px; width: 200px;" class="listing-images" src="{% static 'shopping/categories/listing_placeholder.jpg' %}" alt="listing-placeholder-image">
+                            {% else %}
+                                <img style="height: 200px; width: 200px;" class="listing-images" src="{% static order.listing.listing_main_pic.url %}" alt="listing-image">
+                            {% endif %}
+                        </div>
+                        <div class="col-3 p-3">
+                            <a href="{% url 'listing' order.listing.id %}">{{ order.listing.title }}</a>
+                            <p style="color: grey; font-size: 12px;">Category: <strong>{{ order.listing.category }}</strong></p>
+                            <p style="margin-bottom: 4px;"><strong>Product Description:</strong></p>
+                            <p class="listing-desrc" style="color: grey; font-size: 13px;">{{ order.listing.desrc }}</p>
+                        </div>
+                        <div class="col-2 p-3 my-auto" style="text-align: center;">
+                            <p>{{ order.quantity_demanded }}</p>
+                        </div>
+                        <div class="col-2 p-3 my-auto" style="text-align: center;">
+                            <p class="order-price" id="order-price-{{ order.id }}">${{ order.listing.price }}</p>
+                        </div>
+                        <div class="col-2 p-3 my-auto" style="text-align: center;">
+                            <p id="order_status-{{ order.id }}">{{ order.status }}</p>
+                            <form class="" action="{% url 'receive_order' %}" method="post">
+                                {% csrf_token %}
+                                <input type="text" style="display: none;" name="order_id" value="{{ order.id }}">
+                                <button type="submit" class="receive-btn" id="receive-btn-{{ order.d }}" name="button">Received</button>
+                            </form>
 
+                        </div>
                     </div>
-                </div>
+                    <hr>
                 {% endif %}
-                <hr>
             {% endfor %}
             <nav aria-label="Orders pagination">
                 <ul class="pagination justify-content-center">

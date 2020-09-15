@@ -48,8 +48,12 @@ category_dict = {
 
 def index(request):
     all_listing = Listing.objects.all()
+    top_products = Listing.objects.all().order_by("quantity_sold")
+    trending_searches = Listing.objects.all().order_by("click_rate").reverse()
     return render(request, "shopping/index.html", {
-        "all_listing": all_listing
+        "all_listing": all_listing,
+        "top_products": top_products,
+        "trending_searches": trending_searches,
     })
 
 
@@ -449,6 +453,36 @@ def update_cart_view(request):
         return render(request, "shopping/cart.html", {
             "orders": Order.objects.filter(user=request.user)
         })
+
+
+@csrf_exempt
+@login_required
+def update_listing(request, listing_id):
+
+    # Query for requested listing
+    try:
+        listing = Listing.objects.get(pk=listing_id)
+    except listing.DoesNotExist:
+        return JsonResponse({"error": "Order not found."}, status=404)
+
+    # Return listing contents
+    if request.method == "GET":
+        return JsonResponse(listing.serialize())
+
+    # Update listing contents
+    elif request.method == "PUT":
+        data = json.loads(request.body)
+        if data.get("click_rate") is not None:
+            listing.click_rate = data["click_rate"]
+        listing.save()
+        request.user.save()
+        return HttpResponse(status=204)
+
+    # Listing must be via GET or PUT
+    else:
+        return JsonResponse({
+            "error": "GET or PUT request required."
+        }, status=400)
 
 
 @csrf_exempt

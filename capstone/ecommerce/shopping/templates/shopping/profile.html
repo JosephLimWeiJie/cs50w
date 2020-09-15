@@ -377,20 +377,24 @@
                                                                 <p >Price: <strong>${{ order.listing.price }}</strong></p>
                                                             </div>
                                                         </div>
+                                                        <p>Ordered by: <a href="{% url 'profile' order.user.username %}">{{ order.user }}</a></p>
                                                         <div class="row">
                                                             <div class="col-6">
                                                                 <p id="order-status-{{ order.id }}">Order Status: <strong>{{ order.status }}</strong></p>
                                                             </div>
-                                                            <div class="col-6" style="text-align: right">
-                                                                <select id="select-order-status-{{ order.id }}" class="" name="">
-                                                                    <option value="To Ship">To Ship</option>
-                                                                    <option value="To Receive">To Receive</option>
-                                                                    <option value="Completed">Completed</option>
-                                                                    <option value="Cancelled">Cancelled</option>
-                                                                    <option value="Return">Return</option>
-                                                                </select>
-                                                                <input type="button" id="update-order-status-{{ order.id }}" class="update-order-status-btn" name="update-order-status-btn" value="Update Order Status">
-                                                            </div>
+                                                            {% if order.status != "Completed" %}
+                                                                <hr>
+                                                                <div class="col-6" style="text-align: right">
+                                                                    <select id="select-order-status-{{ order.id }}" class="" name="">
+                                                                        <option value="To Ship">To Ship</option>
+                                                                        <option value="To Receive">To Receive</option>
+                                                                        <option value="Completed">Completed</option>
+                                                                        <option value="Cancelled">Cancelled</option>
+                                                                        <option value="Return">Return</option>
+                                                                    </select>
+                                                                    <input type="button" id="update-order-status-{{ order.id }}" class="update-order-status-btn" name="update-order-status-btn" value="Update Order Status">
+                                                                </div>
+                                                            {% endif %}
                                                         </div>
                                                     </div>
                                                 </div>

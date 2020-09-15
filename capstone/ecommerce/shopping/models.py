@@ -85,9 +85,16 @@ class Listing(models.Model):
         null=True, blank=True,
         validators=[MinValueValidator(0.0), MaxValueValidator(5.0)])
     quantity_sold = models.IntegerField(default=0)
+    click_rate = models.IntegerField(default=0)
 
     def __str__(self):
         return f"{self.title}"
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "click_rate": self.click_rate
+        }
 
 
 class ListingImage(models.Model):

@@ -170,15 +170,42 @@
 {% endblock %}
 
 {% block trending %}
-    <div class="row">
-        <p style="margin-left: 15px;">TRENDING SEARCHES:</p>
+    <p style="margin-left: 15px;">TRENDING SEARCHES:</p>
+    <div class="row m-4" style="justify-content: left;">
+        {% for listing in trending_searches %}
+            <div class="col-2 m-1 border" style="max-height: 300px; min-height: 300px; width: 100%; min-width: 186px; max-width: 198px;">
+                <a href="{% url 'listing' listing.id %}" style="text-docoration: none;">
+                    <div class="row">
+                        <img class="all_listing_img" src="{% static listing.listing_main_pic.url %}" alt="listing_main_pic">
+                    </div>
+                    <div class="row p-3" style="max-width: 170px;">
+                        <div class="listing-title" style="color: black; min-width: 145px;">{{ listing.title }}</div>
+                        <div id="listing-{{ listing.id }}-rating-stars" class="listing-rating-star-section" data-ratingscore={{ listing.rating_score }} data-listingid={{ listing.id }}></div>
+                        <div style="position: absolute; bottom: 10px;"><span style="color: lightgrey">From: </span><strong style="color: #42f5c2">${{ listing.price }}</strong></div><br>
+                    </div>
+                </a>
+            </div>
+        {% endfor %}
     </div>
-
 {% endblock %}
 
 {% block top_products %}
-    <div class="row">
-        <p style="margin-left: 15px;">TOP PRODUCTS:</p>
+    <p style="margin-left: 15px;">TOP PRODUCTS:</p>
+    <div class="row m-4" style="justify-content: left;">
+        {% for listing in all_listing %}
+            <div class="col-2 m-1 border" style="max-height: 300px; min-height: 300px; width: 100%; min-width: 186px; max-width: 198px;">
+                <a href="{% url 'listing' listing.id %}" style="text-docoration: none;">
+                    <div class="row">
+                        <img class="all_listing_img" src="{% static listing.listing_main_pic.url %}" alt="listing_main_pic">
+                    </div>
+                    <div class="row p-3" style="max-width: 170px;">
+                        <div class="listing-title" style="color: black; min-width: 145px;">{{ listing.title }}</div>
+                        <div id="listing-{{ listing.id }}-rating-stars" class="listing-rating-star-section" data-ratingscore={{ listing.rating_score }} data-listingid={{ listing.id }}></div>
+                        <div style="position: absolute; bottom: 10px;"><span style="color: lightgrey">From: </span><strong style="color: #42f5c2">${{ listing.price }}</strong></div><br>
+                    </div>
+                </a>
+            </div>
+        {% endfor %}
     </div>
 
 {% endblock %}
