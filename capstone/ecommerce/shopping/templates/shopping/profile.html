@@ -24,7 +24,7 @@
                     <div class="navbar-nav">
                         <a class="nav-item nav-link" href="#">Sell on Shopping</a>
                         <a class="nav-item nav-link" href="#">Customer Care</a>
-                        <a class="nav-item nav-link" href="{% url 'trackorder' user.username %}">Track My Order</a>
+                        <a class="nav-item nav-link" href="{% url 'trackorder' %}">Track My Order</a>
                     </div>
                     <div class="navbar-nav ml-auto p-2">
                         {% if user.is_authenticated %}
@@ -565,7 +565,6 @@
                                     {% endif %}
                                 </ul>
                             </nav>
-
                         {% else %}
                             <p>You have no purchases currently.</p>
                         {% endif %}
@@ -573,7 +572,41 @@
 
                     <div id="notif">
                         <h4>Notifications</h4>
-                        {% if hasNotif %}
+                        {% if hasNotifications %}
+                            <div class="container-fluid m-3 p-3 border">
+                                {% for notification in notif_page_obj %}
+                                    <div class="row">
+                                        <p>{{ notification.content }}</p>
+                                    </div>
+                                {% endfor %}
+                                <nav aria-label="My purchases pagination">
+                                    <ul class="pagination justify-content-center">
+                                        {% if notif_page_obj.has_previous %}
+                                            <li class="page-item">
+                                                <a class="page-link" href="?page=1">&laquo; first</a>
+                                            </li>
+                                            <li class="page-item">
+                                                <a class="page-link" href="?page={{ orders.previous_page_number }}">previous</a>
+                                            </li>
+                                        {% endif %}
+
+                                        <span class="current">
+                                            <p style="margin-top: 10px; margin-right: 10px; margin-left: 10px;">
+                                                Page {{ notif_page_obj.number }} of {{ notif_page_obj.paginator.num_pages }}.
+                                            </p>
+                                        </span>
+
+                                        {% if notif_page_obj.has_next %}
+                                            <li class="page-item">
+                                                <a class="page-link" href="?page={{ orders.next_page_number }}">next</a>
+                                            </li>
+                                            <li class="page-item">
+                                                <a class="page-link" href="?page={{ orders.paginator.num_pages }}">last &raquo;</a>
+                                            </li>
+                                        {% endif %}
+                                    </ul>
+                                </nav>
+                            </div>
                         {% else %}
                             <p>You have no notifications currently.</p>
                         {% endif %}

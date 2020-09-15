@@ -161,3 +161,27 @@ class Review(models.Model):
 
     def __str__(self):
         return f"{self.user}: {self.listing}"
+
+
+class Notification(models.Model):
+    listing = models.ForeignKey(
+        Listing, on_delete=models.CASCADE, related_name="notification",
+        null=True, blank=True)
+    order = models.ForeignKey(
+        Order, on_delete=models.CASCADE, related_name="notification",
+        null=True, blank=True)
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="notification",
+        null=True, blank=True)
+    review = models.ForeignKey(
+        Review, on_delete=models.CASCADE, related_name="notification",
+        null=True, blank=True)
+    profile = models.ForeignKey(
+        Profile, on_delete=models.CASCADE, related_name="notification",
+        null=True, blank=True)
+    date = models.DateField(auto_now_add=True, null=True, blank=True)
+    has_read = models.BooleanField(default=False)
+    content = models.TextField()
+
+    def __str__(self):
+        return f"{self.user}'s Notification'"

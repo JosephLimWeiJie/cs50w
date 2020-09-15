@@ -11,6 +11,7 @@ from datetime import datetime
 from django import forms
 
 from .models import User, Profile, Listing, ListingImage, Review, Order
+from. models import Notification
 from .forms import SignUpForm
 import json
 
@@ -136,6 +137,11 @@ def profile_view(request, name):
     order_page_number = request.GET.get('page')
     order_page_obj = order_paginator.get_page(order_page_number)
 
+    notif_list = Notification.objects.all().filter(user=request.user)
+    notif_paginator = Paginator(notif_list, 10)
+    notif_page_number = request.GET.get('page')
+    notif_page_obj = notif_paginator.get_page(notif_page_number)
+
     return render(request, "shopping/profile.html", {
         "name": name,
         "profile": profile,
@@ -144,9 +150,12 @@ def profile_view(request, name):
         "listing_page_obj": listing_page_obj,
         "review_page_obj": review_page_obj,
         "order_page_obj": order_page_obj,
+        "notif_page_obj": notif_page_obj,
         "hasPurchases": check_user_has_purchases(request.user, order_list),
         "hasReviews": check_user_has_reviewed(request.user, review_list),
-        "hasItemSold": check_user_has_item_sold(request.user, order_list)
+        "hasItemSold": check_user_has_item_sold(request.user, order_list),
+        "hasNotifications": check_user_has_notifications(
+            request.user, notif_list)
     })
 
 
@@ -340,6 +349,13 @@ def review_view(request, listing_id):
 
         review.save()
         update_listing_rating_score(listing)
+
+        content = request.user.username + " has left a review for " + listing.title
+        notification = Notification.objects.create(
+            listing=listing, profile=profile, review=review, user=listing.user,
+            content=content)
+        notification.save()
+
         return listing_view(request, listing_id)
     else:
         return listing_view(request, listing_id)
@@ -539,7 +555,7 @@ def checkout_view(request):
         })
 
 
-def track_order_view(request, name):
+def track_order_view(request):
     order_list = Order.objects.filter(user=request.user)
     paginator = Paginator(order_list, 10)
     page_number = request.GET.get('page')
@@ -692,6 +708,13 @@ def check_user_has_reviewed(user, relevant_reviews):
 
 def check_user_has_purchases(user, relevant_orders):
     for order in relevant_orders:
+        if user == order.user:
+            return True
+    return False
+
+
+def check_user_has_notifications(user, relevant_notifications):
+    for order in relevant_notifications:
         if user == order.user:
             return True
     return False
