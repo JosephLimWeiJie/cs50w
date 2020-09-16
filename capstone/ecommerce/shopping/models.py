@@ -7,6 +7,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 
 class User(AbstractUser):
     order_total_price = models.FloatField(null=True, blank=True)
+    has_new_notification = models.BooleanField(default=False)
 
     def serialize(self):
         return {

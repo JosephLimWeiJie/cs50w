@@ -69,6 +69,11 @@
                             <p style="color: grey; font-size: 12px;">Category: <strong>{{ order.listing.category }}</strong></p>
                             <p style="margin-bottom: 4px;"><strong>Product Description:</strong></p>
                             <p class="listing-desrc" style="color: grey; font-size: 13px;">{{ order.listing.desrc }}</p>
+                            <form class="" action="{% url 'cancel_order' %}" method="post">
+                                {% csrf_token %}
+                                <input type="text" style="display: none;" name="cancel_order_id" value="{{ order.id }}">
+                                <button type="submit" name="button">Cancel Order</button>
+                            </form>
                         </div>
                         <div class="col-2 p-3 my-auto" style="text-align: center;">
                             <p>{{ order.quantity_demanded }}</p>
@@ -82,7 +87,7 @@
                                 {% csrf_token %}
                                 <input type="text" style="display: none;" name="order_id" value="{{ order.id }}">
                                 {% if order.status == "To Ship" or order.status == "To Receive" %}
-                                    <button type="submit" class="receive-btn" id="receive-btn-{{ order.d }}" name="button">Received</button>
+                                    <button type="submit" class="receive-btn" id="receive-btn-{{ order.id }}" name="button">Received</button>
                                 {% elif order.status == "Return/Refund"%}
                                     <p style="color: grey;">PENDING</p>
                                 {% else %}

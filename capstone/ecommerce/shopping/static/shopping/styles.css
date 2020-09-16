@@ -14,3 +14,14 @@
 .cart-logo i:hover {
     color: #60dbb9;
 }
+
+.line-divider {
+    background-color: #42f5c2;
+    width: 100%;
+}
+
+.line-divider p {
+    color: #42f5c2;
+    font-size: 4px;
+    margin-bottom: 0px;
+}

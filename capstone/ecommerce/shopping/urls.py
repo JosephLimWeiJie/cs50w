@@ -35,11 +35,15 @@ urlpatterns = [
     path("checkout", views.checkout_view, name="checkout"),
     path("trackorder", views.track_order_view, name="trackorder"),
     path("receiveorder", views.receive_order, name="receive_order"),
+    path("cancelorder", views.cancel_order, name="cancel_order"),
     path("returnorder", views.return_order, name="return_order"),
     path(
         "acceptreturn", views.accept_return_order, name="accept_return_order"),
     path(
         "cancelreturn", views.cancel_return_order, name="cancel_return_order"),
+    path(
+        "notification/<str:name>", views.profile_view_notification_toggled,
+        name="notification"),
     path("search", views.search_view, name="search"),
     path("filter", views.filter_category, name="filter_category"),
     path("sort", views.sort_category, name="sort_category"),

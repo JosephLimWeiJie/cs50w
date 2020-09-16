@@ -143,7 +143,50 @@ def profile_view(request, name):
     notif_page_number = request.GET.get('notif-page')
     notif_page_obj = notif_paginator.get_page(notif_page_number)
 
+    request.user.has_new_notification = False
+    request.user.save()
+
     return render(request, "shopping/profile.html", {
+        "name": name,
+        "profile": profile,
+        "hexed_phone_number": hex_phone_number(profile.phone_number),
+        "hasListings": has_listings(request.user),
+        "listing_page_obj": listing_page_obj,
+        "review_page_obj": review_page_obj,
+        "order_page_obj": order_page_obj,
+        "notif_page_obj": notif_page_obj,
+        "hasPurchases": check_user_has_purchases(request.user, order_list),
+        "hasReviews": check_user_has_reviewed(request.user, review_list),
+        "hasItemSold": check_user_has_item_sold(request.user, order_list),
+        "hasNotifications": check_user_has_notifications(
+            request.user, notif_list)
+    })
+
+
+def profile_view_notification_toggled(request, name):
+    profile = Profile.objects.get(user=request.user)
+    listing_list = Listing.objects.all().filter(user=request.user)
+    listing_paginator = Paginator(listing_list, 10)
+    listing_page_number = request.GET.get('listing-page')
+    listing_page_obj = listing_paginator.get_page(listing_page_number)
+
+    review_list = Review.objects.all()
+    review_paginator = Paginator(review_list, 10)
+    review_page_number = request.GET.get('review-page')
+    review_page_obj = review_paginator.get_page(review_page_number)
+
+    order_list = Order.objects.all().filter(user=request.user)
+    order_paginator = Paginator(order_list, 10)
+    order_page_number = request.GET.get('order-page')
+    order_page_obj = order_paginator.get_page(order_page_number)
+
+    notif_list = Notification.objects.all().filter(
+        user=request.user).order_by("datetime").reverse()
+    notif_paginator = Paginator(notif_list, 10)
+    notif_page_number = request.GET.get('notif-page')
+    notif_page_obj = notif_paginator.get_page(notif_page_number)
+
+    return render(request, "shopping/notification.html", {
         "name": name,
         "profile": profile,
         "hexed_phone_number": hex_phone_number(profile.phone_number),
@@ -349,6 +392,8 @@ def review_view(request, listing_id):
             review=review, rating=rating)
 
         review.save()
+        listing.user.has_new_notification = True
+        listing.user.save()
         update_listing_rating_score(listing)
         create_review_notification(request, listing, profile, review)
 
@@ -461,6 +506,7 @@ def update_cart_view(request):
         listing_to_remove = Listing.objects.get(id=listing_to_remove_id)
         order_to_remove = Order.objects.filter(listing=listing_to_remove)
         order_to_remove.delete()
+
         return render(request, "shopping/cart.html", {
             "orders": Order.objects.filter(user=request.user)
         })
@@ -519,9 +565,13 @@ def update_order(request, order_id):
         data = json.loads(request.body)
         if data.get("quantity_demanded") is not None:
             order.quantity_demanded = data["quantity_demanded"]
+            order.listing.user.has_new_notification = True
+            order.listing.user.save()
             update_order_quantity_notification(order)
         if data.get("status") is not None:
             order.status = data["status"]
+            order.listing.user.has_new_notification = True
+            order.listing.user.save()
             update_order_status_notification(order)
         order.save()
         request.user.save()
@@ -580,9 +630,30 @@ def receive_order(request):
         order.status = "Completed"
         order.save()
         update_order_status_notification(order)
-        return HttpResponseRedirect(reverse("trackorder"))
+        return HttpResponseRedirect(reverse('trackorder'))
     else:
-        return HttpResponseRedirect(reverse("trackorder"))
+        return HttpResponseRedirect(reverse('trackorder'))
+
+
+def cancel_order(request):
+    if request.method == 'POST':
+        order_id = request.POST['cancel_order_id']
+        order_to_return = Order.objects.get(pk=order_id)
+        order_to_return.status = "Cancelled"
+        order_to_return.save()
+
+        # Update listing quantity
+        listing_to_update = get_listing(order_to_return)
+        listing_to_update.quantity += order_to_return.quantity_demanded
+        listing_to_update.save()
+
+        create_cancel_order_notification_for_buyer(
+            request, order_to_return)
+        create_cancel_order_notification_for_seller(
+            request, order_to_return)
+        return HttpResponseRedirect(reverse('trackorder'))
+    else:
+        return HttpResponseRedirect(reverse('trackorder'))
 
 
 def search_view(request):
@@ -961,6 +1032,9 @@ def update_order_quantity_notification(order):
         order.listing.title + " to " + order.quantity_demanded + "."
     notification.save()
 
+    order.listing.user.has_new_notification = True
+    order.listing.user.save()
+
 
 def update_order_status_notification(order):
     notification = Notification.objects.create(
@@ -968,6 +1042,9 @@ def update_order_status_notification(order):
     notification.content = order.user.username + \
         " has received " + order.listing.title + "."
     notification.save()
+
+    order.listing.user.has_new_notification = True
+    order.listing.user.save()
 
 
 def create_review_notification(request, listing, profile, review):
@@ -985,6 +1062,9 @@ def update_review_notification(listing, review):
     notification.review = review
     notification.save()
 
+    listing.user.has_new_notification = True
+    listing.listing.user.save()
+
 
 def create_cart_notification_for_seller(request, orders_in_cart):
     for order in orders_in_cart:
@@ -997,6 +1077,9 @@ def create_cart_notification_for_seller(request, orders_in_cart):
                 " " + order.listing.title + "."
             notification.save()
 
+            order.listing.user.has_new_notification = True
+            order.listing.user.save()
+
 
 def create_cart_notification_for_buyer(request, orders_in_cart):
     for order in orders_in_cart:
@@ -1007,6 +1090,9 @@ def create_cart_notification_for_buyer(request, orders_in_cart):
                 str(order.quantity_demanded) + " " + \
                 order.listing.title + "."
             notification.save()
+
+            order.listing.user.has_new_notification = True
+            order.listing.user.save()
 
 
 def create_return_order_notification(request, order_to_return):
@@ -1019,6 +1105,9 @@ def create_return_order_notification(request, order_to_return):
     notification.has_action = True
     notification.save()
 
+    order_to_return.listing.user.has_new_notification = True
+    order_to_return.listing.user.save()
+
 
 def create_accept_return_order_notification_for_buyer(
         request, order_to_return):
@@ -1029,6 +1118,9 @@ def create_accept_return_order_notification_for_buyer(
         user=order_to_return.listing.user)
     notification.content = content
     notification.save()
+
+    order_to_return.user.has_new_notification = True
+    order_to_return.user.save()
 
 
 def create_accept_return_order_notification_for_seller(
@@ -1041,6 +1133,9 @@ def create_accept_return_order_notification_for_seller(
     notification.has_action = False
     notification.save()
 
+    order_to_return.listing.user.has_new_notification = True
+    order_to_return.listing.user.save()
+
 
 def create_cancel_return_order_notification_for_buyer(
         request, order_to_return, reject_reason):
@@ -1051,6 +1146,9 @@ def create_cancel_return_order_notification_for_buyer(
         " has rejected your return order request. The reason is: " + \
         reject_reason
     notification.save()
+
+    order_to_return.user.has_new_notification = True
+    order_to_return.user.save()
 
 
 def create_cancel_return_order_notification_for_seller(
@@ -1063,3 +1161,37 @@ def create_cancel_return_order_notification_for_seller(
     notification.content = content
     notification.has_action = False
     notification.save()
+
+    order_to_return.listing.user.has_new_notification = True
+    order_to_return.listing.user.save()
+
+
+def create_cancel_order_notification_for_buyer(
+        request, order_to_return):
+    content = "You have cancelled the order for the " + \
+        "listing: " + order_to_return.listing.title
+    notification = Notification.objects.create(
+        listing=order_to_return.listing, order=order_to_return,
+        user=order_to_return.user)
+    notification.content = content
+    notification.has_action = False
+    notification.save()
+
+    order_to_return.user.has_new_notification = True
+    order_to_return.user.save()
+
+
+def create_cancel_order_notification_for_seller(
+        request, order_to_return):
+    content = order_to_return.user.username + \
+        " has cancelled the order for the " + \
+        "listing: " + order_to_return.listing.title
+    notification = Notification.objects.create(
+        listing=order_to_return.listing, order=order_to_return,
+        user=order_to_return.listing.user)
+    notification.content = content
+    notification.has_action = False
+    notification.save()
+
+    order_to_return.listing.user.has_new_notification = True
+    order_to_return.listing.user.save()
