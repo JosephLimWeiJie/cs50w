@@ -137,7 +137,8 @@ def profile_view(request, name):
     order_page_number = request.GET.get('order-page')
     order_page_obj = order_paginator.get_page(order_page_number)
 
-    notif_list = Notification.objects.all().filter(user=request.user).reverse()
+    notif_list = Notification.objects.all().filter(
+        user=request.user).order_by("datetime").reverse()
     notif_paginator = Paginator(notif_list, 10)
     notif_page_number = request.GET.get('notif-page')
     notif_page_obj = notif_paginator.get_page(notif_page_number)
@@ -646,6 +647,55 @@ def sort_category(request):
         })
 
 
+def return_order(request):
+    if request.method == 'GET':
+        order_id = request.GET['return_order_id']
+        order_to_return = Order.objects.get(pk=order_id)
+        order_to_return.status = "Return/Refund"
+        order_to_return.save()
+
+        create_return_order_notification(request, order_to_return)
+        return HttpResponseRedirect(reverse('profile', args=[request.user]))
+    else:
+        return HttpResponseRedirect(reverse('profile', args=[request.user]))
+
+
+def accept_return_order(request):
+    if request.method == 'GET':
+        order_id = request.GET['accept_return_order_id']
+        order_to_return = Order.objects.get(pk=order_id)
+
+        # Update listing quantity
+        listing_to_update = get_listing(order_to_return)
+        listing_to_update.quantity += order_to_return.quantity_demanded
+        listing_to_update.save()
+
+        create_accept_return_order_notification_for_buyer(
+            request, order_to_return)
+        create_accept_return_order_notification_for_seller(
+            request, order_to_return)
+        return HttpResponseRedirect(reverse('profile', args=[request.user]))
+    else:
+        return HttpResponseRedirect(reverse('profile', args=[request.user]))
+
+
+def cancel_return_order(request):
+    if request.method == 'POST':
+        order_id = request.POST['cancel_return_order_id']
+        order_to_return = Order.objects.get(pk=order_id)
+        order_to_return.status = "Return Rejected"
+        order_to_return.save()
+        reject_reason = request.POST['reason-rej-order-text']
+
+        create_cancel_return_order_notification_for_buyer(
+            request, order_to_return, reject_reason)
+        create_cancel_return_order_notification_for_seller(
+            request, order_to_return)
+        return HttpResponseRedirect(reverse('profile', args=[request.user]))
+    else:
+        return HttpResponseRedirect(reverse('profile', args=[request.user]))
+
+
 """ Utility Functions """
 
 
@@ -799,6 +849,12 @@ def check_listing_has_sold_out(listing):
     return False
 
 
+def get_listing(order_to_return):
+    for listing in Listing.objects.all():
+        if order_to_return.listing == listing:
+            return listing
+
+
 def get_relevant_listings(search_keywords):
     relevant_listings = []
     for listing in Listing.objects.all():
@@ -947,7 +1003,63 @@ def create_cart_notification_for_buyer(request, orders_in_cart):
         if order.status == "To Ship":
             notification = Notification.objects.create(
                 listing=order.listing, order=order, user=request.user)
-            notification.content = "You has just ordered " + \
+            notification.content = "You have just ordered " + \
                 str(order.quantity_demanded) + " " + \
                 order.listing.title + "."
             notification.save()
+
+
+def create_return_order_notification(request, order_to_return):
+    content = order_to_return.user.username + " is requesting to return " + \
+        order_to_return.listing.title + "."
+    notification = Notification.objects.create(
+        listing=order_to_return.listing, order=order_to_return,
+        user=order_to_return.listing.user)
+    notification.content = content
+    notification.has_action = True
+    notification.save()
+
+
+def create_accept_return_order_notification_for_buyer(
+        request, order_to_return):
+    content = order_to_return.listing.user.username + \
+        " has accepted the return order request."
+    notification = Notification.objects.create(
+        listing=order_to_return.listing, order=order_to_return,
+        user=order_to_return.listing.user)
+    notification.content = content
+    notification.save()
+
+
+def create_accept_return_order_notification_for_seller(
+        request, order_to_return):
+    content = "You have accepted the return order request."
+    notification = Notification.objects.create(
+        listing=order_to_return.listing, order=order_to_return,
+        user=order_to_return.listing.user)
+    notification.content = content
+    notification.has_action = False
+    notification.save()
+
+
+def create_cancel_return_order_notification_for_buyer(
+        request, order_to_return, reject_reason):
+    notification = Notification.objects.create(
+        listing=order_to_return.listing, order=order_to_return,
+        user=order_to_return.user)
+    notification.content = order_to_return.listing.user.username + \
+        " has rejected your return order request. The reason is: " + \
+        reject_reason
+    notification.save()
+
+
+def create_cancel_return_order_notification_for_seller(
+        request, order_to_return):
+    content = "You have rejected the return order request for the " + \
+        "listing: " + order_to_return.listing.title
+    notification = Notification.objects.create(
+        listing=order_to_return.listing, order=order_to_return,
+        user=order_to_return.listing.user)
+    notification.content = content
+    notification.has_action = False
+    notification.save()

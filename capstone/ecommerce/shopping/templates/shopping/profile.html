@@ -526,10 +526,39 @@
                                         </div>
                                         <div class="col-2 p-3 my-auto" style="text-align: center;">
                                             <p>{{ order.status }}</p>
-                                            <form class="" action="{% url 'receive_order' %}" method="post">
+                                            <form class="" action="{% url 'return_order' %}" method="GET">
                                                 {% csrf_token %}
-                                                <input type="text" style="display: none;" name="order_id" value="{{ order.id }}">
-                                                <button type="submit" class="return-btn" id="return-btn" name="button">Return</button>
+                                                <input type="text" style="display: none;" name="return_order_id" value="{{ order.id }}">
+                                                <button type="button" data-toggle="modal" data-target="#return-order-modal" class="return-btn" id="return-btn" name="button">Return</button>
+
+                                                <!-- Return Order Notification Modal -->
+                                                <div class="modal fade" id="return-order-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="return-order-modal">Return Order</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body" style="text-align: left;">
+                                                            <p>You are currently return <strong>{{ order.listing.title }}</strong>
+                                                                Upon confirmation, a notification will be sent to <strong>{{ order.listing.user }}</strong>.
+                                                            </p>
+                                                            <p>
+                                                                Please expect up to 2 weeks for your return request to be processed. For more information,
+                                                                visit <a href="#">Return Policy</a>.
+                                                            </p>
+
+
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                                            <button type="submit" class="btn btn-primary">Confirm</button>
+                                                        </div>
+                                                    </div>
+                                                    </div>
+                                                </div>
                                             </form>
                                         </div>
                                     </div>
@@ -579,11 +608,77 @@
                                                 <img src="{% static notification.listing.listing_main_pic.url %}" alt="listing-image" style="max-width: 60px; max-height: 60px;">
                                             </a>
                                         </div>
-                                        <div class="col-10" style="vertical-align: middle;">
-                                            <p>{{ notification.content }}</p>
-                                            <p style="font-style: italic; color: grey;">{{ notification.review.review }}</p>
-                                            <p style="color: grey; font-size: 12px;">{{ notification.datetime }}</p>
-                                        </div>
+                                        {% if notification.has_action %}
+                                            <div class="col-10" style="vertical-align: middle;">
+                                                <p>{{ notification.content }}</p>
+                                                <p style="font-style: italic; color: grey;">{{ notification.review.review }}</p>
+                                                <button type="button" name="accept-return-btn" data-toggle="modal" data-target="#accept-return-modal">Accept Return</button>
+                                                <button type="button" name="cancel-return-btn" data-toggle="modal" data-target="#cancel-return-modal">Cancel Return</button>
+                                                <form class="" action="{% url 'accept_return_order' %}" method="get">
+                                                    {% csrf_token %}
+                                                    <input type="text" style="display: none;" name="accept_return_order_id" value="{{ notification.order.id }}">
+
+
+                                                    <!-- Accept Return Order Modal -->
+                                                    <div class="modal fade" id="accept-return-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="accept-return-modal">Accept Return Request</h5>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Cancel">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <p>Are you sure you want to proceed with accepting the return request?</p>
+                                                                    <p>Upon accepting, the quantity for <a href="{% url 'listing' notification.order.listing.id %}">{{ notification.order.listing.title }}</a>
+                                                                       will automatically be updated.
+                                                                    </p>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                <button type="submit" class="btn btn-primary">Confirm</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+
+                                                    <!-- Cancel Return Modal -->
+                                                    <div class="modal fade" id="cancel-return-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                        <form class="" action="{% url 'cancel_return_order' %}" method="POST">
+                                                            {% csrf_token %}
+                                                            <input type="text" style="display: none;" name="cancel_return_order_id" value="{{ notification.order.id }}">
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="cancel-return-modal">Cancel Return Request</h5>
+                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Cancel">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <label for="desrc">Reason for rejecting return request</label>
+                                                                        <textarea class="form-control" rows="6" name="reason-rej-order-text" value=""></textarea>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                                                        <button type="submit" class="btn btn-primary">Confirm</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+
+                                                <p style="color: grey; font-size: 12px;">{{ notification.datetime }}</p>
+                                            </div>
+                                        {% else %}
+                                            <div class="col-10" style="vertical-align: middle;">
+                                                <p>{{ notification.content }}</p>
+                                                <p style="font-style: italic; color: grey;">{{ notification.review.review }}</p>
+                                                <p style="color: grey; font-size: 12px;">{{ notification.datetime }}</p>
+                                            </div>
+                                        {% endif %}
                                     </div>
                                 {% endfor %}
                                 <nav aria-label="My Notification pagination">

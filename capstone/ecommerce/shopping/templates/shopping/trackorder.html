@@ -81,9 +81,13 @@
                             <form class="" action="{% url 'receive_order' %}" method="post">
                                 {% csrf_token %}
                                 <input type="text" style="display: none;" name="order_id" value="{{ order.id }}">
-                                <button type="submit" class="receive-btn" id="receive-btn-{{ order.d }}" name="button">Received</button>
+                                {% if order.status == "To Ship" or order.status == "To Receive" %}
+                                    <button type="submit" class="receive-btn" id="receive-btn-{{ order.d }}" name="button">Received</button>
+                                {% elif order.status == "Return/Refund"%}
+                                    <p style="color: grey;">PENDING</p>
+                                {% else %}
+                                {% endif %}
                             </form>
-
                         </div>
                     </div>
                     <hr>

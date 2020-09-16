@@ -121,7 +121,8 @@ class Order(models.Model):
         ("To Receive", "To Receive"),
         ("Completed", "Completed"),
         ("Cancelled", "Cancelled"),
-        ("Return/Refund", "Return/Refund")
+        ("Return/Refund", "Return/Refund"),
+        ("Return Rejected", "Return Rejected"),
     )
 
     user = models.ForeignKey(
@@ -181,6 +182,7 @@ class Notification(models.Model):
         null=True, blank=True)
     datetime = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     has_read = models.BooleanField(default=False)
+    has_action = models.BooleanField(default=False)
     content = models.TextField()
 
     def __str__(self):
