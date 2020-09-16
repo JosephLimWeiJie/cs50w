@@ -324,10 +324,10 @@
                                     <ul class="pagination justify-content-center">
                                         {% if listing_page_obj.has_previous %}
                                             <li class="page-item">
-                                                <a class="page-link" href="?page=1">&laquo; first</a>
+                                                <a class="page-link" href="?listing-page=1">&laquo; first</a>
                                             </li>
                                             <li class="page-item">
-                                                <a class="page-link" href="?page={{ listing_page_obj.previous_page_number }}">previous</a>
+                                                <a class="page-link" href="?listing-page={{ listing_page_obj.previous_page_number }}">previous</a>
                                             </li>
                                         {% endif %}
 
@@ -339,10 +339,10 @@
 
                                         {% if listing_page_obj.has_next %}
                                             <li class="page-item">
-                                                <a class="page-link" href="?page={{ listing_page_obj.next_page_number }}">next</a>
+                                                <a class="page-link" href="?listing-page={{ listing_page_obj.next_page_number }}">next</a>
                                             </li>
                                             <li class="page-item">
-                                                <a class="page-link" href="?page={{ listing_page_obj.paginator.num_pages }}">last &raquo;</a>
+                                                <a class="page-link" href="?listing-page={{ listing_page_obj.paginator.num_pages }}">last &raquo;</a>
                                             </li>
                                         {% endif %}
                                     </ul>
@@ -405,10 +405,10 @@
                                         <ul class="pagination justify-content-center">
                                             {% if order_page_obj.has_previous %}
                                                 <li class="page-item">
-                                                    <a class="page-link" href="?page=1">&laquo; first</a>
+                                                    <a class="page-link" href="?order-page=1">&laquo; first</a>
                                                 </li>
                                                 <li class="page-item">
-                                                    <a class="page-link" href="?page={{ orders.previous_page_number }}">previous</a>
+                                                    <a class="page-link" href="?order-page={{ orders.previous_page_number }}">previous</a>
                                                 </li>
                                             {% endif %}
 
@@ -420,10 +420,10 @@
 
                                             {% if order_page_obj.has_next %}
                                                 <li class="page-item">
-                                                    <a class="page-link" href="?page={{ orders.next_page_number }}">next</a>
+                                                    <a class="page-link" href="?order-page={{ orders.next_page_number }}">next</a>
                                                 </li>
                                                 <li class="page-item">
-                                                    <a class="page-link" href="?page={{ orders.paginator.num_pages }}">last &raquo;</a>
+                                                    <a class="page-link" href="?order-page={{ orders.paginator.num_pages }}">last &raquo;</a>
                                                 </li>
                                             {% endif %}
                                         </ul>
@@ -474,10 +474,10 @@
                                         <ul class="pagination justify-content-center">
                                             {% if review_page_obj.has_previous %}
                                                 <li class="page-item">
-                                                    <a class="page-link" href="?page=1">&laquo; first</a>
+                                                    <a class="page-link" href="?review-page=1">&laquo; first</a>
                                                 </li>
                                                 <li class="page-item">
-                                                    <a class="page-link" href="?page={{ review_page_obj.previous_page_number }}">previous</a>
+                                                    <a class="page-link" href="?review-page={{ review_page_obj.previous_page_number }}">previous</a>
                                                 </li>
                                             {% endif %}
 
@@ -489,10 +489,10 @@
 
                                             {% if review_page_obj.has_next %}
                                                 <li class="page-item">
-                                                    <a class="page-link" href="?page={{ review_page_obj.next_page_number }}">next</a>
+                                                    <a class="page-link" href="?review-page={{ review_page_obj.next_page_number }}">next</a>
                                                 </li>
                                                 <li class="page-item">
-                                                    <a class="page-link" href="?page={{ review_page_obj.paginator.num_pages }}">last &raquo;</a>
+                                                    <a class="page-link" href="?review-page={{ review_page_obj.paginator.num_pages }}">last &raquo;</a>
                                                 </li>
                                             {% endif %}
                                         </ul>
@@ -503,8 +503,6 @@
                             </div>
                         </div>
                     </div>
-
-
 
                     <div id="my-purchase">
                         <h4>My Purchase</h4>
@@ -542,10 +540,10 @@
                                 <ul class="pagination justify-content-center">
                                     {% if order_page_obj.has_previous %}
                                         <li class="page-item">
-                                            <a class="page-link" href="?page=1">&laquo; first</a>
+                                            <a class="page-link" href="?order-page=1">&laquo; first</a>
                                         </li>
                                         <li class="page-item">
-                                            <a class="page-link" href="?page={{ orders.previous_page_number }}">previous</a>
+                                            <a class="page-link" href="?order-page={{ orders.previous_page_number }}">previous</a>
                                         </li>
                                     {% endif %}
 
@@ -557,10 +555,10 @@
 
                                     {% if order_page_obj.has_next %}
                                         <li class="page-item">
-                                            <a class="page-link" href="?page={{ orders.next_page_number }}">next</a>
+                                            <a class="page-link" href="?order-page={{ orders.next_page_number }}">next</a>
                                         </li>
                                         <li class="page-item">
-                                            <a class="page-link" href="?page={{ orders.paginator.num_pages }}">last &raquo;</a>
+                                            <a class="page-link" href="?order-page={{ orders.paginator.num_pages }}">last &raquo;</a>
                                         </li>
                                     {% endif %}
                                 </ul>
@@ -575,18 +573,27 @@
                         {% if hasNotifications %}
                             <div class="container-fluid m-3 p-3 border">
                                 {% for notification in notif_page_obj %}
-                                    <div class="row">
-                                        <p>{{ notification.content }}</p>
+                                    <div class="row m-3 p-3 border">
+                                        <div class="col-2">
+                                            <a href="{% url 'listing' notification.listing.id %}">
+                                                <img src="{% static notification.listing.listing_main_pic.url %}" alt="listing-image" style="max-width: 60px; max-height: 60px;">
+                                            </a>
+                                        </div>
+                                        <div class="col-10" style="vertical-align: middle;">
+                                            <p>{{ notification.content }}</p>
+                                            <p style="font-style: italic; color: grey;">{{ notification.review.review }}</p>
+                                            <p style="color: grey; font-size: 12px;">{{ notification.datetime }}</p>
+                                        </div>
                                     </div>
                                 {% endfor %}
-                                <nav aria-label="My purchases pagination">
+                                <nav aria-label="My Notification pagination">
                                     <ul class="pagination justify-content-center">
                                         {% if notif_page_obj.has_previous %}
                                             <li class="page-item">
-                                                <a class="page-link" href="?page=1">&laquo; first</a>
+                                                <a class="page-link" href="?notif-page=1">&laquo; first</a>
                                             </li>
                                             <li class="page-item">
-                                                <a class="page-link" href="?page={{ orders.previous_page_number }}">previous</a>
+                                                <a class="page-link" href="?notif-page={{ notif_page_obj.previous_page_number }}">previous</a>
                                             </li>
                                         {% endif %}
 
@@ -598,10 +605,10 @@
 
                                         {% if notif_page_obj.has_next %}
                                             <li class="page-item">
-                                                <a class="page-link" href="?page={{ orders.next_page_number }}">next</a>
+                                                <a class="page-link" href="?notif-page={{ notif_page_obj.next_page_number }}">next</a>
                                             </li>
                                             <li class="page-item">
-                                                <a class="page-link" href="?page={{ orders.paginator.num_pages }}">last &raquo;</a>
+                                                <a class="page-link" href="?notif-page={{ notif_page_obj.paginator.num_pages }}">last &raquo;</a>
                                             </li>
                                         {% endif %}
                                     </ul>

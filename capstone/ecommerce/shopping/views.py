@@ -124,22 +124,22 @@ def profile_view(request, name):
     profile = Profile.objects.get(user=request.user)
     listing_list = Listing.objects.all().filter(user=request.user)
     listing_paginator = Paginator(listing_list, 10)
-    listing_page_number = request.GET.get('page')
+    listing_page_number = request.GET.get('listing-page')
     listing_page_obj = listing_paginator.get_page(listing_page_number)
 
     review_list = Review.objects.all()
     review_paginator = Paginator(review_list, 10)
-    review_page_number = request.GET.get('page')
+    review_page_number = request.GET.get('review-page')
     review_page_obj = review_paginator.get_page(review_page_number)
 
     order_list = Order.objects.all().filter(user=request.user)
     order_paginator = Paginator(order_list, 10)
-    order_page_number = request.GET.get('page')
+    order_page_number = request.GET.get('order-page')
     order_page_obj = order_paginator.get_page(order_page_number)
 
-    notif_list = Notification.objects.all().filter(user=request.user)
+    notif_list = Notification.objects.all().filter(user=request.user).reverse()
     notif_paginator = Paginator(notif_list, 10)
-    notif_page_number = request.GET.get('page')
+    notif_page_number = request.GET.get('notif-page')
     notif_page_obj = notif_paginator.get_page(notif_page_number)
 
     return render(request, "shopping/profile.html", {
@@ -349,12 +349,7 @@ def review_view(request, listing_id):
 
         review.save()
         update_listing_rating_score(listing)
-
-        content = request.user.username + " has left a review for " + listing.title
-        notification = Notification.objects.create(
-            listing=listing, profile=profile, review=review, user=listing.user,
-            content=content)
-        notification.save()
+        create_review_notification(request, listing, profile, review)
 
         return listing_view(request, listing_id)
     else:
@@ -367,8 +362,11 @@ def update_review_view(request, listing_id):
         review = Review.objects.get(user=request.user, listing=listing)
         review.review = request.POST['edited-review-text']
         review.rating = request.POST['edited-rating-form-input']
+
         review.save()
-        update_listing_rating_score()
+        update_listing_rating_score(listing)
+        update_review_notification(listing, review)
+
         return listing_view(request, listing_id)
     else:
         return listing_view(request, listing_id)
@@ -428,7 +426,8 @@ def cart_view(request):
         total_order_price = parse_order_total_price_two_decimal_pace(
             get_total_price_in_cart(request.user))
 
-        order_list = Order.objects.filter(user=request.user, has_purchased=False)
+        order_list = Order.objects.filter(
+            user=request.user, has_purchased=False)
         paginator = Paginator(order_list, 10)
         page_number = request.GET.get('page')
         orders = paginator.get_page(page_number)
@@ -439,7 +438,8 @@ def cart_view(request):
             "hasOrderInCart": check_user_has_order_in_cart(request.user)
         })
     else:
-        order_list = Order.objects.filter(user=request.user, has_purchased=False)
+        order_list = Order.objects.filter(
+            user=request.user, has_purchased=False)
         paginator = Paginator(order_list, 10)
         page_number = request.GET.get('page')
         orders = paginator.get_page(page_number)
@@ -460,7 +460,6 @@ def update_cart_view(request):
         listing_to_remove = Listing.objects.get(id=listing_to_remove_id)
         order_to_remove = Order.objects.filter(listing=listing_to_remove)
         order_to_remove.delete()
-
         return render(request, "shopping/cart.html", {
             "orders": Order.objects.filter(user=request.user)
         })
@@ -519,8 +518,10 @@ def update_order(request, order_id):
         data = json.loads(request.body)
         if data.get("quantity_demanded") is not None:
             order.quantity_demanded = data["quantity_demanded"]
+            update_order_quantity_notification(order)
         if data.get("status") is not None:
             order.status = data["status"]
+            update_order_status_notification(order)
         order.save()
         request.user.save()
         return HttpResponse(status=204)
@@ -540,9 +541,12 @@ def checkout_view(request):
     """
     if request.method == 'POST':
         orders_in_cart = Order.objects.filter(user=request.user)
+
         update_listing_quantity(orders_in_cart)
-        return HttpResponseRedirect(
-            reverse("trackorder", args=[request.user]))
+        create_cart_notification_for_seller(request, orders_in_cart)
+        create_cart_notification_for_buyer(request, orders_in_cart)
+
+        return HttpResponseRedirect(reverse("trackorder"))
     else:
         order_list = Order.objects.filter(user=request.user)
         paginator = Paginator(order_list, 10)
@@ -574,11 +578,10 @@ def receive_order(request):
         order = Order.objects.get(pk=order_id)
         order.status = "Completed"
         order.save()
-        return HttpResponseRedirect(
-            reverse("trackorder", args=[request.user]))
+        update_order_status_notification(order)
+        return HttpResponseRedirect(reverse("trackorder"))
     else:
-        return HttpResponseRedirect(
-            reverse("trackorder", args=[request.user]))
+        return HttpResponseRedirect(reverse("trackorder"))
 
 
 def search_view(request):
@@ -892,3 +895,59 @@ def get_sorted_listings_by_sales(search_keywords, filter_category):
                 sorted_listings.append(listing)
 
     return sorted_listings
+
+
+def update_order_quantity_notification(order):
+    notification = Notification.objects.create(
+        listing=order.listing, order=order, user=order.listing.user)
+    notification.content = order.user.username + \
+        " has just changed the quantity demanded for " + \
+        order.listing.title + " to " + order.quantity_demanded + "."
+    notification.save()
+
+
+def update_order_status_notification(order):
+    notification = Notification.objects.create(
+        listing=order.listing, order=order, user=order.listing.user)
+    notification.content = order.user.username + \
+        " has received " + order.listing.title + "."
+    notification.save()
+
+
+def create_review_notification(request, listing, profile, review):
+    content = request.user.username + " has left a review for " + \
+        listing.title + "."
+    notification = Notification.objects.create(
+        listing=listing, profile=profile, review=review, user=listing.user,
+        content=content)
+    notification.save()
+
+
+def update_review_notification(listing, review):
+    notification = Notification.objects.filter(
+        listing=listing, review=review).first()
+    notification.review = review
+    notification.save()
+
+
+def create_cart_notification_for_seller(request, orders_in_cart):
+    for order in orders_in_cart:
+        if order.status == "To Ship":
+            notification = Notification.objects.create(
+                listing=order.listing, order=order,
+                user=order.listing.user)
+            notification.content = request.user.username + \
+                " has just ordered " + str(order.quantity_demanded) + \
+                " " + order.listing.title + "."
+            notification.save()
+
+
+def create_cart_notification_for_buyer(request, orders_in_cart):
+    for order in orders_in_cart:
+        if order.status == "To Ship":
+            notification = Notification.objects.create(
+                listing=order.listing, order=order, user=request.user)
+            notification.content = "You has just ordered " + \
+                str(order.quantity_demanded) + " " + \
+                order.listing.title + "."
+            notification.save()

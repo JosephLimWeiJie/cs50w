@@ -179,9 +179,9 @@ class Notification(models.Model):
     profile = models.ForeignKey(
         Profile, on_delete=models.CASCADE, related_name="notification",
         null=True, blank=True)
-    date = models.DateField(auto_now_add=True, null=True, blank=True)
+    datetime = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     has_read = models.BooleanField(default=False)
     content = models.TextField()
 
     def __str__(self):
-        return f"{self.user}'s Notification'"
+        return f"{self.user}'s Notification"
