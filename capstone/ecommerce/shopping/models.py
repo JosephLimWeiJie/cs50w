@@ -76,7 +76,7 @@ class Listing(models.Model):
     title = models.CharField(max_length=64)
     desrc = models.TextField()
     category = models.CharField(max_length=64, blank=True, choices=CATEGORY)
-    date = models.DateField(auto_now_add=True)
+    datetime = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     quantity = models.IntegerField(default=0)
     price = models.DecimalField(default=0.00, max_digits=20, decimal_places=2)
     listing_main_pic = models.ImageField(null=True, blank=True)
@@ -133,9 +133,11 @@ class Order(models.Model):
     listing = models.ForeignKey(
         Listing, on_delete=models.CASCADE, related_name="order",
         null=True, blank=True)
+    datetime = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     status = models.CharField(
         max_length=64, default="To Ship", choices=STATUS)
     has_purchased = models.BooleanField(default=False)
+    is_tracking = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.user}'s Order: {self.listing}"
@@ -156,7 +158,7 @@ class Review(models.Model):
     profile = models.ForeignKey(
         Profile, on_delete=models.CASCADE, related_name="review", default=1)
     review = models.TextField(null=True, blank=True)
-    date = models.DateField(auto_now_add=True, null=True, blank=True)
+    datetime = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     rating = models.FloatField(
         default=0.0,
         validators=[MinValueValidator(0.0), MaxValueValidator(5.0)])

@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
         'click', () => minusQuantity());
 
     updateListingClickRate();
-    
+
     loadImageCarousel();
     loadRatingFormWidget();
     loadReviewRating();
@@ -151,7 +151,7 @@ function loadListingRatingStars() {
         innerHTMLContent += '<i class="fa fa-star" style="color: #42f5c2;"></i>';
     }
 
-    if (rating_score % 10 > 0 && rating_score % 10 < 9) {
+    if ((rating_score * 10) % 10 > 5) {
         innerHTMLContent += '<i class="fa fa-star-half" style="color: #42f5c2;"></i>';
     }
     listingRatingSection.innerHTML = innerHTMLContent

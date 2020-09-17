@@ -28,78 +28,87 @@
     </head>
     <body>
         {% block body %}
-        {% block navbar %}
-            <div class="container-fluid" style="width: 70%;">
-                <!-- Top nav bar -->
-                <div class="top-nav-bar sticky-top">
-                    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #42f5c2;">
-                        <a class="navbar-brand" href="#"></a>
-                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                            <span class="navbar-toggler-icon"></span>
-                        </button>
-                        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                            <div class="navbar-nav">
-                                <a class="nav-item nav-link" href="#">Sell on Shopping</a>
-                                <a class="nav-item nav-link" href="#">Customer Care</a>
+            {% block navbar %}
+                <div class="container-fluid sticky-top" style="width: 70%; min-width: 720px;">
+                    <!-- Top nav bar -->
+                    <div class="top-nav-bar sticky-top">
+                        <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #42f5c2;">
+                            <a class="navbar-brand" href="#"></a>
+                            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                                <div class="navbar-nav">
+                                    <a class="nav-item nav-link" href="#">Sell on Shopping</a>
+                                    <a class="nav-item nav-link" href="#">Customer Care</a>
+                                </div>
+                                <div class="navbar-nav ml-auto p-2">
+                                    {% if user.is_authenticated %}
+                                        <a class="nav-item nav-link" href="{% url 'trackorder' %}">Track My Order</a>
+                                        {% if user.has_new_notification %}
+                                            <a class="nav-item nav-link" href="{% url 'notification' user.username %}"><i class="fa fa-bell" style="color: orange;"></i> Notifications</a>
+                                        {% else %}
+                                            <a class="nav-item nav-link" href="{% url 'notification' user.username %}"><i class="fa fa-bell" style="color: #787878;"></i> Notifications</a>
+                                        {% endif %}
 
-                            </div>
-                            <div class="navbar-nav ml-auto p-2">
-                                {% if user.is_authenticated %}
-                                    <a class="nav-item nav-link" href="{% url 'trackorder' %}">Track My Order</a>
-                                    {% if user.has_new_notification %}
-                                        <a class="nav-item nav-link" href="{% url 'notification' user.username %}"><i class="fa fa-bell" style="color: red;"></i> Notifications</a>
+                                        <a class="nav-item nav-link" href="{% url 'profile' user.username %}">
+                                            {% if user.profile.profile_pic.url is not None %}
+                                                <img class="profile-pic"  src="{% static user.profile.profile_pic.url %}" alt="user-profile-pic">
+                                            {% else %}
+                                                <img class="profile-pic" src="{% static 'images/placeholder.png' %}" alt="placeholder-profile-pic">
+                                            {% endif %}
+                                            {{ user.username }}
+                                        </a>
+                                        <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
                                     {% else %}
-                                        <a class="nav-item nav-link" href="{% url 'notification' user.username %}"><i class="fa fa-bell" style="color: white;"></i> Notifications</a>
+                                        <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
+                                        <a class="nav-item nav-link" href="{% url 'signup' %}">Sign Up</a>
                                     {% endif %}
-                                    <a class="nav-item nav-link" href="{% url 'profile' user.username %}">{{ user.username }}</a>
-                                    <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
-                                {% else %}
-                                    <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
-                                    <a class="nav-item nav-link" href="{% url 'signup' %}">Sign Up</a>
-                                {% endif %}
+                                </div>
+                            </div>
+                        </nav>
+                        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                              <li class="nav-item active">
+                                <a class="nav-link" href="{% url 'index' %}">Home <span class="sr-only">(current)</span></a>
+                              </li>
+                              <li class="nav-item">
+                                <a class="nav-link" href="#">Link</a>
+                              </li>
+                              <li class="nav-item">
+                                <a class="nav-link disabled" href="#">Disabled</a>
+                              </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Search bar div -->
+                    <div class="container-fluid sticky-top" style="background-color: #42f5c2;">
+                        <div class="row">
+                            <div class="col-3 mt-3" style="font-size: 2rem; text-align: center; color: white;">
+                                <a class="home-logo-container" href="{% url 'index' %}" style="color: white;">
+                                    <div class="home-logo">
+                                        <span style="font-size: 23px;"><i class="fa fa-shopping-bag"></i> Shopping</span>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-7 mt-4 form-group">
+                                <form class="form-inline" action="{% url 'search' %}" method="post">
+                                    {% csrf_token %}
+                                    <input type="text" name="search_keywords" value="" placeholder="Search here!" style="width: 85%;" class="form-control">
+                                    <button type="submit" name="button" class="btn btn-warning">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </form>
+                            </div>
+                            <div class="col-2 mt-3">
+                                <a class="cart-logo" href="{% url 'cart' %}" style="font-size: 2rem; color: white;">
+                                    <i class="fa fa-shopping-cart"></i>
+                                </a>
                             </div>
                         </div>
-                    </nav>
-                    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                          <li class="nav-item active">
-                            <a class="nav-link" href="{% url 'index' %}">Home <span class="sr-only">(current)</span></a>
-                          </li>
-                          <li class="nav-item">
-                            <a class="nav-link" href="#">Link</a>
-                          </li>
-                          <li class="nav-item">
-                            <a class="nav-link disabled" href="#">Disabled</a>
-                          </li>
-                        </ul>
                     </div>
-                </div>
 
-                <!-- Search bar div -->
-                <div class="container-fluid sticky-top" style="background-color: #42f5c2;">
-                    <div class="row">
-                        <div class="col-3" style="font-size: 2rem; text-align: center; color: white;">
-                            <a class="home-logo" href="{% url 'index' %}" style="color: white;">
-                                <i class="fa fa-shopping-bag"></i>
-                                <p>Shopping</p>
-                            </a>
-                        </div>
-                        <div class="col-7 mt-4 form-group">
-                            <form class="form-inline" action="{% url 'search' %}" method="post">
-                                {% csrf_token %}
-                                <input type="text" name="search_keywords" value="" placeholder="Search here!" style="width: 85%;" class="form-control">
-                                <button type="submit" name="button" class="btn btn-warning">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </form>
-                        </div>
-                        <div class="col-2 mt-3">
-                            <a class="cart-logo" href="{% url 'cart' %}" style="font-size: 2rem; color: white;">
-                                <i class="fa fa-shopping-cart"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
             {% endblock %}
 
             <!-- Body -->
@@ -179,13 +188,11 @@
                 {% block line_divider %}
                 {% endblock %}
 
-                <hr>
 
                 <!-- All products -->
                 {% block shopping_descr %}
                 {% endblock %}
 
-                <hr>
 
             {% endblock %}
 
@@ -198,7 +205,7 @@
             <!-- Bottom footer -->
             <div class="container-fluid bg-light" style="max-width: 100%;">
                 <div class="row">
-                    <div class="col-sm">
+                    <div class="col-sm p-3">
                         <p style="margin-bottom: 0rem; color: #575757;" class="nav-item nav-link">Shopping Country & Region:</p>
                         <div class="country-icons">
                             <div class="d-flex p-2">
@@ -212,7 +219,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm">
+                    <div class="col-sm p-3">
                         <p style="margin-bottom: 0rem; color: #575757;" class="nav-item nav-link">Payment</p>
                         <div class="">
                             <i class="fa fa-cc-visa" style="margin-left: 15px; font-size: 40px;"></i>
@@ -220,7 +227,7 @@
                             <i class="fa fa-cc-amex" style="margin-left: 15px; font-size: 40px;"></i>
                         </div>
                     </div>
-                    <div class="col-sm">
+                    <div class="col-sm p-3">
                         <p style="margin-bottom: 0rem; color: #575757;" class="nav-item nav-link">Follow Us On:</p>
                         <div class="">
                             <a href="#" class="follow-links" style="margin-left: 15px;">

@@ -396,6 +396,7 @@
                                                         <span style="color: grey; font-style: italic;">
                                                             For listing: <a style="font-style: normal;" href="{% url 'listing' listing.id %}">{{ listing.title }}</a>
                                                         </span>
+                                                        <p>{{ review.datetime }}</p>
                                                         <hr>
                                                     </div>
                                                 </div>
@@ -461,40 +462,43 @@
                                         </div>
                                         <div class="col-2 p-3 my-auto" style="text-align: center;">
                                             <p>{{ order.status }}</p>
-                                            <form class="" action="{% url 'return_order' %}" method="GET">
-                                                {% csrf_token %}
-                                                <input type="text" style="display: none;" name="return_order_id" value="{{ order.id }}">
-                                                <button type="button" data-toggle="modal" data-target="#return-order-modal" class="return-btn" id="return-btn" name="button">Return</button>
+                                            {% if order.status == "To Ship" or order.status == "To Receive" or order.status == "Completed" %}
+                                                <form class="" action="{% url 'return_order' %}" method="GET">
+                                                    {% csrf_token %}
+                                                    <input type="text" style="display: none;" name="return_order_id" value="{{ order.id }}">
+                                                    <button type="button" data-toggle="modal" data-target="#return-order-modal" class="return-btn" id="return-btn" name="button">Return</button>
 
-                                                <!-- Return Order Notification Modal -->
-                                                <div class="modal fade" id="return-order-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="return-order-modal">Return Order</h5>
-                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span>
-                                                            </button>
+                                                    <!-- Return Order Notification Modal -->
+                                                    <div class="modal fade" id="return-order-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="return-order-modal">Return Order</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body" style="text-align: left;">
+                                                                <p>You are currently return <strong>{{ order.listing.title }}</strong>
+                                                                    Upon confirmation, a notification will be sent to <strong>{{ order.listing.user }}</strong>.
+                                                                </p>
+                                                                <p>
+                                                                    Please expect up to 2 weeks for your return request to be processed. For more information,
+                                                                    visit <a href="#">Return Policy</a>.
+                                                                </p>
+
+
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                                                <button type="submit" class="btn btn-primary">Confirm</button>
+                                                            </div>
                                                         </div>
-                                                        <div class="modal-body" style="text-align: left;">
-                                                            <p>You are currently return <strong>{{ order.listing.title }}</strong>
-                                                                Upon confirmation, a notification will be sent to <strong>{{ order.listing.user }}</strong>.
-                                                            </p>
-                                                            <p>
-                                                                Please expect up to 2 weeks for your return request to be processed. For more information,
-                                                                visit <a href="#">Return Policy</a>.
-                                                            </p>
-
-
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                                            <button type="submit" class="btn btn-primary">Confirm</button>
                                                         </div>
                                                     </div>
-                                                    </div>
-                                                </div>
-                                            </form>
+                                                </form>
+                                            {% else %}
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>
@@ -547,7 +551,7 @@
 
                         <div class="tab-content" id="myTabContent">
                             <div class="tab-pane fade show active" id="pills-pending" role="tabpanel" aria-labelledby="pills-pending-tab">
-                                {% if hasNotifications %}
+                                {% if hasActions %}
                                     {% for notification in notif_page_obj %}
                                         {% if notification.has_action %}
                                             <div class="row m-3 p-3 border">
@@ -629,7 +633,9 @@
                                                 {% endif %}
                                             </div>
                                         {% endif %}
-                                    {% endfor%}
+                                    {% endfor %}
+                                {% else %}
+                                    <p>You have no pending requests currently.</p>
                                 {% endif %}
                             </div>
 

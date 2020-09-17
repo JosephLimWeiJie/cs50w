@@ -122,17 +122,19 @@ def logout_view(request):
 
 def profile_view(request, name):
     profile = Profile.objects.get(user=request.user)
-    listing_list = Listing.objects.all().filter(user=request.user)
+    listing_list = Listing.objects.all().filter(
+        user=request.user).order_by("datetime").reverse()
     listing_paginator = Paginator(listing_list, 10)
     listing_page_number = request.GET.get('listing-page')
     listing_page_obj = listing_paginator.get_page(listing_page_number)
 
-    review_list = Review.objects.all()
+    review_list = Review.objects.all().order_by("datetime").reverse()
     review_paginator = Paginator(review_list, 10)
     review_page_number = request.GET.get('review-page')
     review_page_obj = review_paginator.get_page(review_page_number)
 
-    order_list = Order.objects.all().filter(user=request.user)
+    order_list = Order.objects.all().filter(
+        user=request.user).order_by("datetime").reverse()
     order_paginator = Paginator(order_list, 10)
     order_page_number = request.GET.get('order-page')
     order_page_obj = order_paginator.get_page(order_page_number)
@@ -159,7 +161,8 @@ def profile_view(request, name):
         "hasReviews": check_user_has_reviewed(request.user, review_list),
         "hasItemSold": check_user_has_item_sold(request.user, order_list),
         "hasNotifications": check_user_has_notifications(
-            request.user, notif_list)
+            request.user, notif_list),
+        "hasActions": check_user_has_actions(request.user, notif_list)
     })
 
 
@@ -591,9 +594,11 @@ def checkout_view(request):
     my Order page'.
     """
     if request.method == 'POST':
-        orders_in_cart = Order.objects.filter(user=request.user)
+        orders_in_cart = Order.objects.filter(
+            user=request.user)
 
         update_listing_quantity(orders_in_cart)
+        update_order_is_tracking(orders_in_cart)
         create_cart_notification_for_seller(request, orders_in_cart)
         create_cart_notification_for_buyer(request, orders_in_cart)
 
@@ -628,6 +633,7 @@ def receive_order(request):
         order_id = request.POST['order_id']
         order = Order.objects.get(pk=order_id)
         order.status = "Completed"
+        order.is_tracking = False
         order.save()
         update_order_status_notification(order)
         return HttpResponseRedirect(reverse('trackorder'))
@@ -640,6 +646,7 @@ def cancel_order(request):
         order_id = request.POST['cancel_order_id']
         order_to_return = Order.objects.get(pk=order_id)
         order_to_return.status = "Cancelled"
+        order_to_return.is_tracking = False
         order_to_return.save()
 
         # Update listing quantity
@@ -735,6 +742,8 @@ def accept_return_order(request):
     if request.method == 'GET':
         order_id = request.GET['accept_return_order_id']
         order_to_return = Order.objects.get(pk=order_id)
+        order_to_return.is_tracking = False
+        order_to_return.save()
 
         # Update listing quantity
         listing_to_update = get_listing(order_to_return)
@@ -755,6 +764,7 @@ def cancel_return_order(request):
         order_id = request.POST['cancel_return_order_id']
         order_to_return = Order.objects.get(pk=order_id)
         order_to_return.status = "Return Rejected"
+        order_to_return.is_tracking = False
         order_to_return.save()
         reject_reason = request.POST['reason-rej-order-text']
 
@@ -866,9 +876,9 @@ def check_user_has_order_in_cart_exist_in_cart(listing, user):
 
 def check_user_has_order(user):
     for order in Order.objects.filter(user=user):
-        if order.has_purchased is True:
-            return False
-    return True
+        if order.is_tracking is True:
+            return True
+    return False
 
 
 def check_user_has_item_sold(user, relevant_orders):
@@ -917,6 +927,13 @@ def update_listing_quantity(orders_in_cart):
 def check_listing_has_sold_out(listing):
     if listing.quantity == 0:
         return True
+    return False
+
+
+def check_user_has_actions(user, notif_list):
+    for notif in notif_list.all().filter(user=user):
+        if notif.has_action is True:
+            return True
     return False
 
 
@@ -1024,6 +1041,13 @@ def get_sorted_listings_by_sales(search_keywords, filter_category):
     return sorted_listings
 
 
+def update_order_is_tracking(orders_in_cart):
+    for order in orders_in_cart:
+        if order.status == "To Ship" or order.status == 'To Receive':
+            order.is_tracking = True
+            order.save()
+
+
 def update_order_quantity_notification(order):
     notification = Notification.objects.create(
         listing=order.listing, order=order, user=order.listing.user)
@@ -1117,6 +1141,7 @@ def create_accept_return_order_notification_for_buyer(
         listing=order_to_return.listing, order=order_to_return,
         user=order_to_return.listing.user)
     notification.content = content
+    notification.has_action = False
     notification.save()
 
     order_to_return.user.has_new_notification = True

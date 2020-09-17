@@ -2,13 +2,18 @@
     background-color: red;
 }
 
-.home-logo {
-    color: white;
+.home-logo-container:hover {
+    text-decoration: none;
 }
 
+
 .home-logo:hover {
-    text-decoration: none;
     color: #60dbb9;
+    text-decoration: none;
+}
+
+.home-logo {
+    text-decoration: none;
 }
 
 .cart-logo i:hover {
@@ -24,4 +29,10 @@
     color: #42f5c2;
     font-size: 4px;
     margin-bottom: 0px;
+}
+
+.profile-pic {
+    height: 24px;
+    width: 24px;
+    border-radius: 12px;
 }

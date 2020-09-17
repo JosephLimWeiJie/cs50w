@@ -1,6 +1,8 @@
 document.addEventListener('DOMContentLoaded', function() {
     limitListingTitleChars();
-    loadListingRatingStars();
+    loadListingRatingStarsForTrending();
+    loadListingRatingStarsForTopProducts();
+    loadListingRatingStarsForAllProducts();
 });
 
 function limitListingTitleChars() {
@@ -16,12 +18,12 @@ function limitListingTitleChars() {
 
 }
 
-function loadListingRatingStars() {
+function loadListingRatingStarsForTrending() {
     document.querySelectorAll('.listing-rating-star-section').forEach(
         function(listingRatingStarSection) {
             var listingId = listingRatingStarSection.dataset.listingid;
 
-            var ratingScoreSection = document.querySelector(`#listing-${listingId}-rating-stars`);
+            var ratingScoreSection = document.querySelector(`#trending-${listingId}-rating-stars`);
             var rating_score = listingRatingStarSection.dataset.ratingscore;
 
             var i;
@@ -30,7 +32,51 @@ function loadListingRatingStars() {
                 innerHTMLContent += '<i class="fa fa-star" style="color: #42f5c2;"></i>';
             }
 
-            if (rating_score % 10 > 0 && rating_score % 10 < 9) {
+            if ((rating_score * 10) % 10 > 5) {
+                innerHTMLContent += '<i class="fa fa-star-half" style="color: #42f5c2;"></i>';
+            }
+            ratingScoreSection.innerHTML = innerHTMLContent;
+
+    });
+}
+
+function loadListingRatingStarsForTopProducts() {
+    document.querySelectorAll('.listing-rating-star-section').forEach(
+        function(listingRatingStarSection) {
+            var listingId = listingRatingStarSection.dataset.listingid;
+
+            var ratingScoreSection = document.querySelector(`#topproducts-${listingId}-rating-stars`);
+            var rating_score = listingRatingStarSection.dataset.ratingscore;
+
+            var i;
+            var innerHTMLContent = " ";
+            for (i = 1; i <= rating_score; i++) {
+                innerHTMLContent += '<i class="fa fa-star" style="color: #42f5c2;"></i>';
+            }
+
+            if ((rating_score * 10) % 10 > 5) {
+                innerHTMLContent += '<i class="fa fa-star-half" style="color: #42f5c2;"></i>';
+            }
+            ratingScoreSection.innerHTML = innerHTMLContent;
+
+    });
+}
+
+function loadListingRatingStarsForAllProducts() {
+    document.querySelectorAll('.listing-rating-star-section').forEach(
+        function(listingRatingStarSection) {
+            var listingId = listingRatingStarSection.dataset.listingid;
+
+            var ratingScoreSection = document.querySelector(`#allproducts-${listingId}-rating-stars`);
+            var rating_score = listingRatingStarSection.dataset.ratingscore;
+
+            var i;
+            var innerHTMLContent = " ";
+            for (i = 1; i <= rating_score; i++) {
+                innerHTMLContent += '<i class="fa fa-star" style="color: #42f5c2;"></i>';
+            }
+
+            if ((rating_score * 10) % 10 > 5) {
                 innerHTMLContent += '<i class="fa fa-star-half" style="color: #42f5c2;"></i>';
             }
             ratingScoreSection.innerHTML = innerHTMLContent;
