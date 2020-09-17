@@ -22,6 +22,12 @@
             background-color: #60dbb9;
         }
 
+        @media (max-width: 999px) {
+            .shopping-logo {
+                padding-top: 40px;
+            }
+        }
+
     </style>
 {% endblock %}
 
@@ -38,10 +44,10 @@
 
     <!-- Form -->
     {% block content %}
-        <div class="container-fluid" style="background-color: #42f5c2; width: 100%;">
-            <div class="container-fluid" style="max-width: 70%; background-color: #42f5c2;">
+        <div class="container-fluid" style="background-color: #42f5c2; width: 100%; min-width: 1000px;">
+            <div class="container-fluid middle-section" style="max-width: 70%; background-color: #42f5c2;">
                 <div class="row">
-                    <div class="col-6" style="text-align: center; font-size: 80px; margin-top: 5%; color: white;">
+                    <div class="col-6 shopping-logo" style="text-align: center; font-size: 80px; margin-top: 5%; color: white;">
                         <i class="fa fa-shopping-bag"></i>
                         <p>Shopping</p>
                     </div>
