@@ -17,7 +17,7 @@ function loadImageCarousel() {
     const imageCount = document.querySelector('#imagesCount').innerHTML;
 
     var i;
-    for (i = 1; i <= imageCount; i++) {
+    for (i = 1; i < imageCount; i++) {
         var newLiElement = document.createElement('li');
         newLiElement.dataset.target = "#listingImageIndicators";
         newLiElement.dataset.slide = i;

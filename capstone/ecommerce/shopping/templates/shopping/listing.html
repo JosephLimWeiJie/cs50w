@@ -3,6 +3,7 @@
 
 {% block style %}
     <link href="{% static 'shopping/listing/listing.css' %}" rel="stylesheet">
+    <link href="{% static 'shopping/listing/listing.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block script %}
@@ -21,13 +22,14 @@
                     <li data-target="#listingImageIndicators" data-slide-to="0" class="active"></li>
                 </ol>
                 <div class="carousel-inner">
-                    <div class="carousel-item active p-3">
-                        <img class="d-block w-100" style="display: block; max-height: 400px; height: auto; width: 100%;" src="{% static listing.listing_main_pic.url %}" alt="Listing Image">
-                    </div>
                     {% for image in listing_images %}
-                        {% if image.image.url != listing.listing_main_pic.url %}
-                            <div class="carousel-item p-3">
-                                <img class="d-block w-100" style="display: block; max-height: 450px; height: auto; width: 100%" src="{% static image.image.url %}" alt="Listing Image">
+                        {% if forloop.counter == 1 %}
+                            <div class="carousel-item active p-3" style="vertical-align: middle">
+                                <img class="d-block w-100 listing-image-carousel" src="{% static image.image.url %}" alt="Listing Image">
+                            </div>
+                        {% else %}
+                            <div class="carousel-item p-3" style="vertical-align: middle">
+                                <img class="d-block w-100 listing-image-carousel" src="{% static image.image.url %}" alt="Listing Image">
                             </div>
                         {% endif %}
                     {% endfor %}
@@ -166,13 +168,13 @@
                         <div class="container-fluid" style="justify-content: left;">
                             <div class="row">
                                 <div class="col-xs-3" style="display: inline;">
-                                    <button id="plus-btn" type="button" name="plus-btn">+</button>
+                                    <button id="minus-btn" type="button" name="minus-btn">-</button>
                                 </div>
                                 <div class="col-xs-2" style="display: inline; max-width: 50px;">
                                     <input id="quantity-count" data-quantity="{{ listing.quantity }}" style="max-width: 50px; text-align: center;" type="text" readonly name="quantity-demanded" value="1">
                                 </div>
                                 <div class="col-xs-3" style="display: inline;">
-                                    <button id="minus-btn" type="button" name="minus-btn">-</button>
+                                    <button id="plus-btn" type="button" name="plus-btn">+</button>
                                 </div>
                                 <div class="col-xs-3" style="display: inline; margin-left: 8px; color: grey">
                                     {{ listing.quantity }} available
@@ -282,9 +284,9 @@
                         <div class="col-sm-1 m-3" style="text-align: center; max-width: 45px;">
                             <div class="image-border" style="text-align: center;">
                                 {% if review.profile.profile_pic.url is not None %}
-                                    <img class="profile-pic" src="{% static review.profile.profile_pic.url %}" alt="user-profile-pic">
+                                    <img class="profile-pic-section" src="{% static review.profile.profile_pic.url %}" alt="user-profile-pic">
                                 {% else %}
-                                    <img class="profile-pic" src="{% static 'images/placeholder.png' %}" alt="placeholder-profile-pic">
+                                    <img class="profile-pic-section" src="{% static 'images/placeholder.png' %}" alt="placeholder-profile-pic">
                                 {% endif %}
                             </div>
                         </div>
@@ -362,11 +364,13 @@
                                 </li>
                             {% endif %}
 
-                            <span class="current">
-                                <p style="margin-top: 10px; margin-right: 10px; margin-left: 10px;">
-                                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-                                </p>
-                            </span>
+                            {% if page_obj.number != 1 %}
+                                <span class="current">
+                                    <p style="margin-top: 10px; margin-right: 10px; margin-left: 10px;">
+                                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                                    </p>
+                                </span>
+                            {% endif %}
 
                             {% if page_obj.has_next %}
                                 <li class="page-item">
@@ -384,9 +388,7 @@
                 <p>There is no reviews left by any user.</p>
             </div>
         {% endif %}
-
     </div>
-
 
 
 {% endblock %}

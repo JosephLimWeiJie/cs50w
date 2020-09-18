@@ -1,3 +1,21 @@
+@media (min-width: 1450px) {
+    .listing-image-carousel {
+        display: block;
+        max-height: 400px;
+        min-height: 400px;
+        min-width: 350px;
+    }
+}
+
+@media (max-width: 1449px) {
+    .listing-image-carousel {
+        display: block;
+        max-height: 230px;
+        min-height: 230px;
+        min-width: 230px;
+    }
+}
+
 .carousel-item:active {
     display: block;
     max-width: 100%;
@@ -115,12 +133,6 @@
     background-color: #60dbb9;
 }
 
-.profile-pic {
-    height: 30px;
-    width: 30px;
-    border-radius: 30px;"
-}
-
 #rating1:hover {
     color: #42f5c2;
 }
@@ -141,7 +153,13 @@
     color: #42f5c2;
 }
 
-.profile-pic {
+.profile-pic-section {
+    height: 30px;
+    width: 30px;
+    border-radius: 30px;
+}
+
+.profile-pic-section {
     margin-top: 1rem;
     height: 50px;
     width: 50px;
@@ -172,3 +190,7 @@
     background-color: white;
     border: 1px solid lightgrey;
 }
+
+.modal-backgrop {
+     z-index: -1;
+ }
