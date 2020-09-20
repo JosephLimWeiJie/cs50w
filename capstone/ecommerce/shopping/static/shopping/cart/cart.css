@@ -3,7 +3,7 @@
 }
 
 .plus-btn {
-    min-width: 40px;
+    width: 30px;
     color: grey;
     height: 30px;
     background-color: white;
@@ -15,7 +15,7 @@
 }
 
 .minus-btn {
-    min-width: 40px;
+    width: 30px;
     color: grey;
     height: 30px;
     background-color: white;
@@ -38,7 +38,7 @@
 
 #checkout-btn {
     background-color: #42f5c2;
-    min-width: 200px;
+    width: 200px;
     min-height: 40px;
     border: none;
     color: white;
@@ -52,7 +52,7 @@
 #shop-now-btn {
     background-color: #42f5c2;
     min-width: 200px;
-    min-height: 40px;
+    height: 40px;
     border: none;
     color: white;
     text-align: center;
@@ -63,9 +63,61 @@
 }
 
 .quantity-count {
-    min-width: 40px;
+    width: 40px;
     color: grey;
     height: 30px;
     background-color: white;
     border: 1px solid lightgrey;
+}
+
+@media (max-width: 1400px) {
+    .cart-item-details {
+        font-size: 8px;
+    }
+
+    .minus-btn {
+        width: 20px;
+        height: 20px;
+        font-size: 8px;
+    }
+
+    .plus-btn {
+        width: 20px;
+        height: 20px;
+        font-size: 8px;
+    }
+
+    .quantity-count {
+        width: 20px;
+        height: 20px;
+        font-size: 8px;
+    }
+
+    .nav-bar-headers {
+        font-size: 10px;
+        margin-left: 23px;
+        vertical-align: middle;
+        padding-left: 0;
+    }
+
+    #checkout-btn {
+        background-color: #42f5c2;
+        width: 120px;
+        height: 40px;
+        border: none;
+        color: white;
+        font-size: 15px;
+        text-align: center;
+    }
+
+    #total-price {
+        font-size: 16px;
+    }
+}
+
+@media (min-width: 1401px) {
+    .nav-bar-headers {
+        padding-left: 10px;
+        vertical-align: middle;
+    }
 }
