@@ -5,7 +5,7 @@
     background-color: #42f5c2;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 2px;
 }
 
 .receive-btn:hover {
@@ -19,7 +19,7 @@
     background-color: #42f5c2;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 2px;
 }
 
 .cancel-btn:hover {
@@ -45,25 +45,25 @@
     }
 
     .receive-btn {
-        width: 50px;
+        width: 100%;
         color: grey;
         height: 15px;
         background-color: #42f5c2;
         color: white;
         border: none;
-        border-radius: 5px;
+        border-radius: 2px;
         font-size: 8px;
         padding-top: 2px;
     }
 
     .cancel-btn {
-        width: 50%;
+        width: 100%;
         color: grey;
         height: 15px;
         background-color: #42f5c2;
         color: white;
         border: none;
         font-size: 8px;
-        border-radius: 5px;
+        border-radius: 2px;
     }
 }

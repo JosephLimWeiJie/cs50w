@@ -127,6 +127,16 @@
     background-color: #60dbb9;
 }
 
+.confirm-return-btn {
+    background-color: #42f5c2;
+    color: white;
+}
+
+.confirm-return-btn:hover {
+    background-color: #60dbb9;
+    color: white;
+}
+
 .nav-link.active:active {
     color: #fff;
     cursor: default;
@@ -151,8 +161,118 @@
     background-color: #60dbb9;
 }
 
+.return-btn {
+    background-color: #42f5c2;
+    border: none;
+    border-radius: 2px;
+    color: white;
+    width: 100%;
+    line-height: 30px;
+}
+
+.return-btn:hover {
+    background-color: #60dbb9;
+}
+
+.update-order-status-btn {
+    background-color: #42f5c2;
+    border: none;
+    border-radius: 2px;
+    color: white;
+    width: 100%;
+    margin-top: 5px;
+    height: 30px;
+}
+
+.update-order-status-btn:hover {
+    background-color: #60dbb9;
+}
+
 .listing-images {
     display: block;
     max-width: 100%;
     height: auto;
+}
+
+.notif-datetime {
+    font-size: 13px;
+}
+
+.nav-pills .pill-1 .nav-link:not(.active) {
+    background-color: white;
+    color: black;
+}
+
+.nav-pills .pill-1 .nav-link {
+    background-color: #42f5c2;
+    color: white;
+}
+
+.accept-return-btn {
+    background-color: #42f5c2;
+    color: white;
+    padding-left: 20px;
+}
+
+.accept-return-btn:hover {
+    background-color: #60dbb9;
+    color: white;
+}
+
+.cancel-btn {
+    background-color: white;
+    color: black;
+}
+
+.cancel-btn:hover {
+    background-color: #f8f9fa;
+    color: black;
+}
+
+@media (max-width: 1450px) {
+    .cart-item-details {
+        font-size: 8px;
+    }
+
+    .order-status {
+        width: 40px;
+    }
+
+    .return-btn {
+        background-color: #42f5c2;
+        border: none;
+        border-radius: 2px;
+        color: white;
+        width: 45px;
+        font-size: 8px;
+        line-height: 15px;
+    }
+
+    .update-order-status-btn {
+        background-color: #42f5c2;
+        border: none;
+        border-radius: 2px;
+        color: white;
+        width: 100%;
+        font-size: 8px;
+        margin-top: 1px;
+        height: 20px;
+    }
+
+    .indv-notif-content-section p {
+        padding-left: 10px;
+    }
+
+    .accept-return-btn {
+        font-size: 8px;
+    }
+
+    .btn-light {
+        font-size: 8px;
+    }
+
+    .notif-datetime {
+        font-size: 6px;
+    }
+
 }

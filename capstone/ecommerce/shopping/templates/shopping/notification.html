@@ -13,15 +13,15 @@
 
 {% block content %}
         <!-- Profile section -->
-        <div class="container-fluid" style="margin-top: 15px; min-height: 1000px;">
+        <div class="container-fluid" style="margin-top: 15px; min-height: 800px;">
             <div class="row">
                 <div class="col-4">
                     <div class="row mt-2" style="justify-content: center;">
                         <div class="image-border">
                             {% if profile.profile_pic.url is not None %}
-                                <img class="profile-pic-section" src="{% static profile.profile_pic.url %}" alt="user-profile-pic">
+                                <img class="profile-pic" src="{% static profile.profile_pic.url %}" alt="user-profile-pic">
                             {% else %}
-                                <img class="profile-pic-section" src="{% static 'images/placeholder.png' %}" alt="placeholder-profile-pic">
+                                <img class="profile-pic" src="{% static 'images/placeholder.png' %}" alt="placeholder-profile-pic">
                             {% endif %}
                             <span style="margin-left: 5px;">{{ user.username }}
                                 <button id="edit-profile-btn">
@@ -130,32 +130,32 @@
                                                 <form id="add-listing-form" class="" action="{% url 'create_listing' %}" method="post" enctype="multipart/form-data">
                                                     {% csrf_token %}
                                                     <div class="form-group row pt-3 pb-3">
-                                                        <label for="id_title" class="col-sm-2 col-form-label">Title:</label>
-                                                        <div class="col-sm-10">
+                                                        <label for="id_title" class="col-sm-3 col-form-label">Title:</label>
+                                                        <div class="col-sm-9">
                                                             <input type="text" class="form-control" id="id_title" name="title" required>
                                                         </div>
                                                     </div>
                                                     <div class="form-group row">
-                                                        <label for="id_description" class="col-sm-2 col-form-label">Description:</label>
-                                                        <div class="col-sm-10">
+                                                        <label for="id_description" class="col-sm-3 col-form-label">Description:</label>
+                                                        <div class="col-sm-9">
                                                             <input type="text" required class="form-control" id="id_description" name="desrc" value="">
                                                         </div>
                                                     </div>
                                                     <div class="form-group row">
-                                                        <label for="id_price" class="col-sm-2 col-form-label">Selling Price: (in dollars)</label>
-                                                        <div class="col-sm-10">
+                                                        <label for="id_price" class="col-sm-3 col-form-label">Selling Price: (in dollars)</label>
+                                                        <div class="col-sm-9">
                                                             <input type="text" required class="form-control" id="id_price" name="price" value="" placeholder="Input format: 00.00">
                                                         </div>
                                                     </div>
                                                     <div class="form-group row">
-                                                        <label for="id_quantity" class="col-sm-2 col-form-label">Quantity available</label>
-                                                        <div class="col-sm-10">
+                                                        <label for="id_quantity" class="col-sm-3 col-form-label">Quantity available</label>
+                                                        <div class="col-sm-9">
                                                             <input type="text" required class="form-control" id="id_quantity" name="quantity" value="" placeholder="Stock available for sale">
                                                         </div>
                                                     </div>
                                                     <div class="form-group row">
-                                                        <label for="id_gender" class="col-sm-2 col-form-label">Category:</label>
-                                                        <div class="col-sm-10">
+                                                        <label for="id_gender" class="col-sm-3 col-form-label">Category:</label>
+                                                        <div class="col-sm-9">
                                                             <select class="form-control" name="category" id="id_category" required>
                                                                 <option value="Men's Wear">Men's Wear</option>
                                                                 <option value="Women's Apparel">Women's Apparel</option>
@@ -187,8 +187,8 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group row">
-                                                        <label for="id_images" class="col-sm-2 col-form-label">Images</label>
-                                                        <div class="col-sm-10">
+                                                        <label for="id_images" class="col-sm-3 col-form-label">Images</label>
+                                                        <div class="col-sm-9">
                                                             <div class="custom-file" style="text-align: left;">
                                                                 <input type="file" name="image_files" accept=".jpg,.jpeg,.png" multiple required class="custom-file-input" id="id_images" value="">
                                                                 <label class="custom-file-label" for="customFile">You may upload multiple images.</label>
@@ -197,8 +197,8 @@
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
+                                                        <button type="button" id="" class="btn cancel-btn" data-dismiss="modal">Cancel</button>
                                                         <button type="submit" id="create-listing-btn" class="btn">Create</button>
-                                                        <button type="button" id="cancel-listing-btn" class="btn" data-dismiss="modal">Cancel</button>
                                                     </div>
                                                 </form>
                                             </div>
@@ -212,13 +212,13 @@
                         <hr>
                         <!-- Listing Nav Bar -->
                         <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-                            <li class="nav-item">
+                            <li class="nav-item pill-1">
                                 <a class="nav-link active" id="pills-listing-tab" data-toggle="pill" href="#pills-listing" role="tab" aria-controls="pills-listing" aria-selected="true">My Listings</a>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item pill-1">
                                 <a class="nav-link" id="pills-sold-tab" data-toggle="pill" href="#pills-sold" role="tab" aria-controls="pills-sold" aria-selected="false">Items Sold</a>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item pill-1">
                                 <a class="nav-link" id="pills-review-tab" data-toggle="pill" href="#pills-review" role="tab" aria-controls="pills-review" aria-selected="false">Customers' Reviews</a>
                             </li>
                         </ul>
@@ -226,7 +226,7 @@
                             <div class="tab-pane fade show active" id="pills-listing" role="tabpanel" aria-labelledby="pills-listing-tab">
                                 {% if hasListings %}
                                     {% for listing in listing_page_obj %}
-                                        <div id="indv-listing-{{ listing.id }}" class="container p-3 my-3 border">
+                                        <div id="indv-listing-{{ listing.id }}" class="container p-3 my-3">
                                             <div class="row">
                                                 <div class="col-4 p-3" style="text-align: center; justify-content: center;">
                                                     {% if listing.images is None %}
@@ -236,21 +236,22 @@
                                                     {% endif %}
                                                 </div>
                                                 <div class="col-8 p-3">
-                                                    <a href="{% url 'listing' listing.id %}">{{ listing.title }}</a>
-                                                    <p style="color: grey; font-size: 12px;">Category: <strong>{{ listing.category }}</strong></p>
-                                                    <p style="margin-bottom: 4px;"><strong>Product Description:</strong></p>
-                                                    <p class="listing-desrc" style="color: grey; font-size: 13px;">{{ listing.desrc }}</p>
+                                                    <a class="cart-item-details" href="{% url 'listing' listing.id %}">{{ listing.title }}</a>
+                                                    <p class="cart-item-details" style="color: grey;">Category: <strong>{{ listing.category }}</strong></p>
+                                                    <p class="cart-item-details" style="margin-bottom: 4px;"><strong>Product Description:</strong></p>
+                                                    <p class="listing-desrc cart-item-details" style="color: grey;">{{ listing.desrc }}</p>
                                                     <div class="row">
                                                         <div class="col-6" style="text-align: left;">
-                                                            <p>Quantity left: <strong>{{ listing.quantity }}</strong></p>
+                                                            <p class="cart-item-details">Quantity left: <strong>{{ listing.quantity }}</strong></p>
                                                         </div>
                                                         <div class="col-6" style="text-align: right;">
-                                                            <p >Price: <strong>${{ listing.price }}</strong></p>
+                                                            <p class="cart-item-details">Price: <strong>${{ listing.price }}</strong></p>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+                                        <hr>
                                     {% endfor %}
 
 
@@ -266,11 +267,13 @@
                                             </li>
                                         {% endif %}
 
-                                        <span class="current">
-                                            <p style="margin-top: 10px; margin-right: 10px; margin-left: 10px;">
-                                                Page {{ listing_page_obj.number }} of {{ listing_page_obj.paginator.num_pages }}.
-                                            </p>
-                                        </span>
+                                        {% if listing_page_obj.number != 1 %}
+                                            <span class="current">
+                                                <p style="margin-top: 10px; margin-right: 10px; margin-left: 10px;">
+                                                    Page {{ listing_page_obj.number }} of {{ listing_page_obj.paginator.num_pages }}.
+                                                </p>
+                                            </span>
+                                        {% endif %}
 
                                         {% if listing_page_obj.has_next %}
                                             <li class="page-item">
@@ -290,7 +293,7 @@
                                 {% if hasItemSold %}
                                     {% for order in order_page_obj %}
                                         {% if order.has_purchased is True %}
-                                            <div id="indv-listing-{{ order.listing.id }}" class="container p-3 my-3 border">
+                                            <div id="indv-listing-{{ order.listing.id }}" class="container p-3 my-3">
                                                 <div class="row">
                                                     <div class="col-4 p-3" style="text-align: center; justify-content: center;">
                                                         {% if order.listing.images is None %}
@@ -299,33 +302,33 @@
                                                             <img class="listing-images" src="{% static order.listing.listing_main_pic.url %}" alt="listing-image">
                                                         {% endif %}
                                                     </div>
-                                                    <div class="col-8 p-3">
-                                                        <a href="{% url 'listing' order.listing.id %}">{{ order.listing.title }}</a>
-                                                        <p style="color: grey; font-size: 12px;">Category: <strong>{{ order.listing.category }}</strong></p>
-                                                        <p style="margin-bottom: 4px;"><strong>Product Description:</strong></p>
-                                                        <p class="listing-desrc" style="color: grey; font-size: 13px;">{{ order.listing.desrc }}</p>
+                                                    <div class="col-8">
+                                                        <a class="cart-item-details" href="{% url 'listing' order.listing.id %}">{{ order.listing.title }}</a>
+                                                        <p class="cart-item-details" style="color: grey;">Category: <strong>{{ order.listing.category }}</strong></p>
+                                                        <p class="cart-item-details" style="margin-bottom: 4px;"><strong>Product Description:</strong></p>
+                                                        <p class="listing-desrc cart-item-details" style="color: grey;">{{ order.listing.desrc }}</p>
                                                         <div class="row">
                                                             <div class="col-6" style="text-align: left;">
-                                                                <p>Quantity sold: <strong>{{ order.quantity_demanded }}</strong></p>
+                                                                <p class="cart-item-details">Quantity sold: <strong>{{ order.quantity_demanded }}</strong></p>
                                                             </div>
                                                             <div class="col-6" style="text-align: right;">
-                                                                <p >Price: <strong>${{ order.listing.price }}</strong></p>
+                                                                <p class="cart-item-details">Price: <strong>${{ order.listing.price }}</strong></p>
                                                             </div>
                                                         </div>
-                                                        <p>Ordered by: <a href="{% url 'profile' order.user.username %}">{{ order.user }}</a></p>
+                                                        <p class="cart-item-details">Ordered by: <a href="{% url 'profile' order.user.username %}">{{ order.user }}</a></p>
                                                         <div class="row">
                                                             <div class="col-6">
-                                                                <p id="order-status-{{ order.id }}">Order Status: <strong>{{ order.status }}</strong></p>
+                                                                <p class="cart-item-details" id="order-status-{{ order.id }}">Order Status: <strong>{{ order.status }}</strong></p>
                                                             </div>
                                                             {% if order.status != "Completed" %}
                                                                 <hr>
                                                                 <div class="col-6" style="text-align: right">
-                                                                    <select id="select-order-status-{{ order.id }}" class="" name="">
-                                                                        <option value="To Ship">To Ship</option>
-                                                                        <option value="To Receive">To Receive</option>
-                                                                        <option value="Completed">Completed</option>
-                                                                        <option value="Cancelled">Cancelled</option>
-                                                                        <option value="Return">Return</option>
+                                                                    <select id="select-order-status-{{ order.id }}" class="cart-item-details"" name="">
+                                                                        <option class="cart-item-details" value="To Ship">To Ship</option>
+                                                                        <option class="cart-item-details" value="To Receive">To Receive</option>
+                                                                        <option class="cart-item-details" value="Completed">Completed</option>
+                                                                        <option class="cart-item-details" value="Cancelled">Cancelled</option>
+                                                                        <option class="cart-item-details" value="Return">Return</option>
                                                                     </select>
                                                                     <input type="button" id="update-order-status-{{ order.id }}" class="update-order-status-btn" name="update-order-status-btn" value="Update Order Status">
                                                                 </div>
@@ -335,6 +338,7 @@
                                                 </div>
                                             </div>
                                         {% endif %}
+                                        <hr>
                                     {% endfor %}
                                     <nav aria-label="My purchases pagination">
                                         <ul class="pagination justify-content-center">
@@ -347,11 +351,13 @@
                                                 </li>
                                             {% endif %}
 
-                                            <span class="current">
-                                                <p style="margin-top: 10px; margin-right: 10px; margin-left: 10px;">
-                                                    Page {{ order_page_obj.number }} of {{ order_page_obj.paginator.num_pages }}.
-                                                </p>
-                                            </span>
+                                            {% if order_page_obj.number != 1%}
+                                                <span class="current">
+                                                    <p style="margin-top: 10px; margin-right: 10px; margin-left: 10px;">
+                                                        Page {{ order_page_obj.number }} of {{ order_page_obj.paginator.num_pages }}.
+                                                    </p>
+                                                </span>
+                                            {% endif %}
 
                                             {% if order_page_obj.has_next %}
                                                 <li class="page-item">
@@ -373,33 +379,33 @@
                                         {% for listing in listing_page_obj %}
                                             {% if review.listing == listing and review.user != request.user %}
                                                 <div class="row">
-                                                    <div class="col-sm-1 m-3" style="text-align: center; max-width: 45px;">
+                                                    <div class="col-2" style="text-align: center; max-width: 45px;">
                                                         <div class="image-border" style="text-align: center;">
                                                             {% if review.profile.profile_pic.url is not None %}
                                                                 <img class="profile-pic" src="{% static review.profile.profile_pic.url %}" alt="user-profile-pic">
                                                             {% else %}
-                                                                <img class="profile-picn" src="{% static 'images/placeholder.png' %}" alt="placeholder-profile-pic">
+                                                                <img class="profile-pic" src="{% static 'images/placeholder.png' %}" alt="placeholder-profile-pic">
                                                             {% endif %}
                                                         </div>
                                                     </div>
-                                                    <div class="col-10 m-3">
+                                                    <div class="col-10">
                                                         <div class="row">
                                                             <div class="col-6">
-                                                                <h6 style="padding-top: 1rem;">{{ review.user.username }}</h6>
+                                                                <a style="padding-top: 1rem;" href="{% url 'profile' review.user.username %}">{{ review.user.username }}</a>
                                                             </div>
                                                         </div>
 
                                                         <!-- Rating stars -->
                                                         <p style="font-size: 13px; color:grey;">{{ review.date }}</p>
-                                                        <div id="{{ review.id }}" class="rating-stars" data-ratingvalue="{{ review.rating }}"></div>
-                                                        <p>{{ review.review }}</p>
-                                                        <span style="color: grey; font-style: italic;">
+                                                        <div id="{{ review.id }}" class="rating-stars cart-item-details" data-ratingvalue="{{ review.rating }}"></div>
+                                                        <p class="cart-item-details">{{ review.review }}</p>
+                                                        <span style="color: grey; font-style: italic;" class="cart-item-details">
                                                             For listing: <a style="font-style: normal;" href="{% url 'listing' listing.id %}">{{ listing.title }}</a>
                                                         </span>
-                                                        <p>{{ review.datetime }}</p>
-                                                        <hr>
+                                                        <p class="cart-item-details">{{ review.datetime }}</p>
                                                     </div>
                                                 </div>
+                                                <hr>
                                             {% endif %}
                                         {% endfor %}
                                     {% endfor %}
@@ -417,11 +423,13 @@
                                                 </li>
                                             {% endif %}
 
-                                            <span class="current">
-                                                <p style="margin-top: 10px; margin-right: 10px; margin-left: 10px;">
-                                                    Page {{ review_page_obj.number }} of {{ review_page_obj.paginator.num_pages }}.
-                                                </p>
-                                            </span>
+                                            {% if review_page_obj.number != 1 %}
+                                                <span class="current">
+                                                    <p style="margin-top: 10px; margin-right: 10px; margin-left: 10px;">
+                                                        Page {{ review_page_obj.number }} of {{ review_page_obj.paginator.num_pages }}.
+                                                    </p>
+                                                </span>
+                                            {% endif %}
 
                                             {% if review_page_obj.has_next %}
                                                 <li class="page-item">
@@ -442,26 +450,30 @@
 
                     <div id="my-purchase">
                         <h4>My Purchase</h4>
+                        <hr>
                         {% if hasPurchases %}
                             {% for order in order_page_obj %}
-                                <div class="container p-3 my-3 border">
-                                    <div class="row m-3 p-3">
+                                <div class="container indv-purchase-border">
+                                    <div class="row m-3 p-1">
                                         <div class="col-4 p-3" style="text-align: left; justify-content: center;">
                                             {% if order.listing.images is None %}
-                                                <img style="height: 200px; width: 200px;" class="listing-images" src="{% static 'shopping/categories/listing_placeholder.jpg' %}" alt="listing-placeholder-image">
+                                                <img style="height: auto; width: 100%;" class="listing-images" src="{% static 'shopping/categories/listing_placeholder.jpg' %}" alt="listing-placeholder-image">
                                             {% else %}
-                                                <img style="height: 200px; width: 200px;" class="listing-images" src="{% static order.listing.listing_main_pic.url %}" alt="listing-image">
+                                                <img style="height: auto; width: 100%;" class="listing-images" src="{% static order.listing.listing_main_pic.url %}" alt="listing-image">
                                             {% endif %}
                                         </div>
                                         <div class="col-6 p-3">
-                                            <a href="{% url 'listing' order.listing.id %}">{{ order.listing.title }}</a>
-                                            <p style="color: grey; font-size: 12px;">Category: <strong>{{ order.listing.category }}</strong></p>
-                                            <p style="margin-bottom: 4px;"><strong>Product Description:</strong></p>
-                                            <p class="listing-desrc" style="color: grey; font-size: 13px;">{{ order.listing.desrc }}</p>
-                                            <p>Quantity Bought: <strong>{{ order.quantity_demanded }}</strong></p>
+                                            <a class="cart-item-details" href="{% url 'listing' order.listing.id %}">{{ order.listing.title }}</a>
+                                            <p class="cart-item-details" style="color: grey;">Category: <strong>{{ order.listing.category }}</strong></p>
+                                            <p class="cart-item-details" style="margin-bottom: 4px;"><strong>Product Description:</strong></p>
+                                            <p class="cart-item-details listing-desrc" style="color: grey;">{{ order.listing.desrc }}</p>
+                                            <p class="cart-item-details">Quantity Bought: <strong>{{ order.quantity_demanded }}</strong></p>
                                         </div>
-                                        <div class="col-2 p-3 my-auto" style="text-align: center;">
-                                            <p>{{ order.status }}</p>
+                                        <div class="col-2 my-auto" style="text-align: center;">
+                                            <div class="" style="text-align: center;">
+                                                <p class="cart-item-details order-status" style="">{{ order.status }}</p>
+                                            </div>
+
                                             {% if order.status == "To Ship" or order.status == "To Receive" or order.status == "Completed" %}
                                                 <form class="" action="{% url 'return_order' %}" method="GET">
                                                     {% csrf_token %}
@@ -490,8 +502,8 @@
 
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                                                <button type="submit" class="btn btn-primary">Confirm</button>
+                                                                <button type="button" class="btn cancel-btn" data-dismiss="modal">Cancel</button>
+                                                                <button type="submit" id="confirm-return-btn" class="btn confirm-return-btn">Confirm</button>
                                                             </div>
                                                         </div>
                                                         </div>
@@ -515,11 +527,13 @@
                                         </li>
                                     {% endif %}
 
-                                    <span class="current">
-                                        <p style="margin-top: 10px; margin-right: 10px; margin-left: 10px;">
-                                            Page {{ order_page_obj.number }} of {{ order_page_obj.paginator.num_pages }}.
-                                        </p>
-                                    </span>
+                                    {% if order_page_obj.number != 1%}
+                                        <span class="current">
+                                            <p style="margin-top: 10px; margin-right: 10px; margin-left: 10px;">
+                                                Page {{ order_page_obj.number }} of {{ order_page_obj.paginator.num_pages }}.
+                                            </p>
+                                        </span>
+                                    {% endif %}
 
                                     {% if order_page_obj.has_next %}
                                         <li class="page-item">
@@ -541,10 +555,10 @@
                         <hr>
                         <!-- Notification Nav Bar -->
                         <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-                            <li class="nav-item">
+                            <li class="nav-item pill-1">
                                 <a class="nav-link active" id="pills-pending-tab" data-toggle="pill" href="#pills-pending" role="tab" aria-controls="pills-pending" aria-selected="true">Pending Requests</a>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item pill-1">
                                 <a class="nav-link" id="pills-all-tab" data-toggle="pill" href="#pills-all" role="tab" aria-controls="pills-all" aria-selected="false">All Notifications</a>
                             </li>
                         </ul>
@@ -554,22 +568,23 @@
                                 {% if hasActions %}
                                     {% for notification in notif_page_obj %}
                                         {% if notification.has_action %}
-                                            <div class="row m-3 p-3 border">
+                                            <div class="row m-3 p-3">
                                                 <div class="col-2">
                                                     <a href="{% url 'listing' notification.listing.id %}">
                                                         <img src="{% static notification.listing.listing_main_pic.url %}" alt="listing-image" style="max-width: 60px; max-height: 60px;">
                                                     </a>
                                                 </div>
                                                 {% if notification.has_action %}
-                                                    <div class="col-10" style="vertical-align: middle;">
-                                                        <p>{{ notification.content }}</p>
-                                                        <p style="font-style: italic; color: grey;">{{ notification.review.review }}</p>
-                                                        <button type="button" name="accept-return-btn" data-toggle="modal" data-target="#accept-return-modal">Accept Return</button>
-                                                        <button type="button" name="cancel-return-btn" data-toggle="modal" data-target="#cancel-return-modal">Cancel Return</button>
+                                                    <div class="col-10 indv-notif-content-section" style="vertical-align: middle;">
+                                                        <p class="cart-item-details">{{ notification.content }}</p>
+                                                        <p class="cart-item-details" style="font-style: italic; color: grey;">{{ notification.review.review }}</p>
+                                                        <p class="cart-item-details notif-datetime" style="color: grey;">{{ notification.datetime }}</p>
+
+                                                        <button type="button" name="accept-return-btn" data-toggle="modal" class="btn ml-2 accept-return-btn" data-target="#accept-return-modal">Accept</button>
+                                                        <button type="button" name="cancel-return-btn" data-toggle="modal" class="btn btn-light" data-target="#cancel-return-modal">Cancel</button>
                                                         <form class="" action="{% url 'accept_return_order' %}" method="get">
                                                             {% csrf_token %}
                                                             <input type="text" style="display: none;" name="accept_return_order_id" value="{{ notification.order.id }}">
-
 
                                                             <!-- Accept Return Order Modal -->
                                                             <div class="modal fade" id="accept-return-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -588,8 +603,8 @@
                                                                             </p>
                                                                         </div>
                                                                         <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                        <button type="submit" class="btn btn-primary">Confirm</button>
+                                                                        <button type="button" class="btn cancel-btn" data-dismiss="modal">Cancel</button>
+                                                                        <button type="submit" class="btn confirm-return-btn">Confirm</button>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -614,24 +629,25 @@
                                                                             <textarea class="form-control" rows="6" name="reason-rej-order-text" value=""></textarea>
                                                                         </div>
                                                                         <div class="modal-footer">
-                                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                                                            <button type="submit" class="btn btn-primary">Confirm</button>
+                                                                            <button type="button" class="btn cancel-btn" data-dismiss="modal">Cancel</button>
+                                                                            <button type="submit" class="btn confirm-return-btn">Confirm</button>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             </form>
                                                         </div>
 
-                                                        <p style="color: grey; font-size: 12px;">{{ notification.datetime }}</p>
+
                                                     </div>
                                                 {% else %}
-                                                    <div class="col-10" style="vertical-align: middle;">
-                                                        <p>{{ notification.content }}</p>
-                                                        <p style="font-style: italic; color: grey;">{{ notification.review.review }}</p>
-                                                        <p style="color: grey; font-size: 12px;">{{ notification.datetime }}</p>
+                                                    <div class="col-10 indv-notif-content-section" style="vertical-align: middle;">
+                                                        <p class="cart-item-details">{{ notification.content }}</p>
+                                                        <p class="cart-item-details" style="font-style: italic; color: grey;">{{ notification.review.review }}</p>
+                                                        <p class="cart-item-details notif-datetime" style="color: grey;">{{ notification.datetime }}</p>
                                                     </div>
                                                 {% endif %}
                                             </div>
+                                            <hr>
                                         {% endif %}
                                     {% endfor %}
                                 {% else %}
@@ -642,18 +658,20 @@
                             <div class="tab-pane fade" id="pills-all" role="tabpanel" aria-labelledby="pills-all-tab">
                                 {% if hasNotifications %}
                                     {% for notification in notif_page_obj %}
-                                        <div class="row m-3 p-3 border">
+                                        <div class="row m-3 p-3">
                                             <div class="col-2">
                                                 <a href="{% url 'listing' notification.listing.id %}">
                                                     <img src="{% static notification.listing.listing_main_pic.url %}" alt="listing-image" style="max-width: 60px; max-height: 60px;">
                                                 </a>
                                             </div>
                                             {% if notification.has_action %}
-                                                <div class="col-10" style="vertical-align: middle;">
-                                                    <p>{{ notification.content }}</p>
-                                                    <p style="font-style: italic; color: grey;">{{ notification.review.review }}</p>
-                                                    <button type="button" name="accept-return-btn" data-toggle="modal" data-target="#accept-return-modal">Accept Return</button>
-                                                    <button type="button" name="cancel-return-btn" data-toggle="modal" data-target="#cancel-return-modal">Cancel Return</button>
+                                                <div class="col-10 indv-notif-content-section" style="vertical-align: middle;">
+                                                    <p class="cart-item-details">{{ notification.content }}</p>
+                                                    <p class="cart-item-details" style="font-style: italic; color: grey;">{{ notification.review.review }}</p>
+                                                    <p class="cart-item-details notif-datetime" style="color: grey;">{{ notification.datetime }}</p>
+
+                                                    <button type="button" name="accept-return-btn" id="accept-return-btn" class="btn ml-2 accept-return-btn" data-toggle="modal" data-target="#accept-return-modal">Accept</button>
+                                                    <button type="button" name="cancel-return-btn" id="cancel-return-btn" class="btn btn-light" data-toggle="modal" data-target="#cancel-return-modal">Cancel</button>
                                                     <form class="" action="{% url 'accept_return_order' %}" method="get">
                                                         {% csrf_token %}
                                                         <input type="text" style="display: none;" name="accept_return_order_id" value="{{ notification.order.id }}">
@@ -676,8 +694,8 @@
                                                                         </p>
                                                                     </div>
                                                                     <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                    <button type="submit" class="btn btn-primary">Confirm</button>
+                                                                    <button type="button" class="btn cancel-btn" data-dismiss="modal">Cancel</button>
+                                                                    <button type="submit" class="btn confirm-return-btn">Confirm</button>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -702,24 +720,23 @@
                                                                         <textarea class="form-control" rows="6" name="reason-rej-order-text" value=""></textarea>
                                                                     </div>
                                                                     <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                                                        <button type="submit" class="btn btn-primary">Confirm</button>
+                                                                        <button type="button" class="btn cancel-btn" data-dismiss="modal">Cancel</button>
+                                                                        <button type="submit" class="btn confirm-return-btn">Confirm</button>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </form>
                                                     </div>
-
-                                                    <p style="color: grey; font-size: 12px;">{{ notification.datetime }}</p>
                                                 </div>
                                             {% else %}
-                                                <div class="col-10" style="vertical-align: middle;">
-                                                    <p>{{ notification.content }}</p>
-                                                    <p style="font-style: italic; color: grey;">{{ notification.review.review }}</p>
-                                                    <p style="color: grey; font-size: 12px;">{{ notification.datetime }}</p>
+                                                <div class="col-10 indv-notif-content-section" style="vertical-align: middle;">
+                                                    <p class="cart-item-details">{{ notification.content }}</p>
+                                                    <p class="cart-item-details" style="font-style: italic; color: grey;">{{ notification.review.review }}</p>
+                                                    <p class="cart-item-details notif-datetime" style="color: grey;">{{ notification.datetime }}</p>
                                                 </div>
                                             {% endif %}
                                         </div>
+                                        <hr>
                                     {% endfor %}
                                     <nav aria-label="My Notification pagination">
                                         <ul class="pagination justify-content-center">
@@ -732,11 +749,13 @@
                                                 </li>
                                             {% endif %}
 
-                                            <span class="current">
-                                                <p style="margin-top: 10px; margin-right: 10px; margin-left: 10px;">
-                                                    Page {{ notif_page_obj.number }} of {{ notif_page_obj.paginator.num_pages }}.
-                                                </p>
-                                            </span>
+                                            {% if notif_page_obj.number != 1 %}
+                                                <span class="current">
+                                                    <p style="margin-top: 10px; margin-right: 10px; margin-left: 10px;">
+                                                        Page {{ notif_page_obj.number }} of {{ notif_page_obj.paginator.num_pages }}.
+                                                    </p>
+                                                </span>
+                                            {% endif %}
 
                                             {% if notif_page_obj.has_next %}
                                                 <li class="page-item">
@@ -758,30 +777,30 @@
                     <!-- Edit profile form -->
                     <div id="edit">
                         <h4>Edit Your Profile</h4>
-                        <div class="container-fluid bg-light mt-4">
+                        <div class="container-fluid bg-light mt-4 mb-4">
                             <form id="edit-profile-form" class="" action="" method="post">
                                 {% csrf_token %}
-                                <div class="form-group row pt-3 pb-3">
-                                    <label for="id_username" class="col-sm-2 col-form-label">Username:</label>
-                                    <div class="col-sm-10">
+                                <div class="form-group row pt-3">
+                                    <label for="id_username" class="col-sm-3 col-form-label">Username:</label>
+                                    <div class="col-sm-9">
                                         <input type="text" readonly class="form-control-plaintext" id="id_username" value="{{ user.username }}">
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="id_email" class="col-sm-2 col-form-label">Email:</label>
-                                    <div class="col-sm-10">
+                                    <label for="id_email" class="col-sm-3 col-form-label">Email:</label>
+                                    <div class="col-sm-9">
                                         <input type="text" required class="form-control" id="id_email" value="">
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="id_phone_number" class="col-sm-2 col-form-label">Phone Number:</label>
-                                    <div class="col-sm-10">
+                                    <label for="id_phone_number" class="col-sm-3 col-form-label">Phone Number:</label>
+                                    <div class="col-sm-9">
                                         <input type="text" required class="form-control" id="id_phone_number" value="">
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="id_gender" class="col-sm-2 col-form-label">Gender:</label>
-                                    <div class="col-sm-10">
+                                    <label for="id_gender" class="col-sm-3 col-form-label">Gender:</label>
+                                    <div class="col-sm-9">
                                         <select id="id_gender" class="form-control" name="gender" required>
                                             <option value="Male">Male</option>
                                             <option value="Female">Female</option>
@@ -790,15 +809,19 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="id_date_of_birth" class="col-sm-2 col-form-label">Date of Birth:</label>
-                                    <div class="col-sm-10">
+                                    <label for="id_date_of_birth" class="col-sm-3 col-form-label">Date of Birth:</label>
+                                    <div class="col-sm-9">
                                         <input type="text" required class="form-control" id="id_date_of_birth" placeholder="YYYY-MM-DD" value="">
                                     </div>
                                 </div>
 
                                 <div class="" style="text-align: right;">
-                                    <input id="save-btn" data="{{ profile.id }}" class="btn" type="submit" name="" value="Save">
                                     <input id="undo-btn" data="{{ profile.id }}" class="btn" type="button" name="" value="Undo">
+                                    <input id="save-btn" data="{{ profile.id }}" class="btn" type="submit" name="" value="Save">
+                                </div>
+
+                                <div class="row bg-light">
+                                    <p style="color: transparent; font-size: 4px;">casc</p>
                                 </div>
                             </form>
                         </div>
