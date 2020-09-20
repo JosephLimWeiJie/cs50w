@@ -12,3 +12,31 @@
     font-size: 12px;
     padding-top: 1em;
 }
+
+.sort-btn {
+    width: 100px;
+    color: grey;
+    height: 30px;
+    background-color: #42f5c2;
+    color: white;
+    border: none;
+}
+
+.sort-btn:hover {
+    background-color: #60dbb9;;
+}
+
+.category-btn {
+    border: none;
+    background-color: white;
+}
+
+@media (max-width: 1100px) {
+    .fa-circle {
+        font-size: 10px;
+    }
+
+    .category-btn {
+        font-size: 10px;
+    }
+}

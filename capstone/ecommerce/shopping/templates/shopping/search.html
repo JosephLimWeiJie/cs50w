@@ -18,14 +18,17 @@
         <div class="row">
             <div class="col-4 p-3">
                 <p><strong>SEARCH FILTER</strong></p>
-                <p>By Category</p>
+                <p style="color: grey;">By Category</p>
 
                 {% for category in relevant_categories %}
                     <form class="" action="{% url 'filter_category' %}" method="get">
                         <div class="row p-3 m-3">
                             <div class="row form-check form-check-inline">
                                 <input type="text" name="search-keywords" value="{{ search_keywords }}" style="display: none;">
-                                <input class="" type="submit" name="filter-category" value="{{ category }}">
+                                <span>
+                                    <i style="color: lightgrey;" class="fa fa-circle"></i>
+                                    <input class="category-btn" type="submit" name="filter-category" value="{{ category }}">
+                                </span>
                             </div>
                         </div>
                     </form>
@@ -36,19 +39,19 @@
 
             </div>
             <div class="col-8">
-                <div class="row bg-light">
-                    <p>Sort by: </p>
+                <div class="row bg-light p-3 m-3">
+                    <p class="mt-2 mr-3">Sort by: </p>
                     <form class="" action="{% url 'sort_category' %}" method="get">
                         {% csrf_token %}
                         <input type="text" name="search-keywords" value="{{ search_keywords }}" style="display: none;">
                         <input class="" type="text" name="filter-category" value="{{ category }}" style="display: none;">
-                        <input class="btn" type="submit" name="sort-category" value="Latest">
-                        <input class="btn" type="submit" name="sort-category" value="Price">
-                        <input class="btn" type="submit" name="sort-category" value="Top Sales">
-                        <input class="btn" type="submit" name="sort-category" value="Top Ratings">
+                        <input class="sort-btn m-1" type="submit" name="sort-category" value="Latest">
+                        <input class="sort-btn m-1" type="submit" name="sort-category" value="Price">
+                        <input class="sort-btn m-1" type="submit" name="sort-category" value="Top Sales">
+                        <input class="sort-btn m-1" type="submit" name="sort-category" value="Top Ratings">
                     </form>
                 </div>
-                <p>Search result for {{ search_keywords }}</p>
+                <p class="m-3 p-3">Search result for '<strong>{{ search_keywords }}</strong>'</p>
                 <hr>
 
                 <div class="row m-4" style="justify-content: left;" id="main-search-results">

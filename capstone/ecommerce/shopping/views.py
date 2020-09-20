@@ -979,12 +979,12 @@ def get_sorted_listings_by_latest(search_keywords, filter_category):
     sorted_listings = []
 
     if filter_category == '':
-        for listing in Listing.objects.all().order_by('date').reverse():
+        for listing in Listing.objects.all().order_by('datetime').reverse():
             if search_keywords.lower() in listing.title.lower():
                 sorted_listings.append(listing)
     else:
         for listing in Listing.objects.all().filter(
-                category=filter_category).order_by('date'):
+                category=filter_category).order_by('datetime'):
             if search_keywords.lower() in listing.title.lower().reverse():
                 sorted_listings.append(listing)
 
