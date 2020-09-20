@@ -1,5 +1,5 @@
 .receive-btn {
-    min-width: 50px;
+    width: 100%;
     color: grey;
     height: 30px;
     background-color: #42f5c2;
@@ -9,6 +9,20 @@
 }
 
 .receive-btn:hover {
+    background-color: #60dbb9;;
+}
+
+.cancel-btn {
+    width: 60%;
+    color: grey;
+    height: 30px;
+    background-color: #42f5c2;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+.cancel-btn:hover {
     background-color: #60dbb9;;
 }
 
@@ -23,4 +37,33 @@
 
 #shop-now-btn:hover {
     background-color: #60dbb9;
+}
+
+@media (max-width: 1450px) {
+    .cart-item-details {
+        font-size: 8px;
+    }
+
+    .receive-btn {
+        width: 50px;
+        color: grey;
+        height: 15px;
+        background-color: #42f5c2;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 8px;
+        padding-top: 2px;
+    }
+
+    .cancel-btn {
+        width: 50%;
+        color: grey;
+        height: 15px;
+        background-color: #42f5c2;
+        color: white;
+        border: none;
+        font-size: 8px;
+        border-radius: 5px;
+    }
 }
