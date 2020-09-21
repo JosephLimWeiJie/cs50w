@@ -13,6 +13,8 @@ document.addEventListener('DOMContentLoaded', function() {
         'click', () => loadMyAccount());
     document.querySelector('#edit-profile-form').onsubmit =
         updateMyAccount;
+    document.querySelector('#create-listing-btn').addEventListener(
+        'submit', () => createNewListingNotification());
 
     loadProfilePage();
     loadImageFileName();
@@ -173,4 +175,8 @@ function loadReviewRating() {
             reviewDiv.appendChild(spanForStars);
         }
     });
+}
+
+function createNewListingNotification() {
+    alert('You have created a new listing.');
 }

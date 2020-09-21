@@ -54,14 +54,14 @@ def index(request):
 
     top_products_list = Listing.objects.all().order_by(
         "quantity_sold").reverse()
-    top_products_paginator = Paginator(top_products_list, 20)
+    top_products_paginator = Paginator(top_products_list, 12)
     top_products_page_number = request.GET.get('top-product-listing-page')
     top_products_page_obj = top_products_paginator.get_page(
         top_products_page_number)
 
     trending_searches_list = Listing.objects.all().order_by(
         "click_rate").reverse()
-    trending_searches_paginator = Paginator(trending_searches_list, 20)
+    trending_searches_paginator = Paginator(trending_searches_list, 12)
     trending_searches_page_number = request.GET.get(
         'trending-searches-listing-page')
     trending_searches_page_obj = trending_searches_paginator.get_page(

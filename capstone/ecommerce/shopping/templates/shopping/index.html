@@ -193,14 +193,16 @@
                 </a>
             </div>
         {% endfor %}
+    </div>
+    <div class="row justify-content-center">
         <nav aria-label="trending searches navigation">
             <ul class="pagination justify-content-center">
                 {% if trending_searches_page_obj.has_previous %}
                     <li class="page-item">
-                        <a class="page-link" href="?order-page=1">&laquo; first</a>
+                        <a class="page-link" style="color: #42f5c2" href="?trending-searches-listing-page=1">&laquo; first</a>
                     </li>
                     <li class="page-item">
-                        <a class="page-link" href="?order-page={{trending_searches_page_obj.previous_page_number }}">previous</a>
+                        <a class="page-link" style="color: #42f5c2" href="?trending-searches-listing-page={{ trending_searches_page_obj.previous_page_number }}">previous</a>
                     </li>
                 {% endif %}
 
@@ -214,10 +216,10 @@
 
                 {% if trending_searches_page_obj.has_next %}
                     <li class="page-item">
-                        <a class="page-link" href="?order-page={{ trending_searches_page_obj.next_page_number }}">next</a>
+                        <a class="page-link" style="color: #42f5c2" href="?trending-searches-listing-page={{ trending_searches_page_obj.next_page_number }}">next</a>
                     </li>
                     <li class="page-item">
-                        <a class="page-link" href="?order-page={{ trending_searches_page_obj.paginator.num_pages }}">last &raquo;</a>
+                        <a class="page-link" style="color: #42f5c2" href="?trending-searches-listing-page={{ trending_searches_page_obj.paginator.num_pages }}">last &raquo;</a>
                     </li>
                 {% endif %}
             </ul>
@@ -248,14 +250,16 @@
                 </a>
             </div>
         {% endfor %}
+    </div>
+    <div class="row justify-content-center">
         <nav aria-label="Top products navigation">
             <ul class="pagination justify-content-center">
                 {% if top_products_page_obj.has_previous %}
                     <li class="page-item">
-                        <a class="page-link" href="?order-page=1">&laquo; first</a>
+                        <a class="page-link" href="?top-product-listing-page=1" style="color: #42f5c2">&laquo; first</a>
                     </li>
                     <li class="page-item">
-                        <a class="page-link" href="?order-page={{ top_products_page_obj.previous_page_number }}">previous</a>
+                        <a class="page-link" style="color: #42f5c2" href="?top-product-listing-page={{ top_products_page_obj.previous_page_number }}">previous</a>
                     </li>
                 {% endif %}
 
@@ -269,10 +273,10 @@
 
                 {% if top_products_page_obj.has_next %}
                     <li class="page-item">
-                        <a class="page-link" href="?order-page={{ top_products_page_obj.next_page_number }}">next</a>
+                        <a class="page-link" style="color: #42f5c2" href="?top-product-listing-page={{ top_products_page_obj.next_page_number }}">next</a>
                     </li>
                     <li class="page-item">
-                        <a class="page-link" href="?order-page={{ top_products_page_obj.paginator.num_pages }}">last &raquo;</a>
+                        <a class="page-link" style="color: #42f5c2" href="?top-product-listing-page={{ top_products_page_obj.paginator.num_pages }}">last &raquo;</a>
                     </li>
                 {% endif %}
             </ul>
@@ -285,7 +289,7 @@
     <p style="margin-left: 15px; color: grey;">ALL PRODUCTS:</p>
 
     <div id="all-listing-grid-counter" style="display: none;">1</div>
-    <div class="row m-4" style="justify-content: left;">
+    <div class="row m-4 justify-content-center" style="justify-content: left;">
         {% for listing in all_listing_page_obj %}
             <div class="col-2 m-1 indv-listing-border" style="max-height: 300px; min-height: 300px; width: 100%; min-width: 186px; max-width: 198px;">
                 <a href="{% url 'listing' listing.id %}" style="text-docoration: none;">
@@ -306,18 +310,20 @@
                 </a>
             </div>
         {% endfor %}
+    </div>
+    <div class="row justify-content-center">
         <nav aria-label="All products navigation">
             <ul class="pagination justify-content-center">
                 {% if all_listing_page_obj.has_previous %}
                     <li class="page-item">
-                        <a class="page-link" href="?order-page=1">&laquo; first</a>
+                        <a class="page-link" href="?all-listing-page=1" style="color: #42f5c2">&laquo; first</a>
                     </li>
                     <li class="page-item">
-                        <a class="page-link" href="?order-page={{ all_listing_page_obj.previous_page_number }}">previous</a>
+                        <a class="page-link" style="color: #42f5c2" href="?all-listing-page={{ all_listing_page_obj.previous_page_number }}">previous</a>
                     </li>
                 {% endif %}
 
-                {% if all_listing_page_obj.number != 1%}
+                {% if all_listing_page_obj.number != 1 %}
                     <span class="current">
                         <p style="margin-top: 10px; margin-right: 10px; margin-left: 10px;">
                             Page {{ all_listing_page_obj.number }} of {{ all_listing_page_obj.paginator.num_pages }}.
@@ -327,10 +333,10 @@
 
                 {% if all_listing_page_obj.has_next %}
                     <li class="page-item">
-                        <a class="page-link" href="?order-page={{ all_listing_page_obj.next_page_number }}">next</a>
+                        <a class="page-link" style="color: #42f5c2" href="?all-listing-page={{ all_listing_page_obj.next_page_number }}">next</a>
                     </li>
                     <li class="page-item">
-                        <a class="page-link" href="?order-page={{ all_listing_page_obj.paginator.num_pages }}">last &raquo;</a>
+                        <a class="page-link" style="color: #42f5c2" href="?all-listing-page={{ all_listing_page_obj.paginator.num_pages }}">last &raquo;</a>
                     </li>
                 {% endif %}
             </ul>

@@ -9,6 +9,11 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="{% static 'shopping/profile/profile.js' %}"></script>
+    <script type="text/javascript">
+        function createNewListingNotification() {
+            alert('You have created a new listing.');
+        }
+    </script>
 {% endblock %}
 
 {% block content %}
@@ -127,7 +132,7 @@
                                                 </button>
                                             </div>
                                             <div class="modal-body">
-                                                <form id="add-listing-form" class="" action="{% url 'create_listing' %}" method="post" enctype="multipart/form-data">
+                                                <form onsubmit="createNewListingNotification()" id="add-listing-form" class="" action="{% url 'create_listing' %}" method="post" enctype="multipart/form-data">
                                                     {% csrf_token %}
                                                     <div class="form-group row pt-3 pb-3">
                                                         <label for="id_title" class="col-sm-3 col-form-label">Title:</label>
@@ -202,7 +207,6 @@
                                                     </div>
                                                 </form>
                                             </div>
-
                                         </div>
                                     </div>
                                 </div>
