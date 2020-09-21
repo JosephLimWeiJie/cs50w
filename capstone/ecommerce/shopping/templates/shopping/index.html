@@ -6,6 +6,7 @@
 {% endblock %}
 
 {% block script %}
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
     <script src="{% static 'shopping/index/index.js' %}"></script>
 {% endblock %}
 
@@ -172,7 +173,7 @@
 {% block trending %}
     <p style="margin-left: 15px; color: grey;">TRENDING SEARCHES:</p>
     <div class="row m-4" style="justify-content: left;">
-        {% for listing in trending_searches %}
+        {% for listing in trending_searches_page_obj %}
             <div class="col-2 m-1 indv-listing-border" style="max-height: 300px; min-height: 300px; width: 100%; min-width: 186px; max-width: 198px;">
                 <a href="{% url 'listing' listing.id %}" style="text-docoration: none;">
                     <div class="row">
@@ -192,13 +193,42 @@
                 </a>
             </div>
         {% endfor %}
+        <nav aria-label="trending searches navigation">
+            <ul class="pagination justify-content-center">
+                {% if trending_searches_page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?order-page=1">&laquo; first</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?order-page={{trending_searches_page_obj.previous_page_number }}">previous</a>
+                    </li>
+                {% endif %}
+
+                {% if trending_searches_page_obj.number != 1%}
+                    <span class="current">
+                        <p style="margin-top: 10px; margin-right: 10px; margin-left: 10px;">
+                            Page {{ trending_searches_page_obj.number }} of {{ trending_searches_page_obj.paginator.num_pages }}.
+                        </p>
+                    </span>
+                {% endif %}
+
+                {% if trending_searches_page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?order-page={{ trending_searches_page_obj.next_page_number }}">next</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?order-page={{ trending_searches_page_obj.paginator.num_pages }}">last &raquo;</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
     </div>
 {% endblock %}
 
 {% block top_products %}
     <p style="margin-left: 15px; color: grey;">TOP PRODUCTS:</p>
     <div class="row m-4" style="justify-content: left;">
-        {% for listing in all_listing %}
+        {% for listing in top_products_page_obj %}
             <div class="col-2 m-1 indv-listing-border" style="max-height: 300px; min-height: 300px; width: 100%; min-width: 186px; max-width: 198px;">
                 <a href="{% url 'listing' listing.id %}" style="text-docoration: none;">
                     <div class="row">
@@ -218,6 +248,35 @@
                 </a>
             </div>
         {% endfor %}
+        <nav aria-label="Top products navigation">
+            <ul class="pagination justify-content-center">
+                {% if top_products_page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?order-page=1">&laquo; first</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?order-page={{ top_products_page_obj.previous_page_number }}">previous</a>
+                    </li>
+                {% endif %}
+
+                {% if top_products_page_obj.number != 1%}
+                    <span class="current">
+                        <p style="margin-top: 10px; margin-right: 10px; margin-left: 10px;">
+                            Page {{ top_products_page_obj.number }} of {{ top_products_page_obj.paginator.num_pages }}.
+                        </p>
+                    </span>
+                {% endif %}
+
+                {% if top_products_page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?order-page={{ top_products_page_obj.next_page_number }}">next</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?order-page={{ top_products_page_obj.paginator.num_pages }}">last &raquo;</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
     </div>
 
 {% endblock %}
@@ -227,7 +286,7 @@
 
     <div id="all-listing-grid-counter" style="display: none;">1</div>
     <div class="row m-4" style="justify-content: left;">
-        {% for listing in all_listing %}
+        {% for listing in all_listing_page_obj %}
             <div class="col-2 m-1 indv-listing-border" style="max-height: 300px; min-height: 300px; width: 100%; min-width: 186px; max-width: 198px;">
                 <a href="{% url 'listing' listing.id %}" style="text-docoration: none;">
                     <div class="row">
@@ -247,6 +306,35 @@
                 </a>
             </div>
         {% endfor %}
+        <nav aria-label="All products navigation">
+            <ul class="pagination justify-content-center">
+                {% if all_listing_page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?order-page=1">&laquo; first</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?order-page={{ all_listing_page_obj.previous_page_number }}">previous</a>
+                    </li>
+                {% endif %}
+
+                {% if all_listing_page_obj.number != 1%}
+                    <span class="current">
+                        <p style="margin-top: 10px; margin-right: 10px; margin-left: 10px;">
+                            Page {{ all_listing_page_obj.number }} of {{ all_listing_page_obj.paginator.num_pages }}.
+                        </p>
+                    </span>
+                {% endif %}
+
+                {% if all_listing_page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?order-page={{ all_listing_page_obj.next_page_number }}">next</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?order-page={{ all_listing_page_obj.paginator.num_pages }}">last &raquo;</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
     </div>
 {% endblock %}
 

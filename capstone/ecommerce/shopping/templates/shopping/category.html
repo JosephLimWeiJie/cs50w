@@ -10,61 +10,150 @@
 {% endblock %}
 
 {% block content %}
-    <div class="row">
-        <div class="col-2 p-4">
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fa fa-list"></i>  All Categories:
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="{% url 'category' 'menswear' %}">Men's Wear</a>
-                    <a class="dropdown-item" href="{% url 'category' 'womenapparel' %}">Women's Apparel</a>
-                    <a class="dropdown-item" href="{% url 'category' 'mobile' %}">Mobile & Gadgets</a>
-                    <a class="dropdown-item" href="{% url 'category' 'beauty' %}">Beauty & Personal Care</a>
-                    <a class="dropdown-item" href="{% url 'category' 'homeappliance' %}">Home Appliances</a>
-                    <a class="dropdown-item" href="{% url 'category' 'kidsfashion' %}">Kids Fashion</a>
-                    <a class="dropdown-item" href="{% url 'category' 'toyskids' %}">Toys, Kids & Babies</a>
-                    <a class="dropdown-item" href="{% url 'category' 'games' %}">Video Games</a>
-                    <a class="dropdown-item" href="{% url 'category' 'food' %}">Food & Beverages</a>
-                    <a class="dropdown-item" href="{% url 'category' 'computer' %}">Computer & Peripherals</a>
-                    <a class="dropdown-item" href="{% url 'category' 'hobbies' %}">Hobbies & Books</a>
-                    <a class="dropdown-item" href="{% url 'category' 'health' %}">Health & Wellness</a>
-                    <a class="dropdown-item" href="{% url 'category' 'womensbags' %}">Women's Bags</a>
-                    <a class="dropdown-item" href="{% url 'category' 'travel' %}">Travel & Luggage</a>
-                    <a class="dropdown-item" href="{% url 'category' 'pet' %}">Pet Food & Supplies</a>
-                    <a class="dropdown-item" href="{% url 'category' 'watches' %}">Watches</a>
-                    <a class="dropdown-item" href="{% url 'category' 'jewel' %}">Jewellery & Accessory</a>
-                    <a class="dropdown-item" href="{% url 'category' 'menshoes' %}">Men's Shoes</a>
-                    <a class="dropdown-item" href="{% url 'category' 'womenshoes' %}">Women's Shoes</a>
-                    <a class="dropdown-item" href="{% url 'category' 'sport' %}">Sports & Outdoors</a>
-                    <a class="dropdown-item" href="{% url 'category' 'automotive' %}">Automotive</a>
-                    <a class="dropdown-item" href="{% url 'category' 'menbags' %}">Men's Bags</a>
-                    <a class="dropdown-item" href="{% url 'category' 'camera' %}">Cameras & Drones</a>
-                    <a class="dropdown-item" href="{% url 'category' 'dining' %}">Dining, Travel & Services</a>
-                    <a class="dropdown-item" href="{% url 'category' 'misc' %}">Miscellaneous</a>
-                </div>
-            </div>
-            <hr>
-            <div class="dropdown-menu">
-                Filter by:
-                <a class="dropdown-item">Shipping Options</a>
-            </div>
+    <div class="row p-4" style="min-height: 800px;">
+        <div class="col-3 p-3">
+            <p><i class="fa fa-list"></i> All Categories:</p>
+            {% if category_value == "Men's Wear" %}
+                <a class="dropdown-item highlight-dropdown-item" href="{% url 'category' 'menswear' %}"><i class="fa fa-caret-right"></i> Men's Wear</a>
+            {% else %}
+                <a class="dropdown-item" href="{% url 'category' 'menswear' %}">Men's Wear</a>
+            {% endif %}
+            {% if category_value == "Women's Apparel" %}
+                <a class="dropdown-item highlight-dropdown-item" href="{% url 'category' 'womenapparel' %}"><i class="fa fa-caret-right"></i> Women's Apparel</a>
+            {% else %}
+                <a class="dropdown-item" href="{% url 'category' 'womenapparel' %}">Women's Apparel</a>
+            {% endif %}
+            {% if category_value == "Mobile & Gadgets" %}
+                <a class="dropdown-item highlight-dropdown-item" href="{% url 'category' 'mobile' %}"><i class="fa fa-caret-right"></i> Mobile & Gadgets</a>
+            {% else %}
+                <a class="dropdown-item" href="{% url 'category' 'mobile' %}">Mobile & Gadgets</a>
+            {% endif %}
+            {% if category_value == "Beauty & Personal Care" %}
+                <a class="dropdown-item highlight-dropdown-item" href="{% url 'category' 'beauty' %}"><i class="fa fa-caret-right"></i> Beauty & Personal Care</a>
+            {% else %}
+                <a class="dropdown-item" href="{% url 'category' 'beauty' %}">Beauty & Personal Care</a>
+            {% endif %}
+            {% if category_value == "Home Appliances" %}
+                <a class="dropdown-item highlight-dropdown-item" href="{% url 'category' 'homeappliance' %}"><i class="fa fa-caret-right"></i> Home Appliances</a>
+            {% else %}
+                <a class="dropdown-item" href="{% url 'category' 'homeappliance' %}">Home Appliances</a>
+            {% endif %}
+            {% if category_value == "Kids Fashion" %}
+                <a class="dropdown-item highlight-dropdown-item" href="{% url 'category' 'kidsfashion' %}"><i class="fa fa-caret-right"></i> Kids Fashion</a>
+            {% else %}
+                <a class="dropdown-item" href="{% url 'category' 'kidsfashion' %}">Kids Fashion</a>
+            {% endif %}
+            {% if category_value == "Toys, Kids & Babies" %}
+                <a class="dropdown-item highlight-dropdown-item" href="{% url 'category' 'toyskids' %}"><i class="fa fa-caret-right"></i> Toys, Kids & Babies</a>
+            {% else %}
+                <a class="dropdown-item" href="{% url 'category' 'toyskids' %}">Toys, Kids & Babies</a>
+            {% endif %}
+            {% if category_value == "Video Games" %}
+                <a class="dropdown-item highlight-dropdown-item" href="{% url 'category' 'games' %}"><i class="fa fa-caret-right"></i> Video Games</a>
+            {% else %}
+                <a class="dropdown-item" href="{% url 'category' 'games' %}">Video Games</a>
+            {% endif %}
+            {% if category_value == "Food & Beverages" %}
+                <a class="dropdown-item highlight-dropdown-item" href="{% url 'category' 'food' %}"><i class="fa fa-caret-right"></i> Food & Beverages</a>
+            {% else %}
+                <a class="dropdown-item" href="{% url 'category' 'food' %}">Food & Beverages</a>
+            {% endif %}
+            {% if category_value == "Computer & Peripherals" %}
+                <a class="dropdown-item highlight-dropdown-item" href="{% url 'category' 'computer' %}"><i class="fa fa-caret-right"></i> Computer & Peripherals</a>
+            {% else %}
+                <a class="dropdown-item" href="{% url 'category' 'computer' %}">Computer & Peripherals</a>
+            {% endif %}
+            {% if category_value == "Hobbies & Books" %}
+                <a class="dropdown-item highlight-dropdown-item" href="{% url 'category' 'hobbies' %}"><i class="fa fa-caret-right"></i> Hobbies & Books</a>
+            {% else %}
+                <a class="dropdown-item" href="{% url 'category' 'hobbies' %}">Hobbies & Books</a>
+            {% endif %}
+            {% if category_value == "Health & Wellness" %}
+                <a class="dropdown-item highlight-dropdown-item" href="{% url 'category' 'health' %}"><i class="fa fa-caret-right"></i> Health & Wellness</a>
+            {% else %}
+                <a class="dropdown-item" href="{% url 'category' 'health' %}">Health & Wellness</a>
+            {% endif %}
+            {% if category_value == "Women's Bags" %}
+                <a class="dropdown-item highlight-dropdown-item" href="{% url 'category' 'womensbags' %}"><i class="fa fa-caret-right"></i> Women's Bags</a>
+            {% else %}
+                <a class="dropdown-item" href="{% url 'category' 'womensbags' %}">Women's Bags</a>
+            {% endif %}
+            {% if category_value == "Travel & Luggage" %}
+                <a class="dropdown-item highlight-dropdown-item" href="{% url 'category' 'travel' %}"><i class="fa fa-caret-right"></i> Travel & Luggage</a>
+            {% else %}
+                <a class="dropdown-item" href="{% url 'category' 'travel' %}">Travel & Luggage</a>
+            {% endif %}
+            {% if category_value == "Pet Food & Supplies" %}
+                <a class="dropdown-item highlight-dropdown-item" href="{% url 'category' 'pet' %}"><i class="fa fa-caret-right"></i> Pet Food & Supplies</a>
+            {% else %}
+                <a class="dropdown-item" href="{% url 'category' 'pet' %}">Pet Food & Supplies</a>
+            {% endif %}
+            {% if category_value == "Watches" %}
+                <a class="dropdown-item highlight-dropdown-item" href="{% url 'category' 'watches' %}"><i class="fa fa-caret-right"></i> Watches</a>
+            {% else %}
+                <a class="dropdown-item" href="{% url 'category' 'watches' %}">Watches</a>
+            {% endif %}
+            {% if category_value == "Jewellery & Accessory" %}
+                <a class="dropdown-item highlight-dropdown-item" href="{% url 'category' 'jewel' %}"><i class="fa fa-caret-right"></i> Jewellery & Accessory</a>
+            {% else %}
+                <a class="dropdown-item" href="{% url 'category' 'jewel' %}">Jewellery & Accessory</a>
+            {% endif %}
+            {% if category_value == "Men's Shoes" %}
+                <a class="dropdown-item highlight-dropdown-item" href="{% url 'category' 'menshoes' %}"><i class="fa fa-caret-right"></i> Men's Shoes</a>
+            {% else %}
+                <a class="dropdown-item" href="{% url 'category' 'menshoes' %}">Men's Shoes</a>
+            {% endif %}
+            {% if category_value == "Women's Shoes" %}
+                <a class="dropdown-item highlight-dropdown-item" href="{% url 'category' 'womenshoes' %}"><i class="fa fa-caret-right"></i> Women's Shoes</a>
+            {% else %}
+                <a class="dropdown-item" href="{% url 'category' 'womenshoes' %}">Women's Shoes</a>
+            {% endif %}
+            {% if category_value == "Sports & Outdoors" %}
+                <a class="dropdown-item highlight-dropdown-item" href="{% url 'category' 'sport' %}"><i class="fa fa-caret-right"></i> Sports & Outdoors</a>
+            {% else %}
+                <a class="dropdown-item" href="{% url 'category' 'sport' %}">Sports & Outdoors</a>
+            {% endif %}
+            {% if category_value == "Automotive" %}
+                <a class="dropdown-item highlight-dropdown-item" href="{% url 'category' 'automotive' %}"><i class="fa fa-caret-right"></i> Automotive</a>
+            {% else %}
+                <a class="dropdown-item" href="{% url 'category' 'automotive' %}">Automotive</a>
+            {% endif %}
+            {% if category_value == "Men's Bags" %}
+                <a class="dropdown-item highlight-dropdown-item" href="{% url 'category' 'menbags' %}"><i class="fa fa-caret-right"></i> Men's Bags</a>
+            {% else %}
+                <a class="dropdown-item" href="{% url 'category' 'menbags' %}">Men's Bags</a>
+            {% endif %}
+            {% if category_value == "Cameras & Drones" %}
+                <a class="dropdown-item highlight-dropdown-item" href="{% url 'category' 'camera' %}"><i class="fa fa-caret-right"></i> Cameras & Drones</a>
+            {% else %}
+                <a class="dropdown-item" href="{% url 'category' 'camera' %}">Cameras & Drones</a>
+            {% endif %}
+            {% if category_value == "Dining, Travel & Services" %}
+                <a class="dropdown-item highlight-dropdown-item" href="{% url 'category' 'dining' %}"><i class="fa fa-caret-right"></i> Dining, Travel & Services</a>
+            {% else %}
+                <a class="dropdown-item" href="{% url 'category' 'dining' %}">Dining, Travel & Services</a>
+            {% endif %}
+            {% if category_value == "Miscellaneous" %}
+                <a class="dropdown-item highlight-dropdown-item" href="{% url 'category' 'misc' %}"><i class="fa fa-caret-right"></i> Miscellaneous</a>
+            {% else %}
+                <a class="dropdown-item" href="{% url 'category' 'misc' %}">Miscellaneous</a>
+            {% endif %}
         </div>
-        <div class="col-10">
+        <div class="col-8 p-2">
             <div class="container-fluid bg-light">
-                <div class="container-fluid p-2 m-3">
+                <div class="row p-2 m-3">
                     <form class="" action="{% url 'categorysort' %}" method="get">
                         Sort by
                         <input type="text" style="display: none;" name="category-name" value="{{ category_name }}">
-                        <input type="submit" name="popular-btn" value="Popular">
-                        <input type="submit" name="lastest-btn" value="Latest">
-                        <input type="submit" name="price-btn" value="Price">
+                        <input type="submit" name="popular-btn" class="sort-btn" value="Popular">
+                        <input type="submit" name="lastest-btn" class="sort-btn" value="Latest">
+                        <input type="submit" name="price-btn" class="sort-btn" value="Price">
                     </form>
                 </div>
             </div>
             <div class="row m-4" style="justify-content: left;">
-                {% for listing in relevant_listings %}
-                    <div class="col-2 m-1 border" style="max-height: 300px; min-height: 300px; width: 100%; min-width: 186px; max-width: 198px;">
+                {% for listing in relevant_listings_page_obj %}
+                    <div class="col-2 m-1 indv-listing-border" style="max-height: 300px; min-height: 300px; width: 100%; min-width: 186px; max-width: 198px;">
                         <a href="{% url 'listing' listing.id %}" style="text-docoration: none;">
                             <div class="row">
                                 <img class="all_listing_img" src="{% static listing.listing_main_pic.url %}" alt="listing_main_pic">
@@ -72,13 +161,49 @@
                             <div class="row p-3" style="max-width: 170px;">
                                 <div class="listing-title" style="color: black; min-width: 145px;">{{ listing.title }}</div>
                                 <div id="listing-{{ listing.id }}-rating-stars" class="listing-rating-star-section" data-ratingscore={{ listing.rating_score }} data-listingid={{ listing.id }}></div>
-                                <div style="position: absolute; bottom: 10px;"><span style="color: lightgrey">From: </span><strong style="color: #42f5c2">${{ listing.price }}</strong></div><br>
+                                <div style="position: absolute; bottom: 10px;">
+                                    <span style="color: lightgrey">From: </span>
+                                    <strong style="color: #42f5c2">${{ listing.price }}</strong>
+                                    {% if listing.quantity == 0 %}
+                                        <span class="sold-out-tag">Sold out</span>
+                                    {% endif %}
+                                </div><br>
                             </div>
                         </a>
                     </div>
                 {% endfor %}
+                <nav aria-label="category navigation">
+                    <ul class="pagination justify-content-center">
+                        {% if relevant_listings_page_obj.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?order-page=1">&laquo; first</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?order-page={{ relevant_listings_page_obj.previous_page_number }}">previous</a>
+                            </li>
+                        {% endif %}
+
+                        {% if relevant_listings_page_obj.number != 1%}
+                            <span class="current">
+                                <p style="margin-top: 10px; margin-right: 10px; margin-left: 10px;">
+                                    Page {{ relevant_listings_page_obj.number }} of {{ relevant_listings_page_obj.paginator.num_pages }}.
+                                </p>
+                            </span>
+                        {% endif %}
+
+                        {% if relevant_listings_page_obj.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?order-page={{ relevant_listings_page_obj.next_page_number }}">next</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?order-page={{ relevant_listings_page_obj.paginator.num_pages }}">last &raquo;</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
             </div>
         </div>
     </div>
+
 
 {% endblock %}

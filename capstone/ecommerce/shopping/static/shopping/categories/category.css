@@ -8,3 +8,46 @@
     font-size: 12px;
     padding-top: 1em;
 }
+
+.indv-cat-border {
+    min-height: 119px;
+    min-width: 100px;
+    max-width: 101px;
+    text-align: center;
+    border: 1px solid lightgrey;
+}
+
+.indv-cat-border:hover {
+    box-shadow: 5px 10px #f5f5f5;
+}
+
+.indv-listing-border:hover {
+    box-shadow: 5px 10px #f5f5f5;
+    border: 1px solid #42f5c2;
+}
+
+.sold-out-tag {
+    font-size: 10px;
+    border: 1px solid #42f5c2;
+    color: #42f5c2;
+    border-radius: 2px;
+    padding: 3px 3px 3px 3px;
+}
+
+.sort-btn {
+    width: 100px;
+    color: grey;
+    height: 30px;
+    background-color: #42f5c2;
+    color: white;
+    border: none;
+    margin-left: 3px;
+}
+
+.sort-btn:hover {
+    background-color: #60dbb9;;
+}
+
+.highlight-dropdown-item {
+    color: #42f5c2;
+}

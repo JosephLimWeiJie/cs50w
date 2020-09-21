@@ -46,14 +46,31 @@ category_dict = {
 
 
 def index(request):
-    all_listing = Listing.objects.all()
-    top_products = Listing.objects.all().order_by("quantity_sold")
-    trending_searches = Listing.objects.all().order_by("click_rate").reverse()
+    all_listing_list = Listing.objects.all()
+    all_listing_paginator = Paginator(all_listing_list, 12)
+    all_listing_page_number = request.GET.get('all-listing-page')
+    all_listing_page_obj = all_listing_paginator.get_page(
+        all_listing_page_number)
+
+    top_products_list = Listing.objects.all().order_by(
+        "quantity_sold").reverse()
+    top_products_paginator = Paginator(top_products_list, 20)
+    top_products_page_number = request.GET.get('top-product-listing-page')
+    top_products_page_obj = top_products_paginator.get_page(
+        top_products_page_number)
+
+    trending_searches_list = Listing.objects.all().order_by(
+        "click_rate").reverse()
+    trending_searches_paginator = Paginator(trending_searches_list, 20)
+    trending_searches_page_number = request.GET.get(
+        'trending-searches-listing-page')
+    trending_searches_page_obj = trending_searches_paginator.get_page(
+        trending_searches_page_number)
 
     return render(request, "shopping/index.html", {
-        "all_listing": all_listing,
-        "top_products": top_products,
-        "trending_searches": trending_searches,
+        "all_listing_page_obj": all_listing_page_obj,
+        "top_products_page_obj": top_products_page_obj,
+        "trending_searches_page_obj": trending_searches_page_obj,
     })
 
 
@@ -122,6 +139,7 @@ def logout_view(request):
 
 def profile_view(request, name):
     profile = Profile.objects.get(user=request.user)
+
     listing_list = Listing.objects.all().filter(
         user=request.user).order_by("datetime").reverse()
     listing_paginator = Paginator(listing_list, 10)
@@ -168,6 +186,7 @@ def profile_view(request, name):
 
 def profile_view_notification_toggled(request, name):
     profile = Profile.objects.get(user=request.user)
+
     listing_list = Listing.objects.all().filter(
         user=request.user).order_by("datetime").reverse()
     listing_paginator = Paginator(listing_list, 10)
@@ -430,9 +449,15 @@ def update_review_view(request, listing_id):
 def category_view(request, category_name):
     category_value = category_dict[category_name]
     relevant_listings = Listing.objects.all().filter(category=category_value)
+    relevant_listings_paginator = Paginator(relevant_listings, 10)
+    relevant_listings_page_number = request.GET.get('relevant-listings-page')
+    relevant_listings_page_obj = relevant_listings_paginator.get_page(
+        relevant_listings_page_number)
+
     return render(request, "shopping/category.html", {
         "category_name": category_name,
-        "relevant_listings": relevant_listings
+        "category_value": category_value,
+        "relevant_listings_page_obj": relevant_listings_page_obj
     })
 
 
@@ -450,7 +475,7 @@ def category_sort_view(request):
             })
         elif 'lastest-btn' in request.GET:
             sorted_latest_listings = Listing.objects.all().filter(
-                category=category_value).order_by("date").reverse()
+                category=category_value).order_by("datetime").reverse()
 
             return render(request, "shopping/category.html", {
                 "category_name": category_name,
