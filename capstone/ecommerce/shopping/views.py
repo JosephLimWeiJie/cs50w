@@ -579,6 +579,9 @@ def update_cart_view(request):
         order_to_remove = Order.objects.filter(pk=order_to_remove_id)
         order_to_remove.delete()
 
+        total_order_price = parse_order_total_price_two_decimal_pace(
+            get_total_price_in_cart(request.user))
+
         order_list = Order.objects.filter(
             user=request.user, has_purchased=False)
         order_list_paginator = Paginator(order_list, 10)
@@ -586,7 +589,9 @@ def update_cart_view(request):
         orders = order_list_paginator.get_page(order_list_page_number)
 
         return render(request, "shopping/cart.html", {
-            "orders": orders
+            "orders": orders,
+            "total_order_price": total_order_price,
+            "hasOrderInCart": check_user_has_order_in_cart(request.user)
         })
     else:
         order_list = Order.objects.filter(
@@ -595,8 +600,12 @@ def update_cart_view(request):
         order_list_page_number = request.GET.get('order-page')
         orders = order_list_paginator.get_page(order_list_page_number)
 
+        total_order_price = parse_order_total_price_two_decimal_pace(
+            get_total_price_in_cart(request.user))
         return render(request, "shopping/cart.html", {
-            "orders": orders
+            "orders": orders,
+            "total_order_price": total_order_price,
+            "hasOrderInCart": check_user_has_order_in_cart(request.user)
         })
 
 

@@ -14,28 +14,29 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function loadImageCarousel() {
-    const imageCount = document.querySelector('#imagesCount').innerHTML;
+    const IMAGE_COUNT = document.querySelector('#imagesCount').innerHTML;
 
     var i;
-    for (i = 1; i < imageCount; i++) {
+    for (i = 1; i < IMAGE_COUNT; i++) {
         var newLiElement = document.createElement('li');
         newLiElement.dataset.target = "#listingImageIndicators";
         newLiElement.dataset.slide = i;
 
-        document.querySelector('#carouselIndicators').appendChild(newLiElement);
+        document.querySelector(
+                '#carouselIndicators').appendChild(newLiElement);
     }
 }
 
 function plusQuantity() {
     var currQuantityCount = parseInt(
         document.querySelector('#quantity-count').value);
-    const quantityLeft = parseInt(
+    const QUANTITY_LEFT = parseInt(
         document.querySelector('#quantity-count').dataset.quantity);
 
-    if (currQuantityCount === quantityLeft) {
+    if (currQuantityCount === QUANTITY_LEFT) {
         document.querySelector('#plus-btn').disabled = true;
         return;
-    } else if (currQuantityCount < quantityLeft) {
+    } else if (currQuantityCount < QUANTITY_LEFT) {
         currQuantityCount += 1;
         document.querySelector('#quantity-count').value = currQuantityCount;
         document.querySelector('#minus-btn').disabled = false;
@@ -103,10 +104,10 @@ function loadReviewRating() {
 
         var i;
         for (i = 1; i <= ratingValue; i++) {
-            const spanForStars = document.createElement('span');
-            spanForStars.innerHTML = '<i class="fa fa-star">';
-            spanForStars.style.color = "#42f5c2";
-            reviewDiv.appendChild(spanForStars);
+            const SPAN_FOR_STARS = document.createElement('span');
+            SPAN_FOR_STARS.innerHTML = '<i class="fa fa-star">';
+            SPAN_FOR_STARS.style.color = "#42f5c2";
+            reviewDiv.appendChild(SPAN_FOR_STARS);
         }
     });
 }
@@ -141,31 +142,36 @@ function setNewRatingValue(value) {
 }
 
 function loadListingRatingStars() {
-    const listingRatingSection = document.querySelector(
+    const LISTING_RATING_SECTION = document.querySelector(
             '#listing-rating-section');
-    var rating_score = listingRatingSection.dataset.ratingscore;
+    var rating_score = LISTING_RATING_SECTION.dataset.ratingscore;
 
     var i;
     var innerHTMLContent = " "
     for (i = 1; i <= rating_score; i++) {
-        innerHTMLContent += '<i class="fa fa-star" style="color: #42f5c2;"></i>';
+        innerHTMLContent += (
+                '<i class="fa fa-star"' + ' style="color: #42f5c2;"></i>');
     }
 
-    if ((rating_score * 10) % 10 > 5) {
-        innerHTMLContent += '<i class="fa fa-star-half" style="color: #42f5c2;"></i>';
+    if ((rating_score * 10) % 10 >= 5) {
+        innerHTMLContent += (
+                '<i class="fa fa-star-half"' + ' style="color: #42f5c2;"></i>');
     }
-    listingRatingSection.innerHTML = innerHTMLContent
+
+    LISTING_RATING_SECTION.innerHTML = innerHTMLContent;
 }
 
 function updateListingClickRate() {
-    const listing_id = parseInt(document.querySelector('#main-listing-id').innerHTML);
-    const curr_click_rate = parseInt(document.querySelector('#main-listing-click-rate').innerHTML);
-    const updated_click_rate = curr_click_rate + 1;
+    const LISTING_ID = parseInt(
+            document.querySelector('#main-listing-id').innerHTML);
+    const CURR_CLICK_RATE = parseInt(
+            document.querySelector('#main-listing-click-rate').innerHTML);
+    const UPDATED_CLICK_RATE = CURR_CLICK_RATE + 1;
 
-    fetch(`/shopping/updatelisting/${listing_id}`, {
+    fetch(`/shopping/updatelisting/${LISTING_ID}`, {
         method: 'PUT',
         body: JSON.stringify({
-            click_rate: updated_click_rate
+            click_rate: UPDATED_CLICK_RATE
         })
     });
 }

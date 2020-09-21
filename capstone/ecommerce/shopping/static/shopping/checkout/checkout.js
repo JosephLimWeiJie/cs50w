@@ -8,20 +8,20 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function loadOrderSubtotal(orderId) {
-    const parsedOrderId = orderId.split("-").pop().trim();
-    const orderQuantity = parseInt(document.querySelector(
-        `#order-quantity-${parsedOrderId}`).innerHTML);
-     const orderPrice = parseFloat(parseOrderPrice(parsedOrderId));
-     const orderSubtotal = parseFloat(orderPrice * orderQuantity).toFixed(2);
+    const PARSED_ORDER_ID = orderId.split("-").pop().trim();
+    const ORDER_QUANTITY = parseInt(document.querySelector(
+        `#order-quantity-${PARSED_ORDER_ID}`).innerHTML);
+     const ORDER_PRICE = parseFloat(parseOrderPrice(PARSED_ORDER_ID));
+     const ORDER_SUBTOTAL = parseFloat(ORDER_PRICE * ORDER_QUANTITY).toFixed(2);
      document.querySelector(
-         `#order-subtotal-${parsedOrderId}`).innerHTML = `$${orderSubtotal}`;
+         `#order-subtotal-${PARSED_ORDER_ID}`).innerHTML = `$${ORDER_SUBTOTAL}`;
 }
 
 function parseOrderPrice(orderId) {
-    const orderPrice = document.querySelector(
+    const ORDER_PRICE = document.querySelector(
         `#order-price-${orderId}`).innerHTML;
-    const parsedOrderPrice = orderPrice.substring(1, orderPrice.length);
-    return parsedOrderPrice;
+    const PARSED_ORDER_PRICE = ORDER_PRICE.substring(1, ORDER_PRICE.length);
+    return PARSED_ORDER_PRICE;
 }
 
 function loadTotalPrice() {
@@ -29,8 +29,8 @@ function loadTotalPrice() {
 
     document.querySelectorAll('.order-subtotal').forEach(
         function(order) {
-            const parsedOrderSubtotal = parseOrderSubtotal(order.id);
-            totalPrice += parseFloat(parsedOrderSubtotal);
+            const PARSED_ORDER_SUBTOTAL = parseOrderSubtotal(order.id);
+            totalPrice += parseFloat(PARSED_ORDER_SUBTOTAL);
     });
 
     totalPrice = parseFloat(totalPrice).toFixed(2);
@@ -38,12 +38,12 @@ function loadTotalPrice() {
 }
 
 function parseOrderSubtotal(orderSubtotalId) {
-    const parsedOrderSubtotalId = orderSubtotalId.split("-").pop().trim();
-    const orderSubtotal = document.querySelector(
-        `#order-subtotal-${parsedOrderSubtotalId}`).innerHTML
-    const parsedOrderSubtotal = orderSubtotal.substring(
-        1, orderSubtotal.length);
-    return parsedOrderSubtotal;
+    const PARSED_ORDER_SUBTOTAL_ID = orderSubtotalId.split("-").pop().trim();
+    const ORDER_SUBTOTAL = document.querySelector(
+        `#order-subtotal-${PARSED_ORDER_SUBTOTAL_ID}`).innerHTML
+    const PARSED_ORDER_SUBTOTAL = ORDER_SUBTOTAL.substring(
+        1, ORDER_SUBTOTAL.length);
+    return PARSED_ORDER_SUBTOTAL;
 }
 
 function limitListingTitle() {

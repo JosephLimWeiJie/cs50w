@@ -22,14 +22,14 @@ function loadReceiveButton() {
     });
 }
 
-function updateOrderStatus(button_id) {
-    const order_id = parseButtonId(button_id);
-    const updated_order_status = 'Completed';
+function updateOrderStatus(buttonId) {
+    const ORDER_ID = parseButtonId(buttonId);
+    const UPDATED_ORDER_STATUS = 'Completed';
 
-    fetch(`/shopping/updateorder/${order_id}`, {
+    fetch(`/shopping/updateorder/${ORDER_ID}`, {
         method: 'PUT',
         body: JSON.stringify({
-            status: updated_order_status
+            status: UPDATED_ORDER_STATUS
         })
     });
 

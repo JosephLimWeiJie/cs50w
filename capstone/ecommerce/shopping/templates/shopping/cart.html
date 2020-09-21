@@ -82,7 +82,7 @@
                             <form class="" action="{% url 'updatecart' %}" method="post">
                                 {% csrf_token %}
                                 <input type="text" style="display: none;" name="order-to-remove" value="{{ order.id }}">
-                                <button type="submit" class="delete-btn" id="delete-btn" name="button">Delete</button>
+                                <button type="submit" class="delete-btn" name="button">Delete</button>
                             </form>
                         </div>
                     </div>

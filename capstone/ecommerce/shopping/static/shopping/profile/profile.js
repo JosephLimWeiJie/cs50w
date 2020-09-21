@@ -75,23 +75,27 @@ function loadEditForm() {
 }
 
 function updateMyAccount() {
-    const updated_email = document.querySelector('#id_email').value;
-    const updated_gender = document.querySelector('#id_gender').value;
-    const updated_phone_number = document.querySelector('#id_phone_number').value;
-    const updated_date_of_birth = document.querySelector('#id_date_of_birth').value;
+    const UPDATED_EMAIL = document.querySelector('#id_email').value;
+    const UPDATED_GENDER = document.querySelector('#id_gender').value;
+    const UPDATED_PHONE_NUMBER = document.querySelector(
+                '#id_phone_number').value;
+    const UPDATED_DATE_OF_BIRTH = document.querySelector(
+                '#id_date_of_birth').value;
 
-    document.querySelector('#span-email').innerHTML = updated_email;
-    document.querySelector('#span-gender').innerHTML = updated_gender;
-    document.querySelector('#span-phone-number').innerHTML = updated_phone_number;
-    document.querySelector('#span-date-of-birth').innerHTML = updated_date_of_birth;
+    document.querySelector('#span-email').innerHTML = UPDATED_EMAIL;
+    document.querySelector('#span-gender').innerHTML = UPDATED_GENDER;
+    document.querySelector('#span-phone-number').innerHTML
+            = UPDATED_PHONE_NUMBER;
+    document.querySelector('#span-date-of-birth').innerHTML
+            = UPDATED_DATE_OF_BIRTH;
 
     fetch(`/shopping/updateprofile/2`, {
         method: 'PUT',
         body: JSON.stringify({
-            email: updated_email,
-            gender: updated_gender,
-            phone_number: updated_phone_number,
-            date_of_birth: updated_date_of_birth
+            email: UPDATED_EMAIL,
+            gender: UPDATED_GENDER,
+            phone_number: UPDATED_PHONE_NUMBER,
+            date_of_birth: UPDATED_DATE_OF_BIRTH
         })
     });
 
@@ -100,15 +104,17 @@ function updateMyAccount() {
 }
 
 function loadUpdateOrderStatus() {
-    document.querySelectorAll('.update-order-status-btn').forEach(function(button) {
-        button.addEventListener(
-            'click', () => updateOrderStatus(button.id));
-    });
+    document.querySelectorAll('.update-order-status-btn').forEach(
+        function(button) {
+            button.addEventListener(
+                'click', () => updateOrderStatus(button.id));
+        });
 }
 
 function updateOrderStatus(button_id) {
     const order_id = parseButtonId(button_id);
-    const updated_order_status = document.querySelector(`#select-order-status-${order_id}`).value;
+    const updated_order_status = document.querySelector(
+            `#select-order-status-${order_id}`).value;
 
     fetch(`/shopping/updateorder/${order_id}`, {
         method: 'PUT',
@@ -143,7 +149,8 @@ function loadFile(event) {
 function loadImageFileName() {
     $(".custom-file-input").on("change", function() {
         var fileName = $(this).val().split("\\").pop();
-        $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        $(this).siblings(".custom-file-label")
+                .addClass("selected").html(fileName);
     });
 }
 
@@ -154,9 +161,11 @@ function loadCreateNewListingBtn() {
 }
 
 function limitListingDesrc() {
-    document.querySelectorAll('.listing-desrc').forEach(function(listingDesrcParagraph) {
+    document.querySelectorAll('.listing-desrc').forEach(
+        function(listingDesrcParagraph) {
         if (listingDesrcParagraph.innerHTML.length >= 30) {
-            var limitedDesrcParagraph = listingDesrcParagraph.innerHTML.substring(0, 30);
+            var limitedDesrcParagraph = listingDesrcParagraph
+                    .innerHTML.substring(0, 30);
             limitedDesrcParagraph += "...";
             listingDesrcParagraph.innerHTML = limitedDesrcParagraph;
         }
@@ -169,10 +178,10 @@ function loadReviewRating() {
 
         var i;
         for (i = 1; i <= ratingValue; i++) {
-            const spanForStars = document.createElement('span');
-            spanForStars.innerHTML = '<i class="fa fa-star">';
-            spanForStars.style.color = "#42f5c2";
-            reviewDiv.appendChild(spanForStars);
+            const SPAN_FOR_STARS = document.createElement('span');
+            SPAN_FOR_STARS.innerHTML = '<i class="fa fa-star">';
+            SPAN_FOR_STARS.style.color = "#42f5c2";
+            reviewDiv.appendChild(SPAN_FOR_STARS);
         }
     });
 }

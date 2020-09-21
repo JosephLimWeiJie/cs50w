@@ -13,55 +13,62 @@ document.addEventListener('DOMContentLoaded', function() {
     limitListingDesrc();
 });
 
-function plusQuantity(button_id) {
-    const button_id_number = button_id.split("-").pop().trim();
+function plusQuantity(buttonId) {
+    const BUTTON_ID_NUMBER = buttonId.split("-").pop().trim();
 
     var currQuantityCount = parseInt(
-        document.querySelector(`#quantity-count-${button_id_number}`).value);
+        document.querySelector(`#quantity-count-${BUTTON_ID_NUMBER}`).value);
     const quantityLeft = parseInt(
-        document.querySelector(`#quantity-count-${button_id_number}`).dataset.quantity);
+        document.querySelector(
+            `#quantity-count-${BUTTON_ID_NUMBER}`).dataset.quantity);
 
     if (currQuantityCount === quantityLeft) {
-        document.querySelector(`#plus-btn-${button_id_number}`).disabled = true;
+        document.querySelector(
+            `#plus-btn-${BUTTON_ID_NUMBER}`).disabled = true;
         return;
     } else if (currQuantityCount < quantityLeft) {
         currQuantityCount += 1;
-        document.querySelector(`#quantity-count-${button_id_number}`).value = currQuantityCount;
-        document.querySelector(`#minus-btn-${button_id_number}`).disabled = false;
+        document.querySelector(
+            `#quantity-count-${BUTTON_ID_NUMBER}`).value = currQuantityCount;
+        document.querySelector(
+            `#minus-btn-${BUTTON_ID_NUMBER}`).disabled = false;
     }
 
     $(document).ready(function() {
-        $(`#plus-btn-${button_id_number}`).click(function() {
+        $(`#plus-btn-${BUTTON_ID_NUMBER}`).click(function() {
             $("quantity_count:text").val(currQuantityCount);
         });
     });
 
-    updateOrder(button_id_number);
-    updateTotalPrice(button_id_number, "plus");
+    updateOrder(BUTTON_ID_NUMBER);
+    updateTotalPrice(BUTTON_ID_NUMBER, "plus");
 }
 
-function minusQuantity(button_id) {
-    const button_id_number = button_id.split("-").pop().trim();
+function minusQuantity(buttonId) {
+    const BUTTON_ID_NUMBER = buttonId.split("-").pop().trim();
 
     var currQuantityCount = parseInt(
-        document.querySelector(`#quantity-count-${button_id_number}`).value);
+        document.querySelector(`#quantity-count-${BUTTON_ID_NUMBER}`).value);
     if (currQuantityCount === 1) {
-        document.querySelector(`#minus-btn-${button_id_number}`).disabled = true;
+        document.querySelector(
+            `#minus-btn-${BUTTON_ID_NUMBER}`).disabled = true;
         return;
     } else if (currQuantityCount > 0) {
         currQuantityCount -= 1;
-        document.querySelector(`#plus-btn-${button_id_number}`).disabled = false;
-        document.querySelector(`#quantity-count-${button_id_number}`).value = currQuantityCount;
+        document.querySelector(
+            `#plus-btn-${BUTTON_ID_NUMBER}`).disabled = false;
+        document.querySelector(
+            `#quantity-count-${BUTTON_ID_NUMBER}`).value = currQuantityCount;
     }
 
     $(document).ready(function() {
-        $(`#minus-btn-${button_id_number}`).click(function() {
+        $(`#minus-btn-${BUTTON_ID_NUMBER}`).click(function() {
             $("quantity_count:text").val(currQuantityCount);
         });
     });
 
-    updateOrder(button_id_number);
-    updateTotalPrice(button_id_number, "minus");
+    updateOrder(BUTTON_ID_NUMBER);
+    updateTotalPrice(BUTTON_ID_NUMBER, "minus");
 }
 
 function limitListingDesrc() {
@@ -76,43 +83,48 @@ function limitListingDesrc() {
     });
 }
 
-function updateOrder(order_id) {
-    const updated_quantity_demanded = parseInt(document.querySelector(
-        `#quantity-count-${order_id}`).value);
+function updateOrder(orderId) {
+    const UPDATED_QUANTITY_DEMANDED = parseInt(document.querySelector(
+        `#quantity-count-${orderId}`).value);
 
-    fetch(`/shopping/updateorder/${order_id}`, {
+    fetch(`/shopping/updateorder/${orderId}`, {
         method: 'PUT',
         body: JSON.stringify({
-            "quantity_demanded": updated_quantity_demanded
+            "quantity_demanded": UPDATED_QUANTITY_DEMANDED
         })
     });
 
     return false;
 }
 
-function updateTotalPrice(order_id, command) {
-    var parsedOrderPrice = parseOrderPrice(order_id);
+function updateTotalPrice(orderId, command) {
+    var parsedOrderPrice = parseOrderPrice(orderId);
     var currTotalPrice = parseTotalPrice();
     var updatedTotalPrice;
 
     if (command === "plus") {
-        updatedTotalPrice = parseFloat(currTotalPrice) + parseFloat(parsedOrderPrice);
+        updatedTotalPrice = parseFloat(
+            currTotalPrice) + parseFloat(parsedOrderPrice);
     } else if (command === "minus") {
-        updatedTotalPrice = parseFloat(currTotalPrice) - parseFloat(parsedOrderPrice);
+        updatedTotalPrice = parseFloat(
+            currTotalPrice) - parseFloat(parsedOrderPrice);
     }
 
     updatedTotalPrice = parseFloat(updatedTotalPrice).toFixed(2);
-    document.querySelector('#total-price').innerHTML = `$${updatedTotalPrice}`;
+    document.querySelector(
+        '#total-price').innerHTML = `$${updatedTotalPrice}`;
 }
 
-function parseOrderPrice(order_id) {
-    const orderPrice = document.querySelector(`#order-price-${order_id}`).innerHTML;
-    const parsedOrderPrice = orderPrice.substring(1, orderPrice.length);
-    return parsedOrderPrice;
+function parseOrderPrice(orderId) {
+    const ORDER_PRICE = document.querySelector(
+        `#order-price-${orderId}`).innerHTML;
+    const PARSED_ORDER_PRICE = ORDER_PRICE.substring(1, ORDER_PRICE.length);
+    return PARSED_ORDER_PRICE;
 }
 
 function parseTotalPrice() {
-    const currTotalPrice = document.querySelector('#total-price').innerHTML;
-    const parsedCurrTotalPrice = currTotalPrice.substring(1, currTotalPrice.length);
-    return parsedCurrTotalPrice;
+    const CURR_TOTAL_PRICE = document.querySelector('#total-price').innerHTML;
+    const PARSED_CURR_TOTAL_PRICE = CURR_TOTAL_PRICE.substring(
+        1, CURR_TOTAL_PRICE.length);
+    return PARSED_CURR_TOTAL_PRICE;
 }

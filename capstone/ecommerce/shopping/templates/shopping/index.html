@@ -172,7 +172,7 @@
 
 {% block trending %}
     <p style="margin-left: 15px; color: grey;">TRENDING SEARCHES:</p>
-    <div class="row m-4" style="justify-content: left;">
+    <div class="row m-4 justify-content-center" style="justify-content: left;">
         {% for listing in trending_searches_page_obj %}
             <div class="col-2 m-1 indv-listing-border" style="max-height: 300px; min-height: 300px; width: 100%; min-width: 186px; max-width: 198px;">
                 <a href="{% url 'listing' listing.id %}" style="text-docoration: none;">
@@ -229,7 +229,7 @@
 
 {% block top_products %}
     <p style="margin-left: 15px; color: grey;">TOP PRODUCTS:</p>
-    <div class="row m-4" style="justify-content: left;">
+    <div class="row m-4 justify-content-center" style="justify-content: left;">
         {% for listing in top_products_page_obj %}
             <div class="col-2 m-1 indv-listing-border" style="max-height: 300px; min-height: 300px; width: 100%; min-width: 186px; max-width: 198px;">
                 <a href="{% url 'listing' listing.id %}" style="text-docoration: none;">
