@@ -187,13 +187,13 @@
                     <h4 style="margin-bottom: 0px;">${{ listing.price }}</h4>
                 </div>
                 <div class="row m-3" style="min-width: 284px;">
-                    {% if hasListingInCart %}
+                    {% if has_listing_in_cart %}
                         <input disabled type="submit" style="width: 140px;" id="add-to-cart-btn" class="btn" name="add-to-cart-btn" value="Add To Cart">
                     {% else %}
                         <input type="submit" style="width: 140px;" id="add-to-cart-btn" class="btn" name="add-to-cart-btn" value="Add To Cart">
                     {% endif %}
 
-                    {% if hasSoldOut %}
+                    {% if has_sold_out %}
                         <input disabled type="submit" style="width: 140px; margin-left: 8px;" id="buy-btn" class="btn btn" name="buy-btn" value="Buy">
                     {% else %}
                         <input type="submit" style="width: 140px; margin-left: 8px;" id="buy-btn" class="btn btn" name="buy-btn" value="Buy">
@@ -223,14 +223,14 @@
 
     <!-- Product review -->
     <div class="container-fluid m-3">
-        {% if hasReviews %}
+        {% if has_reviews %}
             {% if request.user.is_authenticated %}
                 <div class="row">
                     <div class="col-6 pt-2">
                         <p style="margin-bottom: 0;"><strong>Product Review:</strong></p>
                     </div>
                     <div class="col-6 pt-2" style="text-align: right;">
-                        {% if not hasReviewed %}
+                        {% if not has_reviewed %}
                             <button type="button" class="btn" name="button" data-toggle="modal" data-target="#reviewModal">
                                 <span style="font-size: 17px;"><i class="fa fa-comments"></i></span>
                                 <span>Leave A Review</span>

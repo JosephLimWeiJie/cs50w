@@ -47,6 +47,11 @@ category_dict = {
 
 
 def index(request):
+    """Loads the index view with with various resources from database.
+
+    Resources include all listings from Listing Model and categorize
+    into `All Products`, `Top Products ` and `Trending Searches`.
+    """
     all_listing_list = Listing.objects.all()
     all_listing_paginator = Paginator(all_listing_list, 12)
     all_listing_page_number = request.GET.get('all-listing-page')
@@ -76,6 +81,11 @@ def index(request):
 
 
 def signup_view(request):
+    """Loads the sign up view.
+
+    Creates a user from the User Model if it does not exist.
+    Note that this view uses `SignUpForm`.
+    """
     if request.method == "POST":
         username = request.POST["username"]
         email = request.POST["email"]
@@ -115,6 +125,11 @@ def signup_view(request):
 
 
 def login_view(request):
+    """Loads the login view.
+
+    Authenticates the current user signing in.
+    Provides an error message if the username or password is invalid.
+    """
     if request.method == "POST":
         # Attempt to sign user in
         username = request.POST["username"]
@@ -134,11 +149,18 @@ def login_view(request):
 
 
 def logout_view(request):
+    """Log the user out and redirect to `index` view.
+    """
     logout(request)
     return HttpResponseRedirect(reverse("index"))
 
 
 def profile_view(request, name):
+    """Loads the profile view with resources from database.
+
+    Resources include the user's profile, orders, reviews and
+    notifcations from the specific models.
+    """
     profile = Profile.objects.get(user=request.user)
 
     listing_list = Listing.objects.all().filter(
@@ -171,21 +193,26 @@ def profile_view(request, name):
         "name": name,
         "profile": profile,
         "hexed_phone_number": hex_phone_number(profile.phone_number),
-        "hasListings": has_listings(request.user),
+        "has_listings": has_listings(request.user),
         "listing_page_obj": listing_page_obj,
         "review_page_obj": review_page_obj,
         "order_page_obj": order_page_obj,
         "notif_page_obj": notif_page_obj,
-        "hasPurchases": check_user_has_purchases(request.user, order_list),
-        "hasReviews": check_user_has_reviewed(request.user, review_list),
-        "hasItemSold": check_user_has_item_sold(request.user, order_list),
-        "hasNotifications": check_user_has_notifications(
+        "has_purchases": check_user_has_purchases(request.user, order_list),
+        "has_reviews": check_user_has_reviewed(request.user, review_list),
+        "has_item_sold": check_user_has_item_sold(request.user, order_list),
+        "has_notifications": check_user_has_notifications(
             request.user, notif_list),
-        "hasActions": check_user_has_actions(request.user, notif_list)
+        "has_actions": check_user_has_actions(request.user, notif_list)
     })
 
 
 def profile_view_notification_toggled(request, name):
+    """Loads the profile view with notification section displayed.
+
+    Resources include the user's profile, orders, reviews and
+    notifcations from the specific models.
+    """
     profile = Profile.objects.get(user=request.user)
 
     listing_list = Listing.objects.all().filter(
@@ -223,18 +250,20 @@ def profile_view_notification_toggled(request, name):
         "review_page_obj": review_page_obj,
         "order_page_obj": order_page_obj,
         "notif_page_obj": notif_page_obj,
-        "hasPurchases": check_user_has_purchases(request.user, order_list),
-        "hasReviews": check_user_has_reviewed(request.user, review_list),
-        "hasItemSold": check_user_has_item_sold(request.user, order_list),
-        "hasNotifications": check_user_has_notifications(
+        "has_purchases": check_user_has_purchases(request.user, order_list),
+        "has_reviews": check_user_has_reviewed(request.user, review_list),
+        "has_item_sold": check_user_has_item_sold(request.user, order_list),
+        "has_notifications": check_user_has_notifications(
             request.user, notif_list),
-        "hasActions": check_user_has_actions(request.user, notif_list)
+        "has_actions": check_user_has_actions(request.user, notif_list)
     })
 
 
 @csrf_exempt
 @login_required
 def update_profile(request, profile_id):
+    """Updates user's profile information asynchrously using JSON.
+    """
 
     # Query for requested profile
     try:
@@ -269,6 +298,8 @@ def update_profile(request, profile_id):
 
 
 def update_profile_pic(request):
+    """Updates the user's profile picture.
+    """
     if request.method == 'POST':
         profile_to_update = Profile.objects.get(user=request.user)
         profile_to_update.profile_pic = request.FILES['myfile']
@@ -283,6 +314,8 @@ def update_profile_pic(request):
 
 
 def update_profile_delivery_addr(request):
+    """Updates the user's delivery address.
+    """
     if request.method == 'POST':
         profile_to_update = Profile.objects.get(user=request.user)
         profile_to_update.delivery_address = request.POST['addr_text']
@@ -298,6 +331,11 @@ def update_profile_delivery_addr(request):
 
 
 def create_listing_view(request):
+    """Create a listing once user submits the form.
+
+    If user submits more than 1 picture, only the first picture
+    will be used as the main picture to be shown for other views.
+    """
     profile = Profile.objects.get(user=request.user)
 
     if request.method == 'POST':
@@ -307,7 +345,8 @@ def create_listing_view(request):
         quantity = request.POST['quantity']
         price = request.POST['price']
         listing = Listing.objects.create(
-            title=title, desrc=desrc, category=category, quantity=quantity,
+            title=title, desrc=desrc,
+            category=category, quantity=quantity,
             price=price, user=request.user)
 
         images = request.FILES.getlist('image_files')
@@ -339,6 +378,10 @@ def create_listing_view(request):
 
 
 def listing_view(request, listing_id):
+    """Loads the listing view with resources from database.
+
+    Resources include Listing and Review Model.
+    """
     listing = Listing.objects.get(id=listing_id)
     listing_images = ListingImage.objects.all().filter(listing=listing)
     listing_images_count = listing_images.count()
@@ -353,20 +396,23 @@ def listing_view(request, listing_id):
         "listing": listing,
         "listing_images": listing_images,
         "listing_images_count": listing_images_count,
-        "hasReviews": check_listing_review(listing),
+        "has_reviews": check_listing_review(listing),
         "reviews": Review.objects.filter(listing=listing),
-        "hasReviewed": check_user_has_reviewed(
+        "has_reviewed": check_user_has_reviewed(
             request.user, Review.objects.filter(listing=listing)),
         "review_listing_page_obj": review_listing_page_obj,
-        "hasSoldOut": check_listing_has_sold_out(listing),
+        "has_sold_out": check_listing_has_sold_out(listing),
         "total_review_count": Review.objects.filter(listing=listing).count(),
         "listing_rating_score": parse_rating_score_one_decimal_place(
             listing.rating_score),
-        "hasListingInCart": check_listing_exist_in_cart(listing, request.user)
+        "has_listing_in_cart": check_listing_exist_in_cart(
+            listing, request.user)
     })
 
 
 def update_listing_desrc_view(request, listing_id):
+    """Updates the listing's description.
+    """
     listing = Listing.objects.get(id=listing_id)
     listing_images = ListingImage.objects.all().filter(listing=listing)
     listing_images_count = listing_images.count()
@@ -413,6 +459,11 @@ def update_listing_desrc_view(request, listing_id):
 
 
 def review_view(request, listing_id):
+    """Creates a review for a given listing.
+
+    Upon creation, the listing's rating score will be updated and
+    a notification will be sent to the listing's poster.
+    """
     if request.method == 'POST':
         listing = Listing.objects.get(id=listing_id)
         profile = Profile.objects.get(user=request.user)
@@ -434,6 +485,8 @@ def review_view(request, listing_id):
 
 
 def update_review_view(request, listing_id):
+    """Updates the edited review.
+    """
     if request.method == 'POST':
         listing = Listing.objects.get(id=listing_id)
         review = Review.objects.get(user=request.user, listing=listing)
@@ -450,6 +503,11 @@ def update_review_view(request, listing_id):
 
 
 def category_view(request, category_name):
+    """Loads the category view with resources from database.
+
+    Resources include listings from the Listing Model, categorized into
+    the specific categories.
+    """
     category_value = category_dict[category_name]
     relevant_listings = Listing.objects.all().filter(category=category_value)
     relevant_listings_paginator = Paginator(relevant_listings, 10)
@@ -465,6 +523,11 @@ def category_view(request, category_name):
 
 
 def category_sort_view(request):
+    """Loads the sorted category view with resources from database.
+
+    There is currently only 3 sort options, namely `latest`, `price`
+    and `popular`.
+    """
     if request.method == "GET":
         category_name = request.GET.get('category-name')
         category_value = category_dict[category_name]
@@ -477,6 +540,8 @@ def category_sort_view(request):
 
 
 def category_sort_popular_view(request, category_name):
+    """Loads the sorted category view.
+    """
     category_name = request.GET.get('category-name')
     category_value = category_dict[category_name]
     sorted_popular_listings = Listing.objects.all().filter(
@@ -484,8 +549,10 @@ def category_sort_popular_view(request, category_name):
     sorted_popular_listings_paginator = Paginator(sorted_popular_listings, 10)
     sorted_popular_listings_page_number = request.GET.get(
         'relevant-listings-page')
-    sorted_popular_listings_page_obj = sorted_popular_listings_paginator.get_page(
-        sorted_popular_listings_page_number)
+    sorted_popular_listings_page_obj = (
+                                    sorted_popular_listings_paginator.get_page(
+                                        sorted_popular_listings_page_number)
+                                       )
 
     return render(request, "shopping/category.html", {
         "category_name": category_name,
@@ -495,6 +562,8 @@ def category_sort_popular_view(request, category_name):
 
 
 def category_sort_price_view(request, category_name):
+    """Loads the sorted category view.
+    """
     category_name = request.GET.get('category-name')
     category_value = category_dict[category_name]
     sorted_price_listings = Listing.objects.all().filter(
@@ -513,6 +582,8 @@ def category_sort_price_view(request, category_name):
 
 
 def category_sort_latest_view(request, category_name):
+    """Loads the sorted category view.
+    """
     category_name = request.GET.get('category-name')
     category_value = category_dict[category_name]
     sorted_latest_listings = Listing.objects.all().filter(
@@ -520,8 +591,10 @@ def category_sort_latest_view(request, category_name):
     sorted_latest_listings_paginator = Paginator(sorted_latest_listings, 10)
     sorted_latest_listings_page_number = request.GET.get(
         'relevant-listings-page')
-    sorted_latest_listings_page_obj = sorted_latest_listings_paginator.get_page(
-        sorted_latest_listings_page_number)
+    sorted_latest_listings_page_obj = (
+                                    sorted_latest_listings_paginator.get_page(
+                                        sorted_latest_listings_page_number)
+                                      )
 
     return render(request, "shopping/category.html", {
         "category_name": category_name,
@@ -532,6 +605,12 @@ def category_sort_latest_view(request, category_name):
 
 @login_required
 def cart_view(request):
+    """Loads the cart view from resources in database.
+
+    Resources include listing and orders from their specific models.
+    A total price will also be calculated based on the the accumulated
+    price and quantity for each order.
+    """
     if request.method == 'POST':
         listing_id = request.POST['listing-id']
         listing = Listing.objects.get(id=listing_id)
@@ -554,7 +633,7 @@ def cart_view(request):
         return render(request, "shopping/cart.html", {
             "orders": orders,
             "total_order_price": total_order_price,
-            "hasOrderInCart": check_user_has_order_in_cart(request.user)
+            "has_order_in_cart": check_user_has_order_in_cart(request.user)
         })
     else:
         order_list = Order.objects.filter(
@@ -568,12 +647,18 @@ def cart_view(request):
         return render(request, "shopping/cart.html", {
             "orders": orders,
             "total_order_price": total_order_price,
-            "hasOrderInCart": check_user_has_order_in_cart(request.user)
+            "has_order_in_cart": check_user_has_order_in_cart(request.user)
         })
 
 
 @login_required
 def update_cart_view(request):
+    """Updates the cart view from resources in database.
+
+    Resources include listing and orders from their specific models.
+    An udpated total price will also be calculated based on the the accumulated
+    price and updated quantity for each order.
+    """
     if request.method == 'POST':
         order_to_remove_id = request.POST['order-to-remove']
         order_to_remove = Order.objects.filter(pk=order_to_remove_id)
@@ -591,7 +676,7 @@ def update_cart_view(request):
         return render(request, "shopping/cart.html", {
             "orders": orders,
             "total_order_price": total_order_price,
-            "hasOrderInCart": check_user_has_order_in_cart(request.user)
+            "has_order_in_cart": check_user_has_order_in_cart(request.user)
         })
     else:
         order_list = Order.objects.filter(
@@ -605,13 +690,15 @@ def update_cart_view(request):
         return render(request, "shopping/cart.html", {
             "orders": orders,
             "total_order_price": total_order_price,
-            "hasOrderInCart": check_user_has_order_in_cart(request.user)
+            "has_order_in_cart": check_user_has_order_in_cart(request.user)
         })
 
 
 @csrf_exempt
 @login_required
 def update_listing(request, listing_id):
+    """Updates the listing's click rate asynchrously using JSON.
+    """
 
     # Query for requested listing
     try:
@@ -642,7 +729,8 @@ def update_listing(request, listing_id):
 @csrf_exempt
 @login_required
 def update_order(request, order_id):
-
+    """Updates the order's information asynchrously using JSON.
+    """
     # Query for requested order
     try:
         order = Order.objects.get(pk=order_id)
@@ -678,10 +766,14 @@ def update_order(request, order_id):
 
 
 def checkout_view(request):
-    """
+    """Loads the checkout view.
+
     Note that this method does not store any credit card
     information and will just redirect the user to 'Track
-    my Order page'.
+    my Order page'. As such, this method is currently not in use.
+
+    Also, `checkout.html` will not be redirected until a safe method
+    to store sensitive information is implemented.
     """
     if request.method == 'POST':
         orders_in_cart = Order.objects.filter(
@@ -706,6 +798,8 @@ def checkout_view(request):
 
 
 def track_order_view(request):
+    """Loads the tracking order view from resources in database.
+    """
     order_list = Order.objects.filter(user=request.user)
     order_list_paginator = Paginator(order_list, 10)
     order_list_page_number = request.GET.get('order-page')
@@ -714,11 +808,17 @@ def track_order_view(request):
     return render(request, "shopping/trackorder.html", {
         "profile": Profile.objects.get(user=request.user),
         "orders": orders,
-        "hasOrders": check_user_has_order(request.user)
+        "has_orders": check_user_has_order(request.user)
     })
 
 
 def receive_order(request):
+    """Updates the purchased order status.
+
+    This method changes the order status to `Completed` and will
+    remove it from tracking. A notification will also be sent to the
+    seller.
+    """
     if request.method == "POST":
         order_id = request.POST['order_id']
         order = Order.objects.get(pk=order_id)
@@ -732,6 +832,8 @@ def receive_order(request):
 
 
 def cancel_order(request):
+    """Removes the order from the cart.
+    """
     if request.method == 'POST':
         order_id = request.POST['cancel_order_id']
         order_to_return = Order.objects.get(pk=order_id)
@@ -754,6 +856,8 @@ def cancel_order(request):
 
 
 def search_view(request):
+    """Searches the entire database using user given keywords.
+    """
     if request.method == "POST":
         search_keywords = request.POST['search_keywords']
         relevant_listings = get_relevant_listings(search_keywords)
@@ -769,6 +873,8 @@ def search_view(request):
 
 
 def filter_category(request):
+    """Filters the current search results into the specific category.
+    """
     if request.method == "GET":
         search_keywords = request.GET['search-keywords']
         category = request.GET['filter-category']
@@ -787,6 +893,8 @@ def filter_category(request):
 
 
 def sort_category(request):
+    """Sorts the current search results by price, lastest or popularity.
+    """
     if request.method == "GET":
         search_keywords = request.GET['search-keywords']
         sort_by = request.GET['sort-category']
@@ -816,6 +924,11 @@ def sort_category(request):
 
 
 def return_order(request):
+    """Updates the order status.
+
+    This method changes the order status to `Return/Refund` and
+    a notification will be sent to the order's seller.
+    """
     if request.method == 'GET':
         order_id = request.GET['return_order_id']
         order_to_return = Order.objects.get(pk=order_id)
@@ -829,6 +942,12 @@ def return_order(request):
 
 
 def accept_return_order(request):
+    """Accepts a return order request.
+
+    This method will update the listing's quantity and then send
+    a notification to the buyer that the return order request is
+    accepted.
+    """
     if request.method == 'GET':
         order_id = request.GET['accept_return_order_id']
         order_to_return = Order.objects.get(pk=order_id)
@@ -850,6 +969,12 @@ def accept_return_order(request):
 
 
 def cancel_return_order(request):
+    """Cancels a return order request.
+
+    This method will send a notification to the buyer that the return order
+    request is rejected. The order's status will also be updated to
+    `Return Rejected`.
+    """
     if request.method == 'POST':
         order_id = request.POST['cancel_return_order_id']
         order_to_return = Order.objects.get(pk=order_id)
@@ -871,6 +996,8 @@ def cancel_return_order(request):
 
 
 def parse_birthdate(received_date_of_birth_repr):
+    """Parses a given birthdate into YYYY-MM-DD format.
+    """
     date_params = received_date_of_birth_repr.split("/")
     parsed_date_of_birth = (
         date_params[2] + "-" + date_params[0] + "-" + date_params[1])
@@ -880,6 +1007,8 @@ def parse_birthdate(received_date_of_birth_repr):
 
 
 def hex_phone_number(number):
+    """Hexes a given phone number for information privacy in profile view.
+    """
     phone_number_string = str(number)
     phone_number_length = len(phone_number_string)
     hexed_phone_number = ""
@@ -907,6 +1036,11 @@ def check_listing_review(listing):
 
 
 def update_listing_rating_score(listing):
+    """Updates the listing's rating score.
+
+    The rating score is calculated by dividing total score given
+    by all users to the number of total users.
+    """
     total_review_count = Review.objects.filter(listing=listing).count()
     total_score = 0
     for review in Review.objects.filter(listing=listing):
@@ -995,7 +1129,7 @@ def parse_order_total_price_two_decimal_pace(total_price):
 
 def update_listing_quantity(orders_in_cart):
     """
-    Subtracts quantity_demanded for each order in cart from the respective
+    Subtracts quantity demanded for each order in cart from the respective
     listing quantity. Deletes the order afterwards.
     """
     all_listings = Listing.objects.all()

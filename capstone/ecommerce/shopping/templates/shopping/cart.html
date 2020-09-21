@@ -36,7 +36,7 @@
                     <p style="" class="nav-bar-headers">Actions</p>
                 </div>
             </div>
-            {% if hasOrderInCart %}
+            {% if has_order_in_cart %}
                 {% for order in orders %}
                     <div class="row m-3">
                         <div class="col-3 p-3 listing-image-section" style="text-align: left; justify-content: center;">
@@ -134,7 +134,7 @@
             <div class="row bg-light m-3 p-2" style="text-align: right;">
                 <div class="col-9 p-3">
                     <h5>Total Price:</h5>
-                    {% if hasOrderInCart %}
+                    {% if has_order_in_cart %}
                         <h2 id="total-price">${{ total_order_price }}</h2>
                     {% else %}
                         <h2>$0.00</h2>

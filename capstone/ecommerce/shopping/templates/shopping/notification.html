@@ -295,7 +295,7 @@
                                 {% endif %}
                             </div>
                             <div class="tab-pane fade" id="pills-sold" role="tabpanel" aria-labelledby="pills-sold-tab">
-                                {% if hasItemSold %}
+                                {% if has_item_sold %}
                                     {% for order in order_page_obj %}
                                         {% if order.has_purchased is True %}
                                             <div id="indv-listing-{{ order.listing.id }}" class="container p-3 my-3">
@@ -381,7 +381,7 @@
                                 {% endif %}
                             </div>
                             <div class="tab-pane fade" id="pills-review" role="tabpanel" aria-labelledby="pills-review-tab">
-                                {% if hasReviews %}
+                                {% if has_Reviews %}
                                     {% for review in review_page_obj %}
                                         {% for listing in listing_page_obj %}
                                             {% if review.listing == listing and review.user != request.user %}
@@ -459,7 +459,7 @@
                     <div id="my-purchase">
                         <h4>My Purchase</h4>
                         <hr>
-                        {% if hasPurchases %}
+                        {% if has_purchases %}
                             {% for order in order_page_obj %}
                                 <div class="container indv-purchase-border">
                                     <div class="row m-3 p-1">
@@ -575,7 +575,7 @@
 
                         <div class="tab-content" id="myTabContent">
                             <div class="tab-pane fade show active" id="pills-pending" role="tabpanel" aria-labelledby="pills-pending-tab">
-                                {% if hasActions %}
+                                {% if has_actions %}
                                     {% for notification in notif_page_obj %}
                                         {% if notification.has_action %}
                                             <div class="row m-3 p-3">
@@ -664,7 +664,7 @@
                             </div>
 
                             <div class="tab-pane fade" id="pills-all" role="tabpanel" aria-labelledby="pills-all-tab">
-                                {% if hasNotifications %}
+                                {% if has_notifications %}
                                     {% for notification in notif_page_obj %}
                                         <div class="row m-3 p-3">
                                             <div class="col-2">
