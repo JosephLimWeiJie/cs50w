@@ -87,6 +87,7 @@ class Listing(models.Model):
         validators=[MinValueValidator(0.0), MaxValueValidator(5.0)])
     quantity_sold = models.IntegerField(default=0)
     click_rate = models.IntegerField(default=0)
+    is_sold_out = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.title}"
@@ -103,7 +104,8 @@ class Listing(models.Model):
             "user": self.user,
             "rating_score": self.rating_score,
             "quantity_sold": self.quantity_sold,
-            "click_rate": self.click_rate
+            "click_rate": self.click_rate,
+            "is_sold_out": self.is_sold_out
         }
 
 

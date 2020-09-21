@@ -39,7 +39,7 @@
             {% if hasOrderInCart %}
                 {% for order in orders %}
                     <div class="row m-3">
-                        <div class="col-3 p-3" style="text-align: left; justify-content: center;">
+                        <div class="col-3 p-3 listing-image-section" style="text-align: left; justify-content: center;">
                             {% if order.listing.images is None %}
                                 <img style="height: auto; width: 100%;" class="listing-images" src="{% static 'shopping/categories/listing_placeholder.jpg' %}" alt="listing-placeholder-image">
                             {% else %}

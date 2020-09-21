@@ -228,9 +228,9 @@
                                     {% for listing in listing_page_obj %}
                                         <div id="indv-listing-{{ listing.id }}" class="container p-3 my-3">
                                             <div class="row">
-                                                <div class="col-4 p-3" style="text-align: center; justify-content: center;">
+                                                <div class="col-4 p-3 listing-image-section">
                                                     {% if listing.images is None %}
-                                                        <img style="height: 100;" class="listing-images" src="{% static 'shopping/categories/listing_placeholder.jpg' %}" alt="listing-placeholder-image">
+                                                        <img class="listing-images" src="{% static 'shopping/categories/listing_placeholder.jpg' %}" alt="listing-placeholder-image">
                                                     {% else %}
                                                         <img class="listing-images" src="{% static listing.listing_main_pic.url %}" alt="listing-image">
                                                     {% endif %}
@@ -295,9 +295,9 @@
                                         {% if order.has_purchased is True %}
                                             <div id="indv-listing-{{ order.listing.id }}" class="container p-3 my-3">
                                                 <div class="row">
-                                                    <div class="col-4 p-3" style="text-align: center; justify-content: center;">
+                                                    <div class="col-4 p-3 listing-image-section" style="text-align: center; justify-content;">
                                                         {% if order.listing.images is None %}
-                                                            <img style="height: 100;" class="listing-images" src="{% static 'shopping/categories/listing_placeholder.jpg' %}" alt="listing-placeholder-image">
+                                                            <img class="listing-images" src="{% static 'shopping/categories/listing_placeholder.jpg' %}" alt="listing-placeholder-image">
                                                         {% else %}
                                                             <img class="listing-images" src="{% static order.listing.listing_main_pic.url %}" alt="listing-image">
                                                         {% endif %}

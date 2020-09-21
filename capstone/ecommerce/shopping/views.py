@@ -168,17 +168,19 @@ def profile_view(request, name):
 
 def profile_view_notification_toggled(request, name):
     profile = Profile.objects.get(user=request.user)
-    listing_list = Listing.objects.all().filter(user=request.user)
+    listing_list = Listing.objects.all().filter(
+        user=request.user).order_by("datetime").reverse()
     listing_paginator = Paginator(listing_list, 10)
     listing_page_number = request.GET.get('listing-page')
     listing_page_obj = listing_paginator.get_page(listing_page_number)
 
-    review_list = Review.objects.all()
+    review_list = Review.objects.all().order_by("datetime").reverse()
     review_paginator = Paginator(review_list, 10)
     review_page_number = request.GET.get('review-page')
     review_page_obj = review_paginator.get_page(review_page_number)
 
-    order_list = Order.objects.all().filter(user=request.user)
+    order_list = Order.objects.all().filter(
+        user=request.user).order_by("datetime").reverse()
     order_paginator = Paginator(order_list, 10)
     order_page_number = request.GET.get('order-page')
     order_page_obj = order_paginator.get_page(order_page_number)
@@ -188,6 +190,9 @@ def profile_view_notification_toggled(request, name):
     notif_paginator = Paginator(notif_list, 10)
     notif_page_number = request.GET.get('notif-page')
     notif_page_obj = notif_paginator.get_page(notif_page_number)
+
+    request.user.has_new_notification = False
+    request.user.save()
 
     return render(request, "shopping/notification.html", {
         "name": name,
@@ -202,7 +207,8 @@ def profile_view_notification_toggled(request, name):
         "hasReviews": check_user_has_reviewed(request.user, review_list),
         "hasItemSold": check_user_has_item_sold(request.user, order_list),
         "hasNotifications": check_user_has_notifications(
-            request.user, notif_list)
+            request.user, notif_list),
+        "hasActions": check_user_has_actions(request.user, notif_list)
     })
 
 
@@ -917,6 +923,9 @@ def update_listing_quantity(orders_in_cart):
                 listing.quantity -= order_quantity_demanded
                 if listing.quantity < 0:
                     listing.quantity = 0
+                if listing.quantity == 0:
+                    listing.is_sold_out = True
+
                 listing.quantity_sold += 1
                 listing.save()
 

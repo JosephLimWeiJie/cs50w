@@ -181,7 +181,13 @@
                     <div class="row p-3" style="max-width: 170px;">
                         <div class="listing-title" style="color: black; min-width: 145px;">{{ listing.title }}</div>
                         <div id="trending-{{ listing.id }}-rating-stars" class="listing-rating-star-section" data-ratingscore={{ listing.rating_score }} data-listingid={{ listing.id }}></div>
-                        <div style="position: absolute; bottom: 10px;"><span style="color: lightgrey">From: </span><strong style="color: #42f5c2">${{ listing.price }}</strong></div><br>
+                        <div style="position: absolute; bottom: 10px;">
+                            <span style="color: lightgrey">From: </span>
+                            <strong style="color: #42f5c2">${{ listing.price }}</strong>
+                            {% if listing.quantity == 0 %}
+                                <span class="sold-out-tag">Sold out</span>
+                            {% endif %}
+                        </div><br>
                     </div>
                 </a>
             </div>
@@ -201,7 +207,13 @@
                     <div class="row p-3" style="max-width: 170px;">
                         <div class="listing-title" style="color: black; min-width: 145px;">{{ listing.title }}</div>
                         <div id="topproducts-{{ listing.id }}-rating-stars" class="listing-rating-star-section" data-ratingscore={{ listing.rating_score }} data-listingid={{ listing.id }}></div>
-                        <div style="position: absolute; bottom: 10px;"><span style="color: lightgrey">From: </span><strong style="color: #42f5c2">${{ listing.price }}</strong></div><br>
+                        <div style="position: absolute; bottom: 10px;">
+                            <span style="color: lightgrey">From: </span>
+                            <strong style="color: #42f5c2">${{ listing.price }}</strong>
+                            {% if listing.quantity == 0 %}
+                                <span class="sold-out-tag">Sold out</span>
+                            {% endif %}
+                        </div><br>
                     </div>
                 </a>
             </div>
@@ -224,7 +236,13 @@
                     <div class="row p-3" style="max-width: 170px;">
                         <div class="listing-title" style="color: black; min-width: 145px;">{{ listing.title }}</div>
                         <div id="allproducts-{{ listing.id }}-rating-stars" class="listing-rating-star-section" data-ratingscore={{ listing.rating_score }} data-listingid={{ listing.id }}></div>
-                        <div style="position: absolute; bottom: 10px;"><span style="color: lightgrey">From: </span><strong style="color: #42f5c2">${{ listing.price }}</strong></div><br>
+                        <div style="position: absolute; bottom: 10px;">
+                            <span style="color: lightgrey">From: </span>
+                            <strong style="color: #42f5c2">${{ listing.price }}</strong>
+                            {% if listing.quantity == 0 %}
+                                <span class="sold-out-tag">Sold out</span>
+                            {% endif %}
+                        </div><br>
                     </div>
                 </a>
             </div>

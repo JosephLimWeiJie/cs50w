@@ -36,3 +36,11 @@
     width: 24px;
     border-radius: 12px;
 }
+
+.fa-circle {
+    position: relative;
+    color: red;
+    font-size: 12px;
+    right: 7px;
+    bottom: 6px;
+}
