@@ -143,11 +143,13 @@
             <div class="container-fluid bg-light">
                 <div class="row p-2 m-3">
                     <form class="" action="{% url 'categorysort' %}" method="get">
-                        Sort by
-                        <input type="text" style="display: none;" name="category-name" value="{{ category_name }}">
-                        <input type="submit" name="popular-btn" class="sort-btn" value="Popular">
-                        <input type="submit" name="lastest-btn" class="sort-btn" value="Latest">
-                        <input type="submit" name="price-btn" class="sort-btn" value="Price">
+                        <div class="row">
+                            Sort by
+                            <input type="text" style="display: none;" name="category-name" value="{{ category_name }}">
+                            <input type="submit" name="popular-btn" class="sort-btn" value="Popular">
+                            <input type="submit" name="lastest-btn" class="sort-btn" value="Latest">
+                            <input type="submit" name="price-btn" class="sort-btn" value="Price">
+                        </div>
                     </form>
                 </div>
             </div>
@@ -158,7 +160,7 @@
                             <div class="row">
                                 <img class="all_listing_img" src="{% static listing.listing_main_pic.url %}" alt="listing_main_pic">
                             </div>
-                            <div class="row p-3" style="max-width: 170px;">
+                            <div class="row p-2" style="max-width: 170px;">
                                 <div class="listing-title" style="color: black; min-width: 145px;">{{ listing.title }}</div>
                                 <div id="listing-{{ listing.id }}-rating-stars" class="listing-rating-star-section" data-ratingscore={{ listing.rating_score }} data-listingid={{ listing.id }}></div>
                                 <div style="position: absolute; bottom: 10px;">

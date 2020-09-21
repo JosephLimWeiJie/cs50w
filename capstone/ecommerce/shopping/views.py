@@ -466,29 +466,65 @@ def category_sort_view(request):
         category_name = request.GET.get('category-name')
         category_value = category_dict[category_name]
         if 'popular-btn' in request.GET:
-            sorted_popular_listings = Listing.objects.all().filter(
-                category=category_value).order_by("rating_score").reverse()
-
-            return render(request, "shopping/category.html", {
-                "category_name": category_name,
-                "relevant_listings": sorted_popular_listings
-            })
+            return category_sort_popular_view(request, category_value)
         elif 'lastest-btn' in request.GET:
-            sorted_latest_listings = Listing.objects.all().filter(
-                category=category_value).order_by("datetime").reverse()
-
-            return render(request, "shopping/category.html", {
-                "category_name": category_name,
-                "relevant_listings": sorted_latest_listings
-            })
+            return category_sort_latest_view(request, category_value)
         elif 'price-btn' in request.GET:
-            sorted_price_listings = Listing.objects.all().filter(
-                category=category_value).order_by("price").reverse()
+            return category_sort_price_view(request, category_value)
 
-            return render(request, "shopping/category.html", {
-                "category_name": category_name,
-                "relevant_listings": sorted_price_listings
-            })
+
+def category_sort_popular_view(request, category_name):
+    category_name = request.GET.get('category-name')
+    category_value = category_dict[category_name]
+    sorted_popular_listings = Listing.objects.all().filter(
+        category=category_value).order_by("rating_score").reverse()
+    sorted_popular_listings_paginator = Paginator(sorted_popular_listings, 10)
+    sorted_popular_listings_page_number = request.GET.get(
+        'relevant-listings-page')
+    sorted_popular_listings_page_obj = sorted_popular_listings_paginator.get_page(
+        sorted_popular_listings_page_number)
+
+    return render(request, "shopping/category.html", {
+        "category_name": category_name,
+        "category_value": category_value,
+        "relevant_listings_page_obj": sorted_popular_listings_page_obj
+    })
+
+
+def category_sort_price_view(request, category_name):
+    category_name = request.GET.get('category-name')
+    category_value = category_dict[category_name]
+    sorted_price_listings = Listing.objects.all().filter(
+        category=category_value).order_by("price").reverse()
+    sorted_price_listings_paginator = Paginator(sorted_price_listings, 10)
+    sorted_price_listings_page_number = request.GET.get(
+        'relevant-listings-page')
+    sorted_price_listings_page_obj = sorted_price_listings_paginator.get_page(
+        sorted_price_listings_page_number)
+
+    return render(request, "shopping/category.html", {
+        "category_name": category_name,
+        "category_value": category_value,
+        "relevant_listings_page_obj": sorted_price_listings_page_obj
+    })
+
+
+def category_sort_latest_view(request, category_name):
+    category_name = request.GET.get('category-name')
+    category_value = category_dict[category_name]
+    sorted_latest_listings = Listing.objects.all().filter(
+        category=category_value).order_by("datetime").reverse()
+    sorted_latest_listings_paginator = Paginator(sorted_latest_listings, 10)
+    sorted_latest_listings_page_number = request.GET.get(
+        'relevant-listings-page')
+    sorted_latest_listings_page_obj = sorted_latest_listings_paginator.get_page(
+        sorted_latest_listings_page_number)
+
+    return render(request, "shopping/category.html", {
+        "category_name": category_name,
+        "category_value": category_value,
+        "relevant_listings_page_obj": sorted_latest_listings_page_obj
+    })
 
 
 @login_required
