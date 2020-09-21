@@ -22,10 +22,21 @@
             background-color: #60dbb9;
         }
 
-        @media (max-width: 999px) {
-            .shopping-logo {
-                padding-top: 40px;
-            }
+        .logo-section {
+            color: white;
+            text-docoration: none;
+        }
+
+        .logo-section-container:hover {
+            color: white;
+            text-decoration: none;
+            color: #60dbb9;
+        }
+
+        .logo-section:hover {
+            color: white;
+            text-decoration: none;
+            color: #60dbb9;
         }
 
     </style>
@@ -44,40 +55,42 @@
 
     <!-- Form -->
     {% block content %}
-        <div class="container-fluid" style="background-color: #42f5c2; width: 100%; min-width: 1000px;">
-            <div class="container-fluid middle-section" style="max-width: 70%; background-color: #42f5c2;">
-                <div class="row">
-                    <div class="col-6 shopping-logo" style="text-align: center; font-size: 80px; margin-top: 5%; color: white;">
+    <div class="container-fluid justify-content-center" style="background-color: #42f5c2; width: 100%;">
+        <div class="container-fluid" style="max-width: 70%; background-color: #42f5c2;">
+            <div class="row justify-content-center">
+                <div class="col-6 logo-section-container" style="text-align: center; font-size: 80px; margin-top: 5%; color: white; max-width: 400px;">
+                    <a href="{% url 'index' %}" class="logo-section">
                         <i class="fa fa-shopping-bag"></i>
                         <p>Shopping</p>
-                    </div>
-                    <div class="col-6">
-                        <form class="form-group" action="" method="post" style="background-color: white; padding: 20px 20px 20px 20px; margin-top: 15px; border-radius: 7px;">
-                            {% csrf_token %}
-                            <div class="" style="margin: 40px 20px 2px 2px;">
-                                <p>
-                                    <label for="id_full_name">Username</label>
-                                    <input autofocus id="id_full_name" type="text" name="username" maxlength="100" required class="form-control">
-                                </p>
+                    </a>
+                </div>
+                <div class="col-6" style="min-width: 400px;">
+                    <form class="form-group" action="" method="post" style="background-color: white; padding: 20px 20px 20px 20px; margin-top: 15px; border-radius: 7px;">
+                        {% csrf_token %}
+                        <div class="" style="margin: 40px 20px 2px 2px;">
+                            <p>
+                                <label for="id_full_name">Username</label>
+                                <input autofocus id="id_full_name" type="text" name="username" maxlength="100" required class="form-control">
+                            </p>
 
-                                <p>
-                                    <label for="id_password">Password</label>
-                                    <input id="id_password" type="password" name="password" maxlength="100" required class="form-control">
-                                </p>
+                            <p>
+                                <label for="id_password">Password</label>
+                                <input id="id_password" type="password" name="password" maxlength="100" required class="form-control">
+                            </p>
 
-                                <a href="#">
-                                    <p>Forgot password</p>
-                                </a>
+                            <a href="#">
+                                <p>Forgot password</p>
+                            </a>
 
-                                <p style="margin-left: 3px; color: grey">{{ message }}</p>
+                            <p style="margin-left: 3px; color: grey">{{ message }}</p>
 
-                            </div>
-                            <input id="login-btn" type="submit" class="btn" name="login" value="Log In">
-                        </form>
-                    </div>
+                        </div>
+                        <input id="login-btn" type="submit" class="btn" name="login" value="Log In">
+                    </form>
                 </div>
             </div>
         </div>
+    </div>
     {% endblock %}
 
     {% block bottom_footer %}
