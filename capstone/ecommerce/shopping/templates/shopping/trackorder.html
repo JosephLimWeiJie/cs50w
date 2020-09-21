@@ -103,35 +103,37 @@
                     {% endif %}
                 {% endif %}
             {% endfor %}
-            <nav aria-label="Orders pagination">
-                <ul class="pagination justify-content-center">
-                    {% if orders.has_previous %}
-                        <li class="page-item">
-                            <a class="page-link" href="?page=1">&laquo; first</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="?page={{ orders.previous_page_number }}">previous</a>
-                        </li>
-                    {% endif %}
+            <div class="row justify-content-center">
+                <nav aria-label="Orders pagination">
+                    <ul class="pagination justify-content-center">
+                        {% if orders.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" style="color: #42f5c2;" href="?order-page=1">&laquo; first</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" style="color: #42f5c2;" href="?order-page={{ orders.previous_page_number }}">previous</a>
+                            </li>
+                        {% endif %}
 
-                    {% if orders.number != 1 %}
-                        <span class="current">
-                            <p style="margin-top: 10px; margin-right: 10px; margin-left: 10px;">
-                                Page {{ orders.number }} of {{ orders.paginator.num_pages }}.
-                            </p>
-                        </span>
-                    {% endif %}
+                        {% if orders.number != 1 %}
+                            <span class="current">
+                                <p style="margin-top: 10px; margin-right: 10px; margin-left: 10px;">
+                                    Page {{ orders.number }} of {{ orders.paginator.num_pages }}.
+                                </p>
+                            </span>
+                        {% endif %}
 
-                    {% if orders.has_next %}
-                        <li class="page-item">
-                            <a class="page-link" href="?page={{ orders.next_page_number }}">next</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="?page={{ orders.paginator.num_pages }}">last &raquo;</a>
-                        </li>
-                    {% endif %}
-                </ul>
-            </nav>
+                        {% if orders.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" style="color: #42f5c2;" href="?order-page={{ orders.next_page_number }}">next</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" style="color: #42f5c2;" href="?order-page={{ orders.paginator.num_pages }}">last &raquo;</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
         {% endif %}
     </div>
 {% endblock %}

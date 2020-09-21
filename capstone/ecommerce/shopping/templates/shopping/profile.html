@@ -258,37 +258,38 @@
                                         <hr>
                                     {% endfor %}
 
+                                    <div class="row justify-content-center">
+                                        <!-- My listing paginator -->
+                                        <nav aria-label="Page navigation listings">
+                                            <ul class="pagination justify-content-center">
+                                                {% if listing_page_obj.has_previous %}
+                                                    <li class="page-item">
+                                                        <a class="page-link" style="color: #42f5c2;" href="?listing-page=1">&laquo; first</a>
+                                                    </li>
+                                                    <li class="page-item">
+                                                        <a class="page-link" style="color: #42f5c2;" href="?listing-page={{ listing_page_obj.previous_page_number }}">previous</a>
+                                                    </li>
+                                                {% endif %}
 
-                                <!-- My listing paginator -->
-                                <nav aria-label="Page navigation listings">
-                                    <ul class="pagination justify-content-center">
-                                        {% if listing_page_obj.has_previous %}
-                                            <li class="page-item">
-                                                <a class="page-link" href="?listing-page=1">&laquo; first</a>
-                                            </li>
-                                            <li class="page-item">
-                                                <a class="page-link" href="?listing-page={{ listing_page_obj.previous_page_number }}">previous</a>
-                                            </li>
-                                        {% endif %}
+                                                {% if listing_page_obj.number != 1 %}
+                                                    <span class="current">
+                                                        <p style="margin-top: 10px; margin-right: 10px; margin-left: 10px;">
+                                                            Page {{ listing_page_obj.number }} of {{ listing_page_obj.paginator.num_pages }}.
+                                                        </p>
+                                                    </span>
+                                                {% endif %}
 
-                                        {% if listing_page_obj.number != 1 %}
-                                            <span class="current">
-                                                <p style="margin-top: 10px; margin-right: 10px; margin-left: 10px;">
-                                                    Page {{ listing_page_obj.number }} of {{ listing_page_obj.paginator.num_pages }}.
-                                                </p>
-                                            </span>
-                                        {% endif %}
-
-                                        {% if listing_page_obj.has_next %}
-                                            <li class="page-item">
-                                                <a class="page-link" href="?listing-page={{ listing_page_obj.next_page_number }}">next</a>
-                                            </li>
-                                            <li class="page-item">
-                                                <a class="page-link" href="?listing-page={{ listing_page_obj.paginator.num_pages }}">last &raquo;</a>
-                                            </li>
-                                        {% endif %}
-                                    </ul>
-                                </nav>
+                                                {% if listing_page_obj.has_next %}
+                                                    <li class="page-item">
+                                                        <a class="page-link" style="color: #42f5c2;" href="?listing-page={{ listing_page_obj.next_page_number }}">next</a>
+                                                    </li>
+                                                    <li class="page-item">
+                                                        <a class="page-link" style="color: #42f5c2;" href="?listing-page={{ listing_page_obj.paginator.num_pages }}">last &raquo;</a>
+                                                    </li>
+                                                {% endif %}
+                                            </ul>
+                                        </nav>
+                                    </div>
                                 {% else %}
                                     <p>You have no listings in the market currently.</p>
                                 {% endif %}
@@ -344,35 +345,37 @@
                                         {% endif %}
                                         <hr>
                                     {% endfor %}
-                                    <nav aria-label="My purchases pagination">
-                                        <ul class="pagination justify-content-center">
-                                            {% if order_page_obj.has_previous %}
-                                                <li class="page-item">
-                                                    <a class="page-link" href="?order-page=1">&laquo; first</a>
-                                                </li>
-                                                <li class="page-item">
-                                                    <a class="page-link" href="?order-page={{ order_page_obj.previous_page_number }}">previous</a>
-                                                </li>
-                                            {% endif %}
+                                    <div class="row justify-content-center">
+                                        <nav aria-label="My purchases pagination">
+                                            <ul class="pagination justify-content-center">
+                                                {% if order_page_obj.has_previous %}
+                                                    <li class="page-item">
+                                                        <a class="page-link" style="color: #42f5c2;" href="?order-page=1">&laquo; first</a>
+                                                    </li>
+                                                    <li class="page-item">
+                                                        <a class="page-link" style="color: #42f5c2;" href="?order-page={{ order_page_obj.previous_page_number }}">previous</a>
+                                                    </li>
+                                                {% endif %}
 
-                                            {% if order_page_obj.number != 1%}
-                                                <span class="current">
-                                                    <p style="margin-top: 10px; margin-right: 10px; margin-left: 10px;">
-                                                        Page {{ order_page_obj.number }} of {{ order_page_obj.paginator.num_pages }}.
-                                                    </p>
-                                                </span>
-                                            {% endif %}
+                                                {% if order_page_obj.number != 1%}
+                                                    <span class="current">
+                                                        <p style="margin-top: 10px; margin-right: 10px; margin-left: 10px;">
+                                                            Page {{ order_page_obj.number }} of {{ order_page_obj.paginator.num_pages }}.
+                                                        </p>
+                                                    </span>
+                                                {% endif %}
 
-                                            {% if order_page_obj.has_next %}
-                                                <li class="page-item">
-                                                    <a class="page-link" href="?order-page={{ order_page_obj.next_page_number }}">next</a>
-                                                </li>
-                                                <li class="page-item">
-                                                    <a class="page-link" href="?order-page={{ order_page_obj.paginator.num_pages }}">last &raquo;</a>
-                                                </li>
-                                            {% endif %}
-                                        </ul>
-                                    </nav>
+                                                {% if order_page_obj.has_next %}
+                                                    <li class="page-item">
+                                                        <a class="page-link" style="color: #42f5c2;" href="?order-page={{ order_page_obj.next_page_number }}">next</a>
+                                                    </li>
+                                                    <li class="page-item">
+                                                        <a class="page-link" style="color: #42f5c2;" href="?order-page={{ order_page_obj.paginator.num_pages }}">last &raquo;</a>
+                                                    </li>
+                                                {% endif %}
+                                            </ul>
+                                        </nav>
+                                    </div>
                                 {% else %}
                                     <p>You have no items sold in the market currently.</p>
                                 {% endif %}
@@ -414,37 +417,38 @@
                                         {% endfor %}
                                     {% endfor %}
 
+                                    <div class="row justify-content-center">
+                                        <!-- My Review paginator -->
+                                        <nav aria-label="Page navigation listings">
+                                            <ul class="pagination justify-content-center">
+                                                {% if review_page_obj.has_previous %}
+                                                    <li class="page-item">
+                                                        <a class="page-link" style="color: #42f5c2;" href="?review-page=1">&laquo; first</a>
+                                                    </li>
+                                                    <li class="page-item">
+                                                        <a class="page-link" style="color: #42f5c2;" href="?review-page={{ review_page_obj.previous_page_number }}">previous</a>
+                                                    </li>
+                                                {% endif %}
 
-                                    <!-- My Review paginator -->
-                                    <nav aria-label="Page navigation listings">
-                                        <ul class="pagination justify-content-center">
-                                            {% if review_page_obj.has_previous %}
-                                                <li class="page-item">
-                                                    <a class="page-link" href="?review-page=1">&laquo; first</a>
-                                                </li>
-                                                <li class="page-item">
-                                                    <a class="page-link" href="?review-page={{ review_page_obj.previous_page_number }}">previous</a>
-                                                </li>
-                                            {% endif %}
+                                                {% if review_page_obj.number != 1 %}
+                                                    <span class="current">
+                                                        <p style="margin-top: 10px; margin-right: 10px; margin-left: 10px;">
+                                                            Page {{ review_page_obj.number }} of {{ review_page_obj.paginator.num_pages }}.
+                                                        </p>
+                                                    </span>
+                                                {% endif %}
 
-                                            {% if review_page_obj.number != 1 %}
-                                                <span class="current">
-                                                    <p style="margin-top: 10px; margin-right: 10px; margin-left: 10px;">
-                                                        Page {{ review_page_obj.number }} of {{ review_page_obj.paginator.num_pages }}.
-                                                    </p>
-                                                </span>
-                                            {% endif %}
-
-                                            {% if review_page_obj.has_next %}
-                                                <li class="page-item">
-                                                    <a class="page-link" href="?review-page={{ review_page_obj.next_page_number }}">next</a>
-                                                </li>
-                                                <li class="page-item">
-                                                    <a class="page-link" href="?review-page={{ review_page_obj.paginator.num_pages }}">last &raquo;</a>
-                                                </li>
-                                            {% endif %}
-                                        </ul>
-                                    </nav>
+                                                {% if review_page_obj.has_next %}
+                                                    <li class="page-item">
+                                                        <a class="page-link" style="color: #42f5c2;" href="?review-page={{ review_page_obj.next_page_number }}">next</a>
+                                                    </li>
+                                                    <li class="page-item">
+                                                        <a class="page-link" style="color: #42f5c2;" href="?review-page={{ review_page_obj.paginator.num_pages }}">last &raquo;</a>
+                                                    </li>
+                                                {% endif %}
+                                            </ul>
+                                        </nav>
+                                    </div>
                                 {% else %}
                                     <p>You have no customers' reviews currently.</p>
                                 {% endif %}
@@ -520,35 +524,37 @@
                                 </div>
                                 <hr>
                             {% endfor %}
-                            <nav aria-label="My purchases pagination">
-                                <ul class="pagination justify-content-center">
-                                    {% if order_page_obj.has_previous %}
-                                        <li class="page-item">
-                                            <a class="page-link" href="?order-page=1">&laquo; first</a>
-                                        </li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="?order-page={{ orders.previous_page_number }}">previous</a>
-                                        </li>
-                                    {% endif %}
+                            <div class="row justify-content-center">
+                                <nav aria-label="My purchases pagination">
+                                    <ul class="pagination justify-content-center">
+                                        {% if order_page_obj.has_previous %}
+                                            <li class="page-item">
+                                                <a class="page-link" style="color: #42f5c2;" href="?order-page=1">&laquo; first</a>
+                                            </li>
+                                            <li class="page-item">
+                                                <a class="page-link" style="color: #42f5c2;" href="?order-page={{ orders.previous_page_number }}">previous</a>
+                                            </li>
+                                        {% endif %}
 
-                                    {% if order_page_obj.number != 1%}
-                                        <span class="current">
-                                            <p style="margin-top: 10px; margin-right: 10px; margin-left: 10px;">
-                                                Page {{ order_page_obj.number }} of {{ order_page_obj.paginator.num_pages }}.
-                                            </p>
-                                        </span>
-                                    {% endif %}
+                                        {% if order_page_obj.number != 1%}
+                                            <span class="current">
+                                                <p style="margin-top: 10px; margin-right: 10px; margin-left: 10px;">
+                                                    Page {{ order_page_obj.number }} of {{ order_page_obj.paginator.num_pages }}.
+                                                </p>
+                                            </span>
+                                        {% endif %}
 
-                                    {% if order_page_obj.has_next %}
-                                        <li class="page-item">
-                                            <a class="page-link" href="?order-page={{ orders.next_page_number }}">next</a>
-                                        </li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="?order-page={{ orders.paginator.num_pages }}">last &raquo;</a>
-                                        </li>
-                                    {% endif %}
-                                </ul>
-                            </nav>
+                                        {% if order_page_obj.has_next %}
+                                            <li class="page-item">
+                                                <a class="page-link" style="color: #42f5c2;" href="?order-page={{ orders.next_page_number }}">next</a>
+                                            </li>
+                                            <li class="page-item">
+                                                <a class="page-link" style="color: #42f5c2;" href="?order-page={{ orders.paginator.num_pages }}">last &raquo;</a>
+                                            </li>
+                                        {% endif %}
+                                    </ul>
+                                </nav>
+                            </div>
                         {% else %}
                             <p>You have no purchases currently.</p>
                         {% endif %}
@@ -640,8 +646,6 @@
                                                                 </div>
                                                             </form>
                                                         </div>
-
-
                                                     </div>
                                                 {% else %}
                                                     <div class="col-10 indv-notif-content-section" style="vertical-align: middle;">
@@ -742,35 +746,37 @@
                                         </div>
                                         <hr>
                                     {% endfor %}
-                                    <nav aria-label="My Notification pagination">
-                                        <ul class="pagination justify-content-center">
-                                            {% if notif_page_obj.has_previous %}
-                                                <li class="page-item">
-                                                    <a class="page-link" href="?notif-page=1">&laquo; first</a>
-                                                </li>
-                                                <li class="page-item">
-                                                    <a class="page-link" href="?notif-page={{ notif_page_obj.previous_page_number }}">previous</a>
-                                                </li>
-                                            {% endif %}
+                                    <div class="row justify-content-center">
+                                        <nav aria-label="My Notification pagination">
+                                            <ul class="pagination justify-content-center">
+                                                {% if notif_page_obj.has_previous %}
+                                                    <li class="page-item">
+                                                        <a class="page-link" style="color: #42f5c2;" href="?notif-page=1">&laquo; first</a>
+                                                    </li>
+                                                    <li class="page-item">
+                                                        <a class="page-link" style="color: #42f5c2;" href="?notif-page={{ notif_page_obj.previous_page_number }}">previous</a>
+                                                    </li>
+                                                {% endif %}
 
-                                            {% if notif_page_obj.number != 1 %}
-                                                <span class="current">
-                                                    <p style="margin-top: 10px; margin-right: 10px; margin-left: 10px;">
-                                                        Page {{ notif_page_obj.number }} of {{ notif_page_obj.paginator.num_pages }}.
-                                                    </p>
-                                                </span>
-                                            {% endif %}
+                                                {% if notif_page_obj.number != 1 %}
+                                                    <span class="current">
+                                                        <p style="margin-top: 10px; margin-right: 10px; margin-left: 10px;">
+                                                            Page {{ notif_page_obj.number }} of {{ notif_page_obj.paginator.num_pages }}.
+                                                        </p>
+                                                    </span>
+                                                {% endif %}
 
-                                            {% if notif_page_obj.has_next %}
-                                                <li class="page-item">
-                                                    <a class="page-link" href="?notif-page={{ notif_page_obj.next_page_number }}">next</a>
-                                                </li>
-                                                <li class="page-item">
-                                                    <a class="page-link" href="?notif-page={{ notif_page_obj.paginator.num_pages }}">last &raquo;</a>
-                                                </li>
-                                            {% endif %}
-                                        </ul>
-                                    </nav>
+                                                {% if notif_page_obj.has_next %}
+                                                    <li class="page-item">
+                                                        <a class="page-link" style="color: #42f5c2;" href="?notif-page={{ notif_page_obj.next_page_number }}">next</a>
+                                                    </li>
+                                                    <li class="page-item">
+                                                        <a class="page-link" style="color: #42f5c2;" href="?notif-page={{ notif_page_obj.paginator.num_pages }}">last &raquo;</a>
+                                                    </li>
+                                                {% endif %}
+                                            </ul>
+                                        </nav>
+                                    </div>
                                 </div>
                             {% else %}
                                 <p>You have no notifications currently.</p>

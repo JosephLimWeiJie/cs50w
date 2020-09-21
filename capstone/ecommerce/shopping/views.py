@@ -12,6 +12,7 @@ from django import forms
 
 from .models import User, Profile, Listing, ListingImage, Review, Order
 from. models import Notification
+
 from .forms import SignUpForm
 import json
 
@@ -341,10 +342,12 @@ def listing_view(request, listing_id):
     listing = Listing.objects.get(id=listing_id)
     listing_images = ListingImage.objects.all().filter(listing=listing)
     listing_images_count = listing_images.count()
-    review_list = Review.objects.all()
-    paginator = Paginator(review_list, 10)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
+
+    review_listing = Review.objects.all()
+    review_listing_paginator = Paginator(review_listing, 10)
+    review_listing_page_number = request.GET.get('review-listing-page')
+    review_listing_page_obj = review_listing_paginator.get_page(
+        review_listing_page_number)
 
     return render(request, "shopping/listing.html", {
         "listing": listing,
@@ -354,7 +357,7 @@ def listing_view(request, listing_id):
         "reviews": Review.objects.filter(listing=listing),
         "hasReviewed": check_user_has_reviewed(
             request.user, Review.objects.filter(listing=listing)),
-        "page_obj": page_obj,
+        "review_listing_page_obj": review_listing_page_obj,
         "hasSoldOut": check_listing_has_sold_out(listing),
         "total_review_count": Review.objects.filter(listing=listing).count(),
         "listing_rating_score": parse_rating_score_one_decimal_place(
@@ -544,9 +547,9 @@ def cart_view(request):
 
         order_list = Order.objects.filter(
             user=request.user, has_purchased=False)
-        paginator = Paginator(order_list, 10)
-        page_number = request.GET.get('page')
-        orders = paginator.get_page(page_number)
+        order_list_paginator = Paginator(order_list, 10)
+        order_list_page_number = request.GET.get('order-page')
+        orders = order_list_paginator.get_page(order_list_page_number)
 
         return render(request, "shopping/cart.html", {
             "orders": orders,
@@ -556,9 +559,9 @@ def cart_view(request):
     else:
         order_list = Order.objects.filter(
             user=request.user, has_purchased=False)
-        paginator = Paginator(order_list, 10)
-        page_number = request.GET.get('page')
-        orders = paginator.get_page(page_number)
+        order_list_paginator = Paginator(order_list, 10)
+        order_list_page_number = request.GET.get('order-page')
+        orders = order_list_paginator.get_page(order_list_page_number)
 
         total_order_price = parse_order_total_price_two_decimal_pace(
             get_total_price_in_cart(request.user))
@@ -572,17 +575,28 @@ def cart_view(request):
 @login_required
 def update_cart_view(request):
     if request.method == 'POST':
-        listing_to_remove_id = request.POST['listing-to-remove']
-        listing_to_remove = Listing.objects.get(id=listing_to_remove_id)
-        order_to_remove = Order.objects.filter(listing=listing_to_remove)
+        order_to_remove_id = request.POST['order-to-remove']
+        order_to_remove = Order.objects.filter(pk=order_to_remove_id)
         order_to_remove.delete()
 
+        order_list = Order.objects.filter(
+            user=request.user, has_purchased=False)
+        order_list_paginator = Paginator(order_list, 10)
+        order_list_page_number = request.GET.get('order-page')
+        orders = order_list_paginator.get_page(order_list_page_number)
+
         return render(request, "shopping/cart.html", {
-            "orders": Order.objects.filter(user=request.user)
+            "orders": orders
         })
     else:
+        order_list = Order.objects.filter(
+            user=request.user, has_purchased=False)
+        order_list_paginator = Paginator(order_list, 10)
+        order_list_page_number = request.GET.get('order-page')
+        orders = order_list_paginator.get_page(order_list_page_number)
+
         return render(request, "shopping/cart.html", {
-            "orders": Order.objects.filter(user=request.user)
+            "orders": orders
         })
 
 
@@ -684,9 +698,9 @@ def checkout_view(request):
 
 def track_order_view(request):
     order_list = Order.objects.filter(user=request.user)
-    paginator = Paginator(order_list, 10)
-    page_number = request.GET.get('page')
-    orders = paginator.get_page(page_number)
+    order_list_paginator = Paginator(order_list, 10)
+    order_list_page_number = request.GET.get('order-page')
+    orders = order_list_paginator.get_page(order_list_page_number)
 
     return render(request, "shopping/trackorder.html", {
         "profile": Profile.objects.get(user=request.user),
@@ -929,7 +943,7 @@ def check_user_has_order_in_cart(user):
 
 def check_listing_exist_in_cart(listing, user):
     for order in Order.objects.filter(user=user, listing=listing):
-        if order.listing == listing:
+        if order.listing == listing and order.has_purchased is False:
             return True
     return False
 

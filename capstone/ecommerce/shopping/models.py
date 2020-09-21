@@ -83,7 +83,7 @@ class Listing(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="listing", default=1)
     rating_score = models.FloatField(
-        null=True, blank=True,
+        default=0.0,
         validators=[MinValueValidator(0.0), MaxValueValidator(5.0)])
     quantity_sold = models.IntegerField(default=0)
     click_rate = models.IntegerField(default=0)

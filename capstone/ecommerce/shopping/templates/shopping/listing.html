@@ -278,7 +278,7 @@
                 </div>
 
                 <!-- Review's section -->
-                {% for review in page_obj %}
+                {% for review in review_listing_page_obj %}
                     {% if review.listing == listing %}
                     <div class="row">
                         <div class="col-sm-1 m-3" style="text-align: center; max-width: 45px;">
@@ -353,35 +353,38 @@
                     </div>
                     {% endif %}
                 {% endfor %}
+                <div class="row justify-content-center">
                     <nav aria-label="Review pagination">
                         <ul class="pagination justify-content-center">
-                            {% if page_obj.has_previous %}
+                            {% if review_listing_page_obj.has_previous %}
                                 <li class="page-item">
-                                    <a class="page-link" href="?page=1">&laquo; first</a>
+                                    <a class="page-link" href="?review-listing-page=1" style="color: #42f5c2;">&laquo; first</a>
                                 </li>
                                 <li class="page-item">
-                                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}">previous</a>
+                                    <a class="page-link" style="color: #42f5c2;" href="?review-listing-page={{ review_listing_page_obj.previous_page_number }}">previous</a>
                                 </li>
                             {% endif %}
 
-                            {% if page_obj.number != 1 %}
+                            {% if review_listing_page_obj.number != 1 %}
                                 <span class="current">
                                     <p style="margin-top: 10px; margin-right: 10px; margin-left: 10px;">
-                                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                                        Page {{ review_listing_page_obj.number }} of {{ review_listing_page_obj.paginator.num_pages }}.
                                     </p>
                                 </span>
                             {% endif %}
 
                             {% if page_obj.has_next %}
                                 <li class="page-item">
-                                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">next</a>
+                                    <a class="page-link" style="color: #42f5c2;" href="?review-listing-page={{ review_listing_page_obj.next_page_number }}">next</a>
                                 </li>
                                 <li class="page-item">
-                                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                                    <a class="page-link" style="color: #42f5c2;" href="?review-listing-page={{ review_listing_page_obj.paginator.num_pages }}">last &raquo;</a>
                                 </li>
                             {% endif %}
                         </ul>
                     </nav>
+                </div>
+
             {% endif %}
         {% else %}
             <div class="container-fluid">
