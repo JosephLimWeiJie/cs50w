@@ -25,10 +25,142 @@
                         <div class="row p-3 m-3">
                             <div class="row form-check form-check-inline">
                                 <input type="text" name="search-keywords" value="{{ search_keywords }}" style="display: none;">
-                                <span>
-                                    <i style="color: lightgrey;" class="fa fa-circle"></i>
-                                    <input class="category-btn" type="submit" name="filter-category" value="{{ category }}">
-                                </span>
+                                    {% if category == "Men's Wear" %}
+                                        <span>
+                                            <i style="color: #42f5c2;" class="fa fa-caret-right"></i>
+                                            <input style="color: #42f5c2;" class="category-btn" type="submit" name="filter-category" value="{{ category }}">
+                                        </span>
+                                    {% elif category == "Women's Apparel" %}
+                                        <span>
+                                            <i style="color: #42f5c2;" class="fa fa-caret-right"></i>
+                                            <input style="color: #42f5c2;" class="category-btn" type="submit" name="filter-category" value="{{ category }}">
+                                        </span>
+                                    {% elif category == "Mobile & Gadgets" %}
+                                        <span>
+                                            <i style="color: #42f5c2;" class="fa fa-caret-right"></i>
+                                            <input style="color: #42f5c2;" class="category-btn" type="submit" name="filter-category" value="{{ category }}">
+                                        </span>
+                                    {% elif category == "Beauty & Personal Care" %}
+                                        <span>
+                                            <i style="color: #42f5c2;" class="fa fa-caret-right"></i>
+                                            <input style="color: #42f5c2;" class="category-btn" type="submit" name="filter-category" value="{{ category }}">
+                                        </span>
+                                    {% elif category == "Home Appliances" %}
+                                        <span>
+                                            <i style="color: #42f5c2;" class="fa fa-caret-right"></i>
+                                            <input style="color: #42f5c2;" class="category-btn" type="submit" name="filter-category" value="{{ category }}">
+                                        </span>
+                                    {% elif category == "Home & Living" %}
+                                        <span>
+                                            <i style="color: #42f5c2;" class="fa fa-caret-right"></i>
+                                            <input style="color: #42f5c2;" class="category-btn" type="submit" name="filter-category" value="{{ category }}">
+                                        </span>
+                                    {% elif category == "Kids Fashion" %}
+                                        <span>
+                                            <i style="color: #42f5c2;" class="fa fa-caret-right"></i>
+                                            <input style="color: #42f5c2;" class="category-btn" type="submit" name="filter-category" value="{{ category }}">
+                                        </span>
+                                    {% elif category == "Toys, Kids & Babies" %}
+                                        <span>
+                                            <i style="color: #42f5c2;" class="fa fa-caret-right"></i>
+                                            <input style="color: #42f5c2;" class="category-btn" type="submit" name="filter-category" value="{{ category }}">
+                                        </span>
+                                    {% elif category == "Video Games" %}
+                                        <span>
+                                            <i style="color: #42f5c2;" class="fa fa-caret-right"></i>
+                                            <input style="color: #42f5c2;" class="category-btn" type="submit" name="filter-category" value="{{ category }}">
+                                        </span>
+                                    {% elif category == "Food & Beverages" %}
+                                        <span>
+                                            <i style="color: #42f5c2;" class="fa fa-caret-right"></i>
+                                            <input style="color: #42f5c2;" class="category-btn" type="submit" name="filter-category" value="{{ category }}">
+                                        </span>
+                                    {% elif category == "Computer & Peripherals" %}
+                                        <span>
+                                            <i style="color: #42f5c2;" class="fa fa-caret-right"></i>
+                                            <input style="color: #42f5c2;" class="category-btn" type="submit" name="filter-category" value="{{ category }}">
+                                        </span>
+                                    {% elif category == "Hobbies & Books" %}
+                                        <span>
+                                            <i style="color: #42f5c2;" class="fa fa-caret-right"></i>
+                                            <input style="color: #42f5c2;" class="category-btn" type="submit" name="filter-category" value="{{ category }}">
+                                        </span>
+                                    {% elif category == "Health & Wellness" %}
+                                        <span>
+                                            <i style="color: #42f5c2;" class="fa fa-caret-right"></i>
+                                            <input style="color: #42f5c2;" class="category-btn" type="submit" name="filter-category" value="{{ category }}">
+                                        </span>
+                                    {% elif category == "Women's Bags" %}
+                                        <span>
+                                            <i style="color: #42f5c2;" class="fa fa-caret-right"></i>
+                                            <input style="color: #42f5c2;" class="category-btn" type="submit" name="filter-category" value="{{ category }}">
+                                        </span>
+                                    {% elif category == "Travel & Luggage" %}
+                                        <span>
+                                            <i style="color: #42f5c2;" class="fa fa-caret-right"></i>
+                                            <input style="color: #42f5c2;" class="category-btn" type="submit" name="filter-category" value="{{ category }}">
+                                        </span>
+                                    {% elif category == "Pet Food & Supplies" %}
+                                        <span>
+                                            <i style="color: #42f5c2;" class="fa fa-caret-right"></i>
+                                            <input style="color: #42f5c2;" class="category-btn" type="submit" name="filter-category" value="{{ category }}">
+                                        </span>
+                                    {% elif category == "Watches" %}
+                                        <span>
+                                            <i style="color: #42f5c2;" class="fa fa-caret-right"></i>
+                                            <input style="color: #42f5c2;" class="category-btn" type="submit" name="filter-category" value="{{ category }}">
+                                        </span>
+                                    {% elif category == "Jewellery & Accessory" %}
+                                        <span>
+                                            <i style="color: #42f5c2;" class="fa fa-caret-right"></i>
+                                            <input style="color: #42f5c2;" class="category-btn" type="submit" name="filter-category" value="{{ category }}">
+                                        </span>
+                                    {% elif category == "Men's Shoes" %}
+                                        <span>
+                                            <i style="color: #42f5c2;" class="fa fa-caret-right"></i>
+                                            <input style="color: #42f5c2;" class="category-btn" type="submit" name="filter-category" value="{{ category }}">
+                                        </span>
+                                    {% elif category == "Women's Shoes" %}
+                                        <span>
+                                            <i style="color: #42f5c2;" class="fa fa-caret-right"></i>
+                                            <input style="color: #42f5c2;" class="category-btn" type="submit" name="filter-category" value="{{ category }}">
+                                        </span>
+                                    {% elif category == "Sports & Outdoors" %}
+                                        <span>
+                                            <i style="color: #42f5c2;" class="fa fa-caret-right"></i>
+                                            <input style="color: #42f5c2;" class="category-btn" type="submit" name="filter-category" value="{{ category }}">
+                                        </span>
+                                    {% elif category == "Automotive" %}
+                                        <span>
+                                            <i style="color: #42f5c2;" class="fa fa-caret-right"></i>
+                                            <input style="color: #42f5c2;" class="category-btn" type="submit" name="filter-category" value="{{ category }}">
+                                        </span>
+                                    {% elif category == "Men's Bags" %}
+                                        <span>
+                                            <i style="color: #42f5c2;" class="fa fa-caret-right"></i>
+                                            <input style="color: #42f5c2;" class="category-btn" type="submit" name="filter-category" value="{{ category }}">
+                                        </span>
+                                    {% elif category == "Cameras & Drones" %}
+                                        <span>
+                                            <i style="color: #42f5c2;" class="fa fa-caret-right"></i>
+                                            <input style="color: #42f5c2;" class="category-btn" type="submit" name="filter-category" value="{{ category }}">
+                                        </span>
+                                    {% elif category == "Dining, Travel & Services" %}
+                                        <span>
+                                            <i style="color: #42f5c2;" class="fa fa-caret-right"></i>
+                                            <input style="color: #42f5c2;" class="category-btn" type="submit" name="filter-category" value="{{ category }}">
+                                        </span>
+                                    {% elif category == "Miscellaneous" %}
+                                        <span>
+                                            <i style="color: #42f5c2;" class="fa fa-caret-right"></i>
+                                            <input style="color: #42f5c2;" class="category-btn" type="submit" name="filter-category" value="{{ category }}">
+                                        </span>
+                                    {% else %}
+                                        <span>
+                                            <i style="color: lightgrey" class="fa fa-caret-right"></i>
+                                            <input class="category-btn" type="submit" name="filter-category" value="{{ category }}">
+                                        </span>
+                                    {% endif %}
                             </div>
                         </div>
                     </form>
