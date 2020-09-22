@@ -13,6 +13,8 @@ document.addEventListener('DOMContentLoaded', function() {
         'click', () => loadMyAccount());
     document.querySelector('#edit-profile-form').onsubmit =
         updateMyAccount;
+    document.querySelector('#create-listing-btn').addEventListener(
+        'submit', () => createNewListingNotification());
 
     loadNotif();
     loadImageFileName();
@@ -106,35 +108,35 @@ function loadUpdateOrderStatus() {
         function(button) {
             button.addEventListener(
                 'click', () => updateOrderStatus(button.id));
-    });
+        });
 }
 
 function updateOrderStatus(button_id) {
-    const ORDER_ID = parseButtonId(button_id);
-    const UPDATED_ORDER_STATUS = document.querySelector(
-            `#select-order-status-${ORDER_ID}`).value;
+    const order_id = parseButtonId(button_id);
+    const updated_order_status = document.querySelector(
+            `#select-order-status-${order_id}`).value;
 
-    fetch(`/shopping/updateorder/${ORDER_ID}`, {
+    fetch(`/shopping/updateorder/${order_id}`, {
         method: 'PUT',
         body: JSON.stringify({
-            status: UPDATED_ORDER_STATUS
+            status: updated_order_status
         })
     });
 
-    document.querySelector(`#order-status-${ORDER_ID}`).innerHTML =
-        `Order Status: <strong>${UPDATED_ORDER_STATUS}</strong>`;
+    document.querySelector(`#order-status-${order_id}`).innerHTML =
+        `Order Status: <strong>${updated_order_status}</strong>`;
 }
 
-function parseButtonId(buttonId) {
-    const ID = buttonId.split("-").pop();
-    return ID;
+function parseButtonId(button_id) {
+    const id = button_id.split("-").pop();
+    return id;
 }
 
 function loadFile(event) {
     var output = document.getElementById('output');
         output.src = URL.createObjectURL(event.target.files[0]);
         output.onload = function() {
-        URL.revokeObjectURL(output.src)
+        URL.revokeObjectURL(output.src) // free memory
     }
 
     document.querySelector('#profile-pic-btn').style.display = "block";
@@ -161,12 +163,12 @@ function loadCreateNewListingBtn() {
 function limitListingDesrc() {
     document.querySelectorAll('.listing-desrc').forEach(
         function(listingDesrcParagraph) {
-            if (listingDesrcParagraph.innerHTML.length >= 30) {
-                var limitedDesrcParagraph = listingDesrcParagraph
-                        .innerHTML.substring(0, 30);
-                limitedDesrcParagraph += "...";
-                listingDesrcParagraph.innerHTML = limitedDesrcParagraph;
-            }
+        if (listingDesrcParagraph.innerHTML.length >= 30) {
+            var limitedDesrcParagraph = listingDesrcParagraph
+                    .innerHTML.substring(0, 30);
+            limitedDesrcParagraph += "...";
+            listingDesrcParagraph.innerHTML = limitedDesrcParagraph;
+        }
     });
 }
 
@@ -179,7 +181,11 @@ function loadReviewRating() {
             const SPAN_FOR_STARS = document.createElement('span');
             SPAN_FOR_STARS.innerHTML = '<i class="fa fa-star">';
             SPAN_FOR_STARS.style.color = "#42f5c2";
-            SPAN_FOR_STARS.appendChild(SPAN_FOR_STARS);
+            reviewDiv.appendChild(SPAN_FOR_STARS);
         }
     });
+}
+
+function createNewListingNotification() {
+    alert('You have created a new listing.');
 }

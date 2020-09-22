@@ -209,7 +209,7 @@ def profile_view(request, name):
 
 
 def profile_view_notification_toggled(request, name):
-    """Loads the profile view with notification section displayed.
+    """Loads the profile view with resources from database.
 
     Resources include the user's profile, orders, reviews and
     notifcations from the specific models.
@@ -242,11 +242,11 @@ def profile_view_notification_toggled(request, name):
     request.user.has_new_notification = False
     request.user.save()
 
-    return render(request, "shopping/notification.html", {
+    return render(request, "shopping/profile.html", {
         "name": name,
         "profile": profile,
         "hexed_phone_number": hex_phone_number(profile.phone_number),
-        "hasListings": has_listings(request.user),
+        "has_listings": has_listings(request.user),
         "listing_page_obj": listing_page_obj,
         "review_page_obj": review_page_obj,
         "order_page_obj": order_page_obj,
