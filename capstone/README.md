@@ -40,6 +40,7 @@ Here are the following features that are implemented in the shopping app. A visu
     + View all listings made by the user
     + Update an order's status
     + View all reviews left for each listing made by the user
+    + Update any order status under 'item sold' tab
 + **Listing**
     + Edit listing
     + Add the current listing into the user's cart
