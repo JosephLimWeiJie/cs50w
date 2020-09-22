@@ -5,6 +5,7 @@ By: `JosephLimWeiJie` Since: `Sep 2020`
 * [2. Quick Start](#quickstart)
 * [3. Features](#features)
 * [4. Files Description](#filesdescription)
+* [5. Project Justification](#justification)
 
 <a name="introduction"></a>
 ## Introduction
@@ -96,3 +97,13 @@ In this folder, there are:
 + `static/shopping/x` - contains a CSS and Javascript file necessary for that feature's template.
 + `static/styles.css` - basic CSS applied to `layout.html`.
 + `templates/shopping/` - contains all templates needed for the app.
+
+<a name="justification"></a>
+## Project Justification
+The `Shopping` app contains various features for it to function as an actual Ecommerce website. As such, several features, as listed under `Features`
+are implemented. Some of these features are more complicated than the others. For instance, the button to increase/decrease quantity in `listing` and `cart`
+was done using Javascript. To allow ease of selecting date when creating a new profile, a calender date picker was also added.
+
+The most notable feature implemented is the **Notification** feature. This feature overlaps all other features and serves as a primary core of the app. Whenever a user (buyer or seller) performs an action, a notification is sent to both parties. Additionally, the trending searches feature in the `Main Page` tracks the click-rate of each listing asynchronously to replicate a top listing searches functionality.
+
+Finally, all the features tie together to give a pleasant user experience. `Shopping` is designed to look clean and modern with its mobile responsive design, with various CSS for each template pages, combined with Boostrap's image carousel, modals, navigations bars and its grid system.
