@@ -4,19 +4,18 @@ By: `JosephLimWeiJie` Since: `Sep 2020`
 * [1. Introduction](#introduction)
 * [2. Quick Start](#quickstart)
 * [3. Features](#features)
-* [4. Files Description](#files)
+* [4. Files Description](#filesdescription)
 
 <a name="introduction"></a>
 ## Introduction
-
-[![Screenshot 2020-09-22 at 11 23 42 PM](https://user-images.githubusercontent.com/59989652/93902942-b415c200-fd2a-11ea-9383-2d3f8e5fd56e.png)](https://www.youtube.com/watch?v=36ygc_wrATI&ab_channel=JosephLim)
+<img align="center" src="https://user-images.githubusercontent.com/59989652/93908297-0823a500-fd31-11ea-860b-ad5a373d3304.png">
 
 Shopping is an Ecommerce website developed using `Django`, `Python`, `JQuery` and `Javascript`, where users can buy or sell products on a common space. Users can sell products by setting up a shop. Each product will be listed on the main page where anyone can browse or make purchases.
 
 <a name="quickstart"></a>
 ## Quick Start
 + Ensure that you have `Django` installed. (Note: This app requires Python `Pillow` to display the images properly.)
-+ Download the `src` code and traverse into ecommerce directory, `ecommerce/`.
++ Download the `src` code.
 + Within the `capstone` folder, you should see a `manage.py` file.
 + Run the command `python manage.py runserver`.
 + Next, open your browser and enter the following url `http://127.0.0.1:8000/shopping/`.
@@ -25,6 +24,8 @@ Shopping is an Ecommerce website developed using `Django`, `Python`, `JQuery` an
 <a name="features"></a>
 ## Features
 Here are the following features that are implemented in the shopping app. A visual demo is provided in the video below.
+
+[![Screenshot 2020-09-22 at 11 23 42 PM](https://user-images.githubusercontent.com/59989652/93902942-b415c200-fd2a-11ea-9383-2d3f8e5fd56e.png)](https://www.youtube.com/watch?v=36ygc_wrATI&ab_channel=JosephLim)
 
 ### Features Implemented
  + **User**
@@ -71,7 +72,7 @@ Here are the following features that are implemented in the shopping app. A visu
 + **Mobile Responsiveness**
     + This app is designed to be mobile responsive when displayed in a browser
 
-<a name="files"></a>
+<a name="filesdescription"></a>
 ## Files Description
 The `shopping` folder contains all necessary files/folders to run the app.
 
