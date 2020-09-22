@@ -1327,7 +1327,7 @@ def update_review_notification(listing, review):
     notification.save()
 
     listing.user.has_new_notification = True
-    listing.listing.user.save()
+    listing.user.save()
 
 
 def create_cart_notification_for_seller(request, orders_in_cart):
