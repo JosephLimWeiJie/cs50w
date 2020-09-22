@@ -48,6 +48,7 @@ Here are the following features that are implemented in the shopping app. A visu
     + Add the current listing into the user's cart
     + Checkout the current listing directly
     + Edit user's own review for the particular listing
+    + Contains a rating score represented by the number of rating stars
 + **Notification**
     + View all pending requests (notifications that require a course of action, such as accepting a return order request)
     + View all notifications
@@ -61,6 +62,7 @@ Here are the following features that are implemented in the shopping app. A visu
 + **Review**
     + Add/Edit review for a listing
     + Notifies the listing's poster whenever an add/edit operation is done
+    + Leaves a rating score for each listing
 + **Search**
     + Filter by listing's category
     + Sort by listing's popularity, price or by most recent
@@ -104,6 +106,6 @@ The `Shopping` app contains various features for it to function as an actual Eco
 are implemented. Some of these features are more complicated than the others. For instance, the button to increase/decrease quantity in `listing` and `cart`
 was done using Javascript. To allow ease of selecting date when creating a new profile, a calender date picker was also added.
 
-The most notable feature implemented is the **Notification** feature. This feature overlaps all other features and serves as a primary core of the app. Whenever a user (buyer or seller) performs an action, a notification is sent to both parties. Additionally, the trending searches feature in the `Main Page` tracks the click-rate of each listing asynchronously to replicate a top listing searches functionality.
+The most notable feature implemented is the **Notification** feature. This feature overlaps all other features and serves as a primary core of the app. Whenever a user (buyer or seller) performs an action, a notification is sent to both parties. Other noteworthy features include leaving a rating score for each listing, which are then represented using the number rating stars. To enable this rating feature to work, some additional Javascript functions has to be written. Additionally, the trending searches feature in the `Main Page` tracks the click-rate of each listing asynchronously to replicate a top listing searches functionality.
 
 Finally, all the features tie together to give a pleasant user experience. `Shopping` is designed to look clean and modern with its mobile responsive design, with various CSS for each template pages, combined with Boostrap's image carousel, modals, navigations bars and its grid system.
