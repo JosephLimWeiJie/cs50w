@@ -1,0 +1,2 @@
+shopping app requires the following external libraries:
+- pillow
