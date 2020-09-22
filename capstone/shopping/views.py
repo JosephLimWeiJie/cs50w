@@ -841,6 +841,7 @@ def cancel_order(request):
         order_to_return = Order.objects.get(pk=order_id)
         order_to_return.status = "Cancelled"
         order_to_return.is_tracking = False
+        order_to_return.has_action = False
         order_to_return.save()
 
         # Update listing quantity
@@ -954,10 +955,11 @@ def accept_return_order(request):
         order_id = request.GET['accept_return_order_id']
         order_to_return = Order.objects.get(pk=order_id)
         order_to_return.is_tracking = False
+        order_to_return.has_actions = False
         order_to_return.save()
 
         # Update listing quantity
-        listing_to_update = get_listing(order_to_return)
+        listing_to_update = order_to_return.listing
         listing_to_update.quantity += order_to_return.quantity_demanded
         listing_to_update.save()
 
@@ -965,6 +967,7 @@ def accept_return_order(request):
             request, order_to_return)
         create_accept_return_order_notification_for_seller(
             request, order_to_return)
+        remove_pending_order_notification_for_seller(order_to_return)
         return HttpResponseRedirect(reverse('profile', args=[request.user]))
     else:
         return HttpResponseRedirect(reverse('profile', args=[request.user]))
@@ -989,6 +992,7 @@ def cancel_return_order(request):
             request, order_to_return, reject_reason)
         create_cancel_return_order_notification_for_seller(
             request, order_to_return)
+        remove_pending_order_notification_for_seller(order_to_return)
         return HttpResponseRedirect(reverse('profile', args=[request.user]))
     else:
         return HttpResponseRedirect(reverse('profile', args=[request.user]))
@@ -1109,7 +1113,7 @@ def check_user_has_order(user):
 
 def check_user_has_item_sold(user, relevant_orders):
     for order in relevant_orders:
-        if order.has_purchased is True:
+        if order.has_purchased is True and order.listing.user == user:
             return True
     return False
 
@@ -1375,7 +1379,7 @@ def create_accept_return_order_notification_for_buyer(
         " has accepted the return order request."
     notification = Notification.objects.create(
         listing=order_to_return.listing, order=order_to_return,
-        user=order_to_return.listing.user)
+        user=order_to_return.user)
     notification.content = content
     notification.has_action = False
     notification.save()
@@ -1406,6 +1410,7 @@ def create_cancel_return_order_notification_for_buyer(
     notification.content = order_to_return.listing.user.username + \
         " has rejected your return order request. The reason is: " + \
         reject_reason
+    notification.has_action = False
     notification.save()
 
     order_to_return.user.has_new_notification = True
@@ -1456,3 +1461,9 @@ def create_cancel_order_notification_for_seller(
 
     order_to_return.listing.user.has_new_notification = True
     order_to_return.listing.user.save()
+
+
+def remove_pending_order_notification_for_seller(order_to_return):
+    for notif in Notification.objects.all():
+        if notif.order == order_to_return and notif.has_action is True:
+            notif.delete()
