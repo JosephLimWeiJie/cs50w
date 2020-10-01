@@ -2,7 +2,7 @@
 This repository contains all the completed projects for this course.
  
 ## Official Certificate
-[CS50W Official Certificate.pdf](https://github.com/JosephLimWeiJie/cs50w/files/5283553/CS50W.Official.Certificate.pdf)
+[Lim Wei Jie Verified Official Certificate.pdf](https://github.com/JosephLimWeiJie/cs50w/files/5309445/Lim.Wei.Jie.Verified.Official.Certificate.pdf)
 
 ### Project 0 (Google Search Homepage)
 Project 0 involves designing a front-end Google Homepage website with simple search functionality using purely HTML and CSS.
