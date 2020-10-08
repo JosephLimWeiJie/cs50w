@@ -22,7 +22,7 @@ Wikipedia is a free online encyclopedia that consists of a number of encyclopedi
 
 <a name="features"></a>
 ## Features
-Here are the following features that are implemented in the Network app. A visual demo is provided in the video below.
+Here are the following features that are implemented in the Wiki app. A visual demo is provided in the video below.
 + **Entry Page**
   + Users can create a new Wiki entry page.
 + **Index Page**
