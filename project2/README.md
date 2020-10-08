@@ -35,7 +35,7 @@ Here are the following features that are implemented in the Commerce app. A visu
   + Users can set a listing to be under their watchlist.
 + **Categories**
   + Each listing can be sorted into specific categories.
-+ **"Django Admin Interface**
++ **Django Admin Interface**
   + A superuser is created to have full admin access to the `Models`.
 
 [![Screenshot 2020-09-22 at 11 23 42 PM](https://user-images.githubusercontent.com/59989652/95488807-92723700-09c8-11eb-93f1-d7f41270892b.png)](https://youtu.be/-ZmFzBEm53Y)
