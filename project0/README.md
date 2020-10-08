@@ -7,8 +7,7 @@ By: `JosephLimWeiJie` Since: `Aug 2020`
 
 <a name="introduction"></a>
 ## Introduction
-<img align="center" src="https://user-images.githubusercontent.com/59989652/95490305-a4ed7000-09ca-11eb-9a18-f2aab8234712.png)
-">
+<img align="center" src="https://user-images.githubusercontent.com/59989652/95490305-a4ed7000-09ca-11eb-9a18-f2aab8234712.png">
 
 Search is a front-end for Google Search, Google Image Search, and Google Advanced Search.
 
