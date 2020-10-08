@@ -7,7 +7,7 @@ By: `JosephLimWeiJie` Since: `Aug 2020`
 
 <a name="introduction"></a>
 ## Introduction
-<img align="center" src="https://user-images.githubusercontent.com/59989652/95486566-bda75700-09c5-11eb-8de0-b0a92b710bbb.png">
+<img align="center" src="https://user-images.githubusercontent.com/59989652/95487417-dfeda480-09c6-11eb-895e-67c2b0dad7a1.png">
 
 Network Design is a Twitter-like social network website for making posts and following users.
 
